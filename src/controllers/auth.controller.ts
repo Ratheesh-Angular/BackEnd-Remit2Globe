@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { authService } from "../services/auth.service";
 import { prisma } from "../lib/prisma";
 import { AuthRequest } from "../middleware/auth.middleware";
-
+//test commit
 export const authController = {
   async register(req: Request, res: Response) {
     try {
