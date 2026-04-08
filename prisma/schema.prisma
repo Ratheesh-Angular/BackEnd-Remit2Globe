@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String?   @unique
+  phone        String?   @unique
+  passwordHash String
+  role         UserRole  @default(INDIVIDUAL)
+  kycStatus    KycStatus @default(PENDING)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  individualProfile IndividualProfile?
+  corporateProfile  CorporateProfile?
+  documents         KycDocument[]
+}
+
+model IndividualProfile {
+  id               String    @id @default(uuid())
+  userId           String    @unique
+  fullName         String?
+  dateOfBirth      DateTime?
+  nationality      String?
+  isNational       Boolean   @default(false)
+
+  passportNumber   String?
+  passportIssue    DateTime?
+  passportExpiry   DateTime?
+
+  workPermitNumber String?
+  workPermitIssue  DateTime?
+  workPermitExpiry DateTime?
+
+  nationalIdNumber String?
+  nationalIdIssue  DateTime?
+  nationalIdExpiry DateTime?
+
+ 
+  residentialAddress           String?
+ 
+
+  country          String?
+
+  contactEmail     String?
+  contactPhone     String?
+  occupation       String?
+  employerName     String?
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id])
+}
+
+model CorporateProfile {
+  id                      String    @id @default(uuid())
+  userId                  String    @unique
+  businessName            String?
+  natureOfBusiness        String?
+  businessAddress         String?
+  registrationNumber      String?
+  incorporationDate       DateTime?
+
+  tradingLicenseNumber    String?
+  tradingLicenseIssue     DateTime?
+  tradingLicenseExpiry    DateTime?
+
+  regulatoryLicenseNumber String?
+  regulatoryLicenseIssue  DateTime?
+  regulatoryLicenseExpiry DateTime?
+
+  keyPersonnel            Json?
+  shareholders            Json?
+
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  user                    User      @relation(fields: [userId], references: [id])
+}
+
+model KycDocument {
+  id           String         @id @default(uuid())
+  userId       String
+  documentType DocumentType
+  fileName     String
+  fileUrl      String
+  fileSize     Int?
+  mimeType     String?
+  status       DocumentStatus @default(PENDING)
+  uploadedAt   DateTime       @default(now())
+
+  user         User           @relation(fields: [userId], references: [id])
+}
+
+enum UserRole {
+  INDIVIDUAL
+  CORPORATE
+}
+
+enum KycStatus {
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum DocumentType {
+  PASSPORT
+  WORK_PERMIT
+  NATIONAL_ID
+  OTHER_GOVT_ID
+  CERTIFICATE_OF_INCORPORATION
+  TRADING_LICENSE
+  CR12
+  REGULATORY_LICENSE
+  PROOF_OF_ADDRESS
+  DIRECTOR_ID
+  SHAREHOLDER_ID
+  REPRESENTATIVE_ID
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
