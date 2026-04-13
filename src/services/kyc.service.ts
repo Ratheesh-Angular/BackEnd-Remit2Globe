@@ -2,11 +2,20 @@ import { prisma } from "../lib/prisma";
 import { s3Service } from "./s3.service";
 export const kycService = {
   async saveIndividualProfile(userId: string, data: any) {
+    // Construct fullName from firstName, middleName, lastName
+    const fullName = [data.firstName, data.middleName, data.lastName]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+
     // upsert = update if exists, create if not
     const profile = await prisma.individualProfile.upsert({
       where: { userId },
       update: {
-        fullName: data.fullName,
+        firstName: data.firstName,
+        middleName: data.middleName,
+        lastName: data.lastName,
+        fullName: fullName || null,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
         nationality: data.nationality,
         isNational: data.isNational || false,
@@ -39,7 +48,10 @@ export const kycService = {
       },
       create: {
         userId,
-        fullName: data.fullName,
+        firstName: data.firstName,
+        middleName: data.middleName,
+        lastName: data.lastName,
+        fullName: fullName || null,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
         nationality: data.nationality,
         isNational: data.isNational || false,

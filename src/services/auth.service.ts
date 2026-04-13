@@ -1,15 +1,15 @@
-import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma";
 import { generateToken } from "../utils/jwt.utils";
+import { otpService } from "./otp.service";
+import { emailService } from "./email.service";
 interface RegisterInput {
   email?: string;
   phone?: string;
-  password: string;
+  country: string;
   role: "INDIVIDUAL" | "CORPORATE";
 }
 interface LoginInput {
   emailOrPhone: string;
-  password: string;
 }
 export const authService = {
   async register(input: RegisterInput) {
@@ -33,26 +33,37 @@ export const authService = {
       }
     }
 
-    // 3. Hash the password
-    const passwordHash = await bcrypt.hash(input.password, 12);
-
-    // 4. Create the user in database
+    // 3. Create the user in database
     const user = await prisma.user.create({
       data: {
         email: input.email || null,
         phone: input.phone || null,
-        passwordHash,
+        country: input.country,
         role: input.role,
         kycStatus: "PENDING",
+        emailVerified: false,
+        phoneVerified: false,
       },
     });
 
-    // 5. Return user without password
-    const { passwordHash: _, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    // 4. Send verification OTPs
+    try {
+      if (input.email) {
+        await otpService.sendEmailOtp(user.id, input.email);
+      }
+      if (input.phone) {
+        await otpService.sendPhoneOtp(user.id, input.phone);
+      }
+    } catch (error) {
+      console.error("Error sending OTPs:", error);
+      // Don't fail registration if OTP sending fails
+    }
+
+    // 5. Return user
+    return user;
   },
   async login(input: LoginInput) {
-    const { emailOrPhone, password } = input;
+    const { emailOrPhone } = input;
 
     // 1. Find user by email or phone
     const isEmail = emailOrPhone.includes("@");
@@ -71,24 +82,17 @@ export const authService = {
       throw new Error("ACCOUNT_SUSPENDED");
     }
 
-    // 4. Compare password
-    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isPasswordValid) {
-      throw new Error("INVALID_CREDENTIALS");
-    }
-
-    // 5. Generate JWT token
+    // 4. Generate JWT token
     const token = generateToken({
       userId: user.id,
       email: user.email,
       role: user.role,
     });
 
-    // 6. Return token and user info
-    const { passwordHash: _, ...userWithoutPassword } = user;
+    // 5. Return token and user info
     return {
       token,
-      user: userWithoutPassword,
+      user,
     };
   },
 };

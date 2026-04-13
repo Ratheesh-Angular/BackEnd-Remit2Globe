@@ -8,23 +8,45 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  email        String?   @unique
-  phone        String?   @unique
-  passwordHash String
-  role         UserRole  @default(INDIVIDUAL)
-  kycStatus    KycStatus @default(PENDING)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id            String    @id @default(uuid())
+  email         String?   @unique
+  phone         String?   @unique
+  country       String?
+  passwordHash  String?
+  role          UserRole  @default(INDIVIDUAL)
+  kycStatus     KycStatus @default(PENDING)
+  emailVerified Boolean   @default(false)
+  phoneVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   individualProfile IndividualProfile?
   corporateProfile  CorporateProfile?
   documents         KycDocument[]
+  beneficiaries     Beneficiary[]
+  otps              Otp[]
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  userId    String
+  type      OtpType
+  code      String
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
 }
 
 model IndividualProfile {
   id               String    @id @default(uuid())
   userId           String    @unique
+  firstName        String?
+  middleName       String?
+  lastName         String?
   fullName         String?
   dateOfBirth      DateTime?
   nationality      String?
@@ -99,6 +121,30 @@ model KycDocument {
   user         User           @relation(fields: [userId], references: [id])
 }
 
+model Beneficiary {
+  id                  String          @id @default(uuid())
+  userId              String
+  deliveryChannel     DeliveryChannel
+  fullName            String
+
+  // Bank Transfer fields
+  country             String?
+  bankName            String?
+  accountNumber       String?
+  swiftBic            String?
+
+  // Mobile Money fields
+  mobileMoneyProvider String?
+  mobileNumber        String?
+
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  user                User            @relation(fields: [userId], references: [id])
+}
+
+
+
 enum UserRole {
   INDIVIDUAL
   CORPORATE
@@ -113,9 +159,12 @@ enum KycStatus {
 }
 
 enum DocumentType {
-  PASSPORT
-  WORK_PERMIT
-  NATIONAL_ID
+  PASSPORT_FRONT
+  PASSPORT_BACK
+  WORK_PERMIT_FRONT
+  WORK_PERMIT_BACK
+  NATIONAL_ID_FRONT
+  NATIONAL_ID_BACK
   OTHER_GOVT_ID
   CERTIFICATE_OF_INCORPORATION
   TRADING_LICENSE
@@ -131,4 +180,14 @@ enum DocumentStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum DeliveryChannel {
+  BANK_TRANSFER
+  MOBILE_MONEY
+}
+
+enum OtpType {
+  EMAIL
+  PHONE
 }

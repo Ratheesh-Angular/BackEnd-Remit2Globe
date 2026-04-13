@@ -6,7 +6,7 @@ import { AuthRequest } from "../middleware/auth.middleware";
 export const authController = {
   async register(req: Request, res: Response) {
     try {
-      const { email, phone, password, confirmPassword, role } = req.body;
+      const { email, phone, country, role } = req.body;
 
       // Basic validation
       if (!email && !phone) {
@@ -16,24 +16,10 @@ export const authController = {
         });
       }
 
-      if (!password) {
+      if (!country) {
         return res.status(400).json({
           success: false,
-          message: "Password is required",
-        });
-      }
-
-      if (password.length < 8) {
-        return res.status(400).json({
-          success: false,
-          message: "Password must be at least 8 characters",
-        });
-      }
-
-      if (password !== confirmPassword) {
-        return res.status(400).json({
-          success: false,
-          message: "Passwords do not match",
+          message: "Country is required",
         });
       }
 
@@ -48,7 +34,7 @@ export const authController = {
       const user = await authService.register({
         email,
         phone,
-        password,
+        country,
         role,
       });
 
@@ -81,7 +67,7 @@ export const authController = {
   },
   async login(req: Request, res: Response) {
     try {
-      const { emailOrPhone, password } = req.body;
+      const { emailOrPhone } = req.body;
 
       if (!emailOrPhone) {
         return res.status(400).json({
@@ -90,14 +76,7 @@ export const authController = {
         });
       }
 
-      if (!password) {
-        return res.status(400).json({
-          success: false,
-          message: "Password is required",
-        });
-      }
-
-      const result = await authService.login({ emailOrPhone, password });
+      const result = await authService.login({ emailOrPhone });
 
       // Store token in httpOnly cookie (more secure than localStorage)
       res.cookie("token", result.token, {
@@ -116,7 +95,7 @@ export const authController = {
       if (error.message === "INVALID_CREDENTIALS") {
         return res.status(401).json({
           success: false,
-          message: "Invalid email/phone or password",
+          message: "Invalid email/phone",
         });
       }
       if (error.message === "ACCOUNT_SUSPENDED") {
@@ -140,6 +119,7 @@ export const authController = {
           id: true,
           email: true,
           phone: true,
+          country: true,
           role: true,
           kycStatus: true,
           createdAt: true,

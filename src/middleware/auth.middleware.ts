@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-
+import file from "multer";
 export interface AuthRequest extends Request {
   user?: {
     userId: string;
     email: string | null;
     role: string;
   };
+  file?: Express.Multer.File;
 }
 
 export const protect = (

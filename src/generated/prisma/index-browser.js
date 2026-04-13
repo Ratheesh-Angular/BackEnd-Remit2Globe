@@ -124,16 +124,32 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   phone: 'phone',
+  country: 'country',
   passwordHash: 'passwordHash',
   role: 'role',
   kycStatus: 'kycStatus',
+  emailVerified: 'emailVerified',
+  phoneVerified: 'phoneVerified',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OtpScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  code: 'code',
+  expiresAt: 'expiresAt',
+  verified: 'verified',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.IndividualProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  firstName: 'firstName',
+  middleName: 'middleName',
+  lastName: 'lastName',
   fullName: 'fullName',
   dateOfBirth: 'dateOfBirth',
   nationality: 'nationality',
@@ -189,6 +205,21 @@ exports.Prisma.KycDocumentScalarFieldEnum = {
   uploadedAt: 'uploadedAt'
 };
 
+exports.Prisma.BeneficiaryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  deliveryChannel: 'deliveryChannel',
+  fullName: 'fullName',
+  country: 'country',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  swiftBic: 'swiftBic',
+  mobileMoneyProvider: 'mobileMoneyProvider',
+  mobileNumber: 'mobileNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -227,10 +258,18 @@ exports.KycStatus = exports.$Enums.KycStatus = {
   SUSPENDED: 'SUSPENDED'
 };
 
+exports.OtpType = exports.$Enums.OtpType = {
+  EMAIL: 'EMAIL',
+  PHONE: 'PHONE'
+};
+
 exports.DocumentType = exports.$Enums.DocumentType = {
-  PASSPORT: 'PASSPORT',
-  WORK_PERMIT: 'WORK_PERMIT',
-  NATIONAL_ID: 'NATIONAL_ID',
+  PASSPORT_FRONT: 'PASSPORT_FRONT',
+  PASSPORT_BACK: 'PASSPORT_BACK',
+  WORK_PERMIT_FRONT: 'WORK_PERMIT_FRONT',
+  WORK_PERMIT_BACK: 'WORK_PERMIT_BACK',
+  NATIONAL_ID_FRONT: 'NATIONAL_ID_FRONT',
+  NATIONAL_ID_BACK: 'NATIONAL_ID_BACK',
   OTHER_GOVT_ID: 'OTHER_GOVT_ID',
   CERTIFICATE_OF_INCORPORATION: 'CERTIFICATE_OF_INCORPORATION',
   TRADING_LICENSE: 'TRADING_LICENSE',
@@ -248,11 +287,18 @@ exports.DocumentStatus = exports.$Enums.DocumentStatus = {
   REJECTED: 'REJECTED'
 };
 
+exports.DeliveryChannel = exports.$Enums.DeliveryChannel = {
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  MOBILE_MONEY: 'MOBILE_MONEY'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
+  Otp: 'Otp',
   IndividualProfile: 'IndividualProfile',
   CorporateProfile: 'CorporateProfile',
-  KycDocument: 'KycDocument'
+  KycDocument: 'KycDocument',
+  Beneficiary: 'Beneficiary'
 };
 
 /**
