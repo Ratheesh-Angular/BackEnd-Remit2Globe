@@ -27,6 +27,7 @@ function validateBeneficiaryData(data: CreateBeneficiaryDto): void {
   }
 
   if (data.deliveryChannel === "MOBILE_MONEY") {
+    if (!data.country?.trim()) throw new Error("Country is required for mobile money transfers");
     if (!data.mobileMoneyProvider?.trim()) throw new Error("Mobile money provider is required");
     if (!data.mobileNumber?.trim()) throw new Error("Mobile number is required");
   }

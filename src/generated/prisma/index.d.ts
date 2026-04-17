@@ -19,6 +19,21 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Account
+ * 
+ */
+export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
+/**
+ * Model Session
+ * 
+ */
+export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
+/**
+ * Model VerificationToken
+ * 
+ */
+export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
+/**
  * Model Otp
  * 
  */
@@ -43,6 +58,21 @@ export type KycDocument = $Result.DefaultSelection<Prisma.$KycDocumentPayload>
  * 
  */
 export type Beneficiary = $Result.DefaultSelection<Prisma.$BeneficiaryPayload>
+/**
+ * Model RemittanceTransfer
+ * 
+ */
+export type RemittanceTransfer = $Result.DefaultSelection<Prisma.$RemittanceTransferPayload>
+/**
+ * Model FxRate
+ * 
+ */
+export type FxRate = $Result.DefaultSelection<Prisma.$FxRatePayload>
+/**
+ * Model CompanyBankAccount
+ * 
+ */
+export type CompanyBankAccount = $Result.DefaultSelection<Prisma.$CompanyBankAccountPayload>
 
 /**
  * Enums
@@ -112,6 +142,28 @@ export const OtpType: {
 
 export type OtpType = (typeof OtpType)[keyof typeof OtpType]
 
+
+export const RemittanceStatus: {
+  DRAFT: 'DRAFT',
+  PENDING_PAYMENT: 'PENDING_PAYMENT',
+  PAYMENT_SUBMITTED: 'PAYMENT_SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type RemittanceStatus = (typeof RemittanceStatus)[keyof typeof RemittanceStatus]
+
+
+export const PayInMethod: {
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  MOBILE_MONEY: 'MOBILE_MONEY'
+};
+
+export type PayInMethod = (typeof PayInMethod)[keyof typeof PayInMethod]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -137,6 +189,14 @@ export const DeliveryChannel: typeof $Enums.DeliveryChannel
 export type OtpType = $Enums.OtpType
 
 export const OtpType: typeof $Enums.OtpType
+
+export type RemittanceStatus = $Enums.RemittanceStatus
+
+export const RemittanceStatus: typeof $Enums.RemittanceStatus
+
+export type PayInMethod = $Enums.PayInMethod
+
+export const PayInMethod: typeof $Enums.PayInMethod
 
 /**
  * ##  Prisma Client ʲˢ
@@ -270,6 +330,36 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.account`: Exposes CRUD operations for the **Account** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Accounts
+    * const accounts = await prisma.account.findMany()
+    * ```
+    */
+  get account(): Prisma.AccountDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.session`: Exposes CRUD operations for the **Session** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sessions
+    * const sessions = await prisma.session.findMany()
+    * ```
+    */
+  get session(): Prisma.SessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.verificationToken`: Exposes CRUD operations for the **VerificationToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VerificationTokens
+    * const verificationTokens = await prisma.verificationToken.findMany()
+    * ```
+    */
+  get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.otp`: Exposes CRUD operations for the **Otp** model.
     * Example usage:
     * ```ts
@@ -318,6 +408,36 @@ export class PrismaClient<
     * ```
     */
   get beneficiary(): Prisma.BeneficiaryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.remittanceTransfer`: Exposes CRUD operations for the **RemittanceTransfer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RemittanceTransfers
+    * const remittanceTransfers = await prisma.remittanceTransfer.findMany()
+    * ```
+    */
+  get remittanceTransfer(): Prisma.RemittanceTransferDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fxRate`: Exposes CRUD operations for the **FxRate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FxRates
+    * const fxRates = await prisma.fxRate.findMany()
+    * ```
+    */
+  get fxRate(): Prisma.FxRateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.companyBankAccount`: Exposes CRUD operations for the **CompanyBankAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CompanyBankAccounts
+    * const companyBankAccounts = await prisma.companyBankAccount.findMany()
+    * ```
+    */
+  get companyBankAccount(): Prisma.CompanyBankAccountDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -753,11 +873,17 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    Account: 'Account',
+    Session: 'Session',
+    VerificationToken: 'VerificationToken',
     Otp: 'Otp',
     IndividualProfile: 'IndividualProfile',
     CorporateProfile: 'CorporateProfile',
     KycDocument: 'KycDocument',
-    Beneficiary: 'Beneficiary'
+    Beneficiary: 'Beneficiary',
+    RemittanceTransfer: 'RemittanceTransfer',
+    FxRate: 'FxRate',
+    CompanyBankAccount: 'CompanyBankAccount'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -773,7 +899,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "otp" | "individualProfile" | "corporateProfile" | "kycDocument" | "beneficiary"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "otp" | "individualProfile" | "corporateProfile" | "kycDocument" | "beneficiary" | "remittanceTransfer" | "fxRate" | "companyBankAccount"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -848,6 +974,228 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Account: {
+        payload: Prisma.$AccountPayload<ExtArgs>
+        fields: Prisma.AccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          findFirst: {
+            args: Prisma.AccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          findMany: {
+            args: Prisma.AccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          create: {
+            args: Prisma.AccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          createMany: {
+            args: Prisma.AccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          delete: {
+            args: Prisma.AccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          update: {
+            args: Prisma.AccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.AccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.AccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          aggregate: {
+            args: Prisma.AccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAccount>
+          }
+          groupBy: {
+            args: Prisma.AccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AccountCountArgs<ExtArgs>
+            result: $Utils.Optional<AccountCountAggregateOutputType> | number
+          }
+        }
+      }
+      Session: {
+        payload: Prisma.$SessionPayload<ExtArgs>
+        fields: Prisma.SessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findFirst: {
+            args: Prisma.SessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findMany: {
+            args: Prisma.SessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          create: {
+            args: Prisma.SessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          createMany: {
+            args: Prisma.SessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          delete: {
+            args: Prisma.SessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          update: {
+            args: Prisma.SessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          aggregate: {
+            args: Prisma.SessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSession>
+          }
+          groupBy: {
+            args: Prisma.SessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessionCountArgs<ExtArgs>
+            result: $Utils.Optional<SessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      VerificationToken: {
+        payload: Prisma.$VerificationTokenPayload<ExtArgs>
+        fields: Prisma.VerificationTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VerificationTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VerificationTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.VerificationTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VerificationTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          findMany: {
+            args: Prisma.VerificationTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          create: {
+            args: Prisma.VerificationTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          createMany: {
+            args: Prisma.VerificationTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VerificationTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.VerificationTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          update: {
+            args: Prisma.VerificationTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.VerificationTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VerificationTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VerificationTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.VerificationTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.VerificationTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVerificationToken>
+          }
+          groupBy: {
+            args: Prisma.VerificationTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VerificationTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VerificationTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<VerificationTokenCountAggregateOutputType> | number
           }
         }
       }
@@ -1221,6 +1569,228 @@ export namespace Prisma {
           }
         }
       }
+      RemittanceTransfer: {
+        payload: Prisma.$RemittanceTransferPayload<ExtArgs>
+        fields: Prisma.RemittanceTransferFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RemittanceTransferFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RemittanceTransferFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>
+          }
+          findFirst: {
+            args: Prisma.RemittanceTransferFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RemittanceTransferFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>
+          }
+          findMany: {
+            args: Prisma.RemittanceTransferFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>[]
+          }
+          create: {
+            args: Prisma.RemittanceTransferCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>
+          }
+          createMany: {
+            args: Prisma.RemittanceTransferCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RemittanceTransferCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>[]
+          }
+          delete: {
+            args: Prisma.RemittanceTransferDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>
+          }
+          update: {
+            args: Prisma.RemittanceTransferUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>
+          }
+          deleteMany: {
+            args: Prisma.RemittanceTransferDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RemittanceTransferUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RemittanceTransferUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>[]
+          }
+          upsert: {
+            args: Prisma.RemittanceTransferUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemittanceTransferPayload>
+          }
+          aggregate: {
+            args: Prisma.RemittanceTransferAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRemittanceTransfer>
+          }
+          groupBy: {
+            args: Prisma.RemittanceTransferGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RemittanceTransferGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RemittanceTransferCountArgs<ExtArgs>
+            result: $Utils.Optional<RemittanceTransferCountAggregateOutputType> | number
+          }
+        }
+      }
+      FxRate: {
+        payload: Prisma.$FxRatePayload<ExtArgs>
+        fields: Prisma.FxRateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FxRateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FxRateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>
+          }
+          findFirst: {
+            args: Prisma.FxRateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FxRateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>
+          }
+          findMany: {
+            args: Prisma.FxRateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>[]
+          }
+          create: {
+            args: Prisma.FxRateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>
+          }
+          createMany: {
+            args: Prisma.FxRateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FxRateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>[]
+          }
+          delete: {
+            args: Prisma.FxRateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>
+          }
+          update: {
+            args: Prisma.FxRateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>
+          }
+          deleteMany: {
+            args: Prisma.FxRateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FxRateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FxRateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>[]
+          }
+          upsert: {
+            args: Prisma.FxRateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FxRatePayload>
+          }
+          aggregate: {
+            args: Prisma.FxRateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFxRate>
+          }
+          groupBy: {
+            args: Prisma.FxRateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FxRateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FxRateCountArgs<ExtArgs>
+            result: $Utils.Optional<FxRateCountAggregateOutputType> | number
+          }
+        }
+      }
+      CompanyBankAccount: {
+        payload: Prisma.$CompanyBankAccountPayload<ExtArgs>
+        fields: Prisma.CompanyBankAccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompanyBankAccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompanyBankAccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>
+          }
+          findFirst: {
+            args: Prisma.CompanyBankAccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompanyBankAccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>
+          }
+          findMany: {
+            args: Prisma.CompanyBankAccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>[]
+          }
+          create: {
+            args: Prisma.CompanyBankAccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>
+          }
+          createMany: {
+            args: Prisma.CompanyBankAccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompanyBankAccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>[]
+          }
+          delete: {
+            args: Prisma.CompanyBankAccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>
+          }
+          update: {
+            args: Prisma.CompanyBankAccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompanyBankAccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompanyBankAccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompanyBankAccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompanyBankAccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyBankAccountPayload>
+          }
+          aggregate: {
+            args: Prisma.CompanyBankAccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompanyBankAccount>
+          }
+          groupBy: {
+            args: Prisma.CompanyBankAccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompanyBankAccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompanyBankAccountCountArgs<ExtArgs>
+            result: $Utils.Optional<CompanyBankAccountCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1330,11 +1900,17 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    account?: AccountOmit
+    session?: SessionOmit
+    verificationToken?: VerificationTokenOmit
     otp?: OtpOmit
     individualProfile?: IndividualProfileOmit
     corporateProfile?: CorporateProfileOmit
     kycDocument?: KycDocumentOmit
     beneficiary?: BeneficiaryOmit
+    remittanceTransfer?: RemittanceTransferOmit
+    fxRate?: FxRateOmit
+    companyBankAccount?: CompanyBankAccountOmit
   }
 
   /* Types for Logging */
@@ -1417,13 +1993,19 @@ export namespace Prisma {
   export type UserCountOutputType = {
     documents: number
     beneficiaries: number
+    remittanceTransfers: number
     otps: number
+    accounts: number
+    sessions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     documents?: boolean | UserCountOutputTypeCountDocumentsArgs
     beneficiaries?: boolean | UserCountOutputTypeCountBeneficiariesArgs
+    remittanceTransfers?: boolean | UserCountOutputTypeCountRemittanceTransfersArgs
     otps?: boolean | UserCountOutputTypeCountOtpsArgs
+    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   }
 
   // Custom InputTypes
@@ -1454,8 +2036,60 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountRemittanceTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RemittanceTransferWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountOtpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OtpWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+  }
+
+
+  /**
+   * Count Type BeneficiaryCountOutputType
+   */
+
+  export type BeneficiaryCountOutputType = {
+    remittanceTransfers: number
+  }
+
+  export type BeneficiaryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    remittanceTransfers?: boolean | BeneficiaryCountOutputTypeCountRemittanceTransfersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BeneficiaryCountOutputType without action
+   */
+  export type BeneficiaryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BeneficiaryCountOutputType
+     */
+    select?: BeneficiaryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BeneficiaryCountOutputType without action
+   */
+  export type BeneficiaryCountOutputTypeCountRemittanceTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RemittanceTransferWhereInput
   }
 
 
@@ -1479,6 +2113,9 @@ export namespace Prisma {
     phone: string | null
     country: string | null
     passwordHash: string | null
+    name: string | null
+    image: string | null
+    googleId: string | null
     role: $Enums.UserRole | null
     kycStatus: $Enums.KycStatus | null
     emailVerified: boolean | null
@@ -1493,6 +2130,9 @@ export namespace Prisma {
     phone: string | null
     country: string | null
     passwordHash: string | null
+    name: string | null
+    image: string | null
+    googleId: string | null
     role: $Enums.UserRole | null
     kycStatus: $Enums.KycStatus | null
     emailVerified: boolean | null
@@ -1507,6 +2147,9 @@ export namespace Prisma {
     phone: number
     country: number
     passwordHash: number
+    name: number
+    image: number
+    googleId: number
     role: number
     kycStatus: number
     emailVerified: number
@@ -1523,6 +2166,9 @@ export namespace Prisma {
     phone?: true
     country?: true
     passwordHash?: true
+    name?: true
+    image?: true
+    googleId?: true
     role?: true
     kycStatus?: true
     emailVerified?: true
@@ -1537,6 +2183,9 @@ export namespace Prisma {
     phone?: true
     country?: true
     passwordHash?: true
+    name?: true
+    image?: true
+    googleId?: true
     role?: true
     kycStatus?: true
     emailVerified?: true
@@ -1551,6 +2200,9 @@ export namespace Prisma {
     phone?: true
     country?: true
     passwordHash?: true
+    name?: true
+    image?: true
+    googleId?: true
     role?: true
     kycStatus?: true
     emailVerified?: true
@@ -1638,6 +2290,9 @@ export namespace Prisma {
     phone: string | null
     country: string | null
     passwordHash: string | null
+    name: string | null
+    image: string | null
+    googleId: string | null
     role: $Enums.UserRole
     kycStatus: $Enums.KycStatus
     emailVerified: boolean
@@ -1669,6 +2324,9 @@ export namespace Prisma {
     phone?: boolean
     country?: boolean
     passwordHash?: boolean
+    name?: boolean
+    image?: boolean
+    googleId?: boolean
     role?: boolean
     kycStatus?: boolean
     emailVerified?: boolean
@@ -1679,7 +2337,10 @@ export namespace Prisma {
     corporateProfile?: boolean | User$corporateProfileArgs<ExtArgs>
     documents?: boolean | User$documentsArgs<ExtArgs>
     beneficiaries?: boolean | User$beneficiariesArgs<ExtArgs>
+    remittanceTransfers?: boolean | User$remittanceTransfersArgs<ExtArgs>
     otps?: boolean | User$otpsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1689,6 +2350,9 @@ export namespace Prisma {
     phone?: boolean
     country?: boolean
     passwordHash?: boolean
+    name?: boolean
+    image?: boolean
+    googleId?: boolean
     role?: boolean
     kycStatus?: boolean
     emailVerified?: boolean
@@ -1703,6 +2367,9 @@ export namespace Prisma {
     phone?: boolean
     country?: boolean
     passwordHash?: boolean
+    name?: boolean
+    image?: boolean
+    googleId?: boolean
     role?: boolean
     kycStatus?: boolean
     emailVerified?: boolean
@@ -1717,6 +2384,9 @@ export namespace Prisma {
     phone?: boolean
     country?: boolean
     passwordHash?: boolean
+    name?: boolean
+    image?: boolean
+    googleId?: boolean
     role?: boolean
     kycStatus?: boolean
     emailVerified?: boolean
@@ -1725,13 +2395,16 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "phone" | "country" | "passwordHash" | "role" | "kycStatus" | "emailVerified" | "phoneVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "phone" | "country" | "passwordHash" | "name" | "image" | "googleId" | "role" | "kycStatus" | "emailVerified" | "phoneVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     individualProfile?: boolean | User$individualProfileArgs<ExtArgs>
     corporateProfile?: boolean | User$corporateProfileArgs<ExtArgs>
     documents?: boolean | User$documentsArgs<ExtArgs>
     beneficiaries?: boolean | User$beneficiariesArgs<ExtArgs>
+    remittanceTransfers?: boolean | User$remittanceTransfersArgs<ExtArgs>
     otps?: boolean | User$otpsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1744,7 +2417,10 @@ export namespace Prisma {
       corporateProfile: Prisma.$CorporateProfilePayload<ExtArgs> | null
       documents: Prisma.$KycDocumentPayload<ExtArgs>[]
       beneficiaries: Prisma.$BeneficiaryPayload<ExtArgs>[]
+      remittanceTransfers: Prisma.$RemittanceTransferPayload<ExtArgs>[]
       otps: Prisma.$OtpPayload<ExtArgs>[]
+      accounts: Prisma.$AccountPayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1752,6 +2428,9 @@ export namespace Prisma {
       phone: string | null
       country: string | null
       passwordHash: string | null
+      name: string | null
+      image: string | null
+      googleId: string | null
       role: $Enums.UserRole
       kycStatus: $Enums.KycStatus
       emailVerified: boolean
@@ -2156,7 +2835,10 @@ export namespace Prisma {
     corporateProfile<T extends User$corporateProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$corporateProfileArgs<ExtArgs>>): Prisma__CorporateProfileClient<$Result.GetResult<Prisma.$CorporateProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     documents<T extends User$documentsArgs<ExtArgs> = {}>(args?: Subset<T, User$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KycDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     beneficiaries<T extends User$beneficiariesArgs<ExtArgs> = {}>(args?: Subset<T, User$beneficiariesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BeneficiaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    remittanceTransfers<T extends User$remittanceTransfersArgs<ExtArgs> = {}>(args?: Subset<T, User$remittanceTransfersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     otps<T extends User$otpsArgs<ExtArgs> = {}>(args?: Subset<T, User$otpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2191,6 +2873,9 @@ export namespace Prisma {
     readonly phone: FieldRef<"User", 'String'>
     readonly country: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
+    readonly name: FieldRef<"User", 'String'>
+    readonly image: FieldRef<"User", 'String'>
+    readonly googleId: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly kycStatus: FieldRef<"User", 'KycStatus'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
@@ -2676,6 +3361,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.remittanceTransfers
+   */
+  export type User$remittanceTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    where?: RemittanceTransferWhereInput
+    orderBy?: RemittanceTransferOrderByWithRelationInput | RemittanceTransferOrderByWithRelationInput[]
+    cursor?: RemittanceTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RemittanceTransferScalarFieldEnum | RemittanceTransferScalarFieldEnum[]
+  }
+
+  /**
    * User.otps
    */
   export type User$otpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2700,6 +3409,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.accounts
+   */
+  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    cursor?: AccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.sessions
+   */
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2715,6 +3472,3218 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Account
+   */
+
+  export type AggregateAccount = {
+    _count: AccountCountAggregateOutputType | null
+    _avg: AccountAvgAggregateOutputType | null
+    _sum: AccountSumAggregateOutputType | null
+    _min: AccountMinAggregateOutputType | null
+    _max: AccountMaxAggregateOutputType | null
+  }
+
+  export type AccountAvgAggregateOutputType = {
+    expires_at: number | null
+  }
+
+  export type AccountSumAggregateOutputType = {
+    expires_at: number | null
+  }
+
+  export type AccountMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: string | null
+    provider: string | null
+    providerAccountId: string | null
+    refresh_token: string | null
+    access_token: string | null
+    expires_at: number | null
+    token_type: string | null
+    scope: string | null
+    id_token: string | null
+    session_state: string | null
+  }
+
+  export type AccountMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: string | null
+    provider: string | null
+    providerAccountId: string | null
+    refresh_token: string | null
+    access_token: string | null
+    expires_at: number | null
+    token_type: string | null
+    scope: string | null
+    id_token: string | null
+    session_state: string | null
+  }
+
+  export type AccountCountAggregateOutputType = {
+    id: number
+    userId: number
+    type: number
+    provider: number
+    providerAccountId: number
+    refresh_token: number
+    access_token: number
+    expires_at: number
+    token_type: number
+    scope: number
+    id_token: number
+    session_state: number
+    _all: number
+  }
+
+
+  export type AccountAvgAggregateInputType = {
+    expires_at?: true
+  }
+
+  export type AccountSumAggregateInputType = {
+    expires_at?: true
+  }
+
+  export type AccountMinAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    provider?: true
+    providerAccountId?: true
+    refresh_token?: true
+    access_token?: true
+    expires_at?: true
+    token_type?: true
+    scope?: true
+    id_token?: true
+    session_state?: true
+  }
+
+  export type AccountMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    provider?: true
+    providerAccountId?: true
+    refresh_token?: true
+    access_token?: true
+    expires_at?: true
+    token_type?: true
+    scope?: true
+    id_token?: true
+    session_state?: true
+  }
+
+  export type AccountCountAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    provider?: true
+    providerAccountId?: true
+    refresh_token?: true
+    access_token?: true
+    expires_at?: true
+    token_type?: true
+    scope?: true
+    id_token?: true
+    session_state?: true
+    _all?: true
+  }
+
+  export type AccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Account to aggregate.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Accounts
+    **/
+    _count?: true | AccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AccountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AccountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AccountMaxAggregateInputType
+  }
+
+  export type GetAccountAggregateType<T extends AccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAccount[P]>
+      : GetScalarType<T[P], AggregateAccount[P]>
+  }
+
+
+
+
+  export type AccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithAggregationInput | AccountOrderByWithAggregationInput[]
+    by: AccountScalarFieldEnum[] | AccountScalarFieldEnum
+    having?: AccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AccountCountAggregateInputType | true
+    _avg?: AccountAvgAggregateInputType
+    _sum?: AccountSumAggregateInputType
+    _min?: AccountMinAggregateInputType
+    _max?: AccountMaxAggregateInputType
+  }
+
+  export type AccountGroupByOutputType = {
+    id: string
+    userId: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token: string | null
+    access_token: string | null
+    expires_at: number | null
+    token_type: string | null
+    scope: string | null
+    id_token: string | null
+    session_state: string | null
+    _count: AccountCountAggregateOutputType | null
+    _avg: AccountAvgAggregateOutputType | null
+    _sum: AccountSumAggregateOutputType | null
+    _min: AccountMinAggregateOutputType | null
+    _max: AccountMaxAggregateOutputType | null
+  }
+
+  type GetAccountGroupByPayload<T extends AccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AccountGroupByOutputType[P]>
+            : GetScalarType<T[P], AccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+  }
+
+  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "provider" | "providerAccountId" | "refresh_token" | "access_token" | "expires_at" | "token_type" | "scope" | "id_token" | "session_state", ExtArgs["result"]["account"]>
+  export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Account"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      type: string
+      provider: string
+      providerAccountId: string
+      refresh_token: string | null
+      access_token: string | null
+      expires_at: number | null
+      token_type: string | null
+      scope: string | null
+      id_token: string | null
+      session_state: string | null
+    }, ExtArgs["result"]["account"]>
+    composites: {}
+  }
+
+  type AccountGetPayload<S extends boolean | null | undefined | AccountDefaultArgs> = $Result.GetResult<Prisma.$AccountPayload, S>
+
+  type AccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AccountCountAggregateInputType | true
+    }
+
+  export interface AccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Account'], meta: { name: 'Account' } }
+    /**
+     * Find zero or one Account that matches the filter.
+     * @param {AccountFindUniqueArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AccountFindUniqueArgs>(args: SelectSubset<T, AccountFindUniqueArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Account that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AccountFindUniqueOrThrowArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AccountFindUniqueOrThrowArgs>(args: SelectSubset<T, AccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Account that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindFirstArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AccountFindFirstArgs>(args?: SelectSubset<T, AccountFindFirstArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Account that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindFirstOrThrowArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AccountFindFirstOrThrowArgs>(args?: SelectSubset<T, AccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Accounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Accounts
+     * const accounts = await prisma.account.findMany()
+     * 
+     * // Get first 10 Accounts
+     * const accounts = await prisma.account.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const accountWithIdOnly = await prisma.account.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AccountFindManyArgs>(args?: SelectSubset<T, AccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Account.
+     * @param {AccountCreateArgs} args - Arguments to create a Account.
+     * @example
+     * // Create one Account
+     * const Account = await prisma.account.create({
+     *   data: {
+     *     // ... data to create a Account
+     *   }
+     * })
+     * 
+     */
+    create<T extends AccountCreateArgs>(args: SelectSubset<T, AccountCreateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Accounts.
+     * @param {AccountCreateManyArgs} args - Arguments to create many Accounts.
+     * @example
+     * // Create many Accounts
+     * const account = await prisma.account.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AccountCreateManyArgs>(args?: SelectSubset<T, AccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Accounts and returns the data saved in the database.
+     * @param {AccountCreateManyAndReturnArgs} args - Arguments to create many Accounts.
+     * @example
+     * // Create many Accounts
+     * const account = await prisma.account.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Accounts and only return the `id`
+     * const accountWithIdOnly = await prisma.account.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AccountCreateManyAndReturnArgs>(args?: SelectSubset<T, AccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Account.
+     * @param {AccountDeleteArgs} args - Arguments to delete one Account.
+     * @example
+     * // Delete one Account
+     * const Account = await prisma.account.delete({
+     *   where: {
+     *     // ... filter to delete one Account
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AccountDeleteArgs>(args: SelectSubset<T, AccountDeleteArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Account.
+     * @param {AccountUpdateArgs} args - Arguments to update one Account.
+     * @example
+     * // Update one Account
+     * const account = await prisma.account.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AccountUpdateArgs>(args: SelectSubset<T, AccountUpdateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Accounts.
+     * @param {AccountDeleteManyArgs} args - Arguments to filter Accounts to delete.
+     * @example
+     * // Delete a few Accounts
+     * const { count } = await prisma.account.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AccountDeleteManyArgs>(args?: SelectSubset<T, AccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Accounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Accounts
+     * const account = await prisma.account.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AccountUpdateManyArgs>(args: SelectSubset<T, AccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Accounts and returns the data updated in the database.
+     * @param {AccountUpdateManyAndReturnArgs} args - Arguments to update many Accounts.
+     * @example
+     * // Update many Accounts
+     * const account = await prisma.account.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Accounts and only return the `id`
+     * const accountWithIdOnly = await prisma.account.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AccountUpdateManyAndReturnArgs>(args: SelectSubset<T, AccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Account.
+     * @param {AccountUpsertArgs} args - Arguments to update or create a Account.
+     * @example
+     * // Update or create a Account
+     * const account = await prisma.account.upsert({
+     *   create: {
+     *     // ... data to create a Account
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Account we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AccountUpsertArgs>(args: SelectSubset<T, AccountUpsertArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Accounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountCountArgs} args - Arguments to filter Accounts to count.
+     * @example
+     * // Count the number of Accounts
+     * const count = await prisma.account.count({
+     *   where: {
+     *     // ... the filter for the Accounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends AccountCountArgs>(
+      args?: Subset<T, AccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Account.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AccountAggregateArgs>(args: Subset<T, AccountAggregateArgs>): Prisma.PrismaPromise<GetAccountAggregateType<T>>
+
+    /**
+     * Group by Account.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AccountGroupByArgs['orderBy'] }
+        : { orderBy?: AccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Account model
+   */
+  readonly fields: AccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Account.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Account model
+   */
+  interface AccountFieldRefs {
+    readonly id: FieldRef<"Account", 'String'>
+    readonly userId: FieldRef<"Account", 'String'>
+    readonly type: FieldRef<"Account", 'String'>
+    readonly provider: FieldRef<"Account", 'String'>
+    readonly providerAccountId: FieldRef<"Account", 'String'>
+    readonly refresh_token: FieldRef<"Account", 'String'>
+    readonly access_token: FieldRef<"Account", 'String'>
+    readonly expires_at: FieldRef<"Account", 'Int'>
+    readonly token_type: FieldRef<"Account", 'String'>
+    readonly scope: FieldRef<"Account", 'String'>
+    readonly id_token: FieldRef<"Account", 'String'>
+    readonly session_state: FieldRef<"Account", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Account findUnique
+   */
+  export type AccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account findUniqueOrThrow
+   */
+  export type AccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account findFirst
+   */
+  export type AccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account findFirstOrThrow
+   */
+  export type AccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account findMany
+   */
+  export type AccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Accounts to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account create
+   */
+  export type AccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Account.
+     */
+    data: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+  }
+
+  /**
+   * Account createMany
+   */
+  export type AccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Accounts.
+     */
+    data: AccountCreateManyInput | AccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Account createManyAndReturn
+   */
+  export type AccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many Accounts.
+     */
+    data: AccountCreateManyInput | AccountCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Account update
+   */
+  export type AccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Account.
+     */
+    data: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+    /**
+     * Choose, which Account to update.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account updateMany
+   */
+  export type AccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Accounts.
+     */
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    /**
+     * Filter which Accounts to update
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Account updateManyAndReturn
+   */
+  export type AccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * The data used to update Accounts.
+     */
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    /**
+     * Filter which Accounts to update
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Account upsert
+   */
+  export type AccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Account to update in case it exists.
+     */
+    where: AccountWhereUniqueInput
+    /**
+     * In case the Account found by the `where` argument doesn't exist, create a new Account with this data.
+     */
+    create: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+    /**
+     * In case the Account was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+  }
+
+  /**
+   * Account delete
+   */
+  export type AccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter which Account to delete.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account deleteMany
+   */
+  export type AccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Accounts to delete
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Account without action
+   */
+  export type AccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Session
+   */
+
+  export type AggregateSession = {
+    _count: SessionCountAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  export type SessionMinAggregateOutputType = {
+    id: string | null
+    sessionToken: string | null
+    userId: string | null
+    expires: Date | null
+  }
+
+  export type SessionMaxAggregateOutputType = {
+    id: string | null
+    sessionToken: string | null
+    userId: string | null
+    expires: Date | null
+  }
+
+  export type SessionCountAggregateOutputType = {
+    id: number
+    sessionToken: number
+    userId: number
+    expires: number
+    _all: number
+  }
+
+
+  export type SessionMinAggregateInputType = {
+    id?: true
+    sessionToken?: true
+    userId?: true
+    expires?: true
+  }
+
+  export type SessionMaxAggregateInputType = {
+    id?: true
+    sessionToken?: true
+    userId?: true
+    expires?: true
+  }
+
+  export type SessionCountAggregateInputType = {
+    id?: true
+    sessionToken?: true
+    userId?: true
+    expires?: true
+    _all?: true
+  }
+
+  export type SessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Session to aggregate.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Sessions
+    **/
+    _count?: true | SessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type GetSessionAggregateType<T extends SessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSession[P]>
+      : GetScalarType<T[P], AggregateSession[P]>
+  }
+
+
+
+
+  export type SessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithAggregationInput | SessionOrderByWithAggregationInput[]
+    by: SessionScalarFieldEnum[] | SessionScalarFieldEnum
+    having?: SessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessionCountAggregateInputType | true
+    _min?: SessionMinAggregateInputType
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type SessionGroupByOutputType = {
+    id: string
+    sessionToken: string
+    userId: string
+    expires: Date
+    _count: SessionCountAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  type GetSessionGroupByPayload<T extends SessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectScalar = {
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+  }
+
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionToken" | "userId" | "expires", ExtArgs["result"]["session"]>
+  export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Session"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionToken: string
+      userId: string
+      expires: Date
+    }, ExtArgs["result"]["session"]>
+    composites: {}
+  }
+
+  type SessionGetPayload<S extends boolean | null | undefined | SessionDefaultArgs> = $Result.GetResult<Prisma.$SessionPayload, S>
+
+  type SessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SessionCountAggregateInputType | true
+    }
+
+  export interface SessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Session'], meta: { name: 'Session' } }
+    /**
+     * Find zero or one Session that matches the filter.
+     * @param {SessionFindUniqueArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessionFindUniqueArgs>(args: SelectSubset<T, SessionFindUniqueArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Session that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SessionFindUniqueOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessionFindUniqueOrThrowArgs>(args: SelectSubset<T, SessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessionFindFirstArgs>(args?: SelectSubset<T, SessionFindFirstArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessionFindFirstOrThrowArgs>(args?: SelectSubset<T, SessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Sessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sessions
+     * const sessions = await prisma.session.findMany()
+     * 
+     * // Get first 10 Sessions
+     * const sessions = await prisma.session.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sessionWithIdOnly = await prisma.session.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SessionFindManyArgs>(args?: SelectSubset<T, SessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Session.
+     * @param {SessionCreateArgs} args - Arguments to create a Session.
+     * @example
+     * // Create one Session
+     * const Session = await prisma.session.create({
+     *   data: {
+     *     // ... data to create a Session
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessionCreateArgs>(args: SelectSubset<T, SessionCreateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Sessions.
+     * @param {SessionCreateManyArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessionCreateManyArgs>(args?: SelectSubset<T, SessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Sessions and returns the data saved in the database.
+     * @param {SessionCreateManyAndReturnArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Sessions and only return the `id`
+     * const sessionWithIdOnly = await prisma.session.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessionCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Session.
+     * @param {SessionDeleteArgs} args - Arguments to delete one Session.
+     * @example
+     * // Delete one Session
+     * const Session = await prisma.session.delete({
+     *   where: {
+     *     // ... filter to delete one Session
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessionDeleteArgs>(args: SelectSubset<T, SessionDeleteArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Session.
+     * @param {SessionUpdateArgs} args - Arguments to update one Session.
+     * @example
+     * // Update one Session
+     * const session = await prisma.session.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessionUpdateArgs>(args: SelectSubset<T, SessionUpdateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Sessions.
+     * @param {SessionDeleteManyArgs} args - Arguments to filter Sessions to delete.
+     * @example
+     * // Delete a few Sessions
+     * const { count } = await prisma.session.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessionDeleteManyArgs>(args?: SelectSubset<T, SessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessionUpdateManyArgs>(args: SelectSubset<T, SessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions and returns the data updated in the database.
+     * @param {SessionUpdateManyAndReturnArgs} args - Arguments to update many Sessions.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Sessions and only return the `id`
+     * const sessionWithIdOnly = await prisma.session.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SessionUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Session.
+     * @param {SessionUpsertArgs} args - Arguments to update or create a Session.
+     * @example
+     * // Update or create a Session
+     * const session = await prisma.session.upsert({
+     *   create: {
+     *     // ... data to create a Session
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Session we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessionUpsertArgs>(args: SelectSubset<T, SessionUpsertArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionCountArgs} args - Arguments to filter Sessions to count.
+     * @example
+     * // Count the number of Sessions
+     * const count = await prisma.session.count({
+     *   where: {
+     *     // ... the filter for the Sessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessionCountArgs>(
+      args?: Subset<T, SessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessionAggregateArgs>(args: Subset<T, SessionAggregateArgs>): Prisma.PrismaPromise<GetSessionAggregateType<T>>
+
+    /**
+     * Group by Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessionGroupByArgs['orderBy'] }
+        : { orderBy?: SessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Session model
+   */
+  readonly fields: SessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Session.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Session model
+   */
+  interface SessionFieldRefs {
+    readonly id: FieldRef<"Session", 'String'>
+    readonly sessionToken: FieldRef<"Session", 'String'>
+    readonly userId: FieldRef<"Session", 'String'>
+    readonly expires: FieldRef<"Session", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Session findUnique
+   */
+  export type SessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findUniqueOrThrow
+   */
+  export type SessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findFirst
+   */
+  export type SessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findFirstOrThrow
+   */
+  export type SessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findMany
+   */
+  export type SessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Sessions to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session create
+   */
+  export type SessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Session.
+     */
+    data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+  }
+
+  /**
+   * Session createMany
+   */
+  export type SessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Session createManyAndReturn
+   */
+  export type SessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session update
+   */
+  export type SessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Session.
+     */
+    data: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+    /**
+     * Choose, which Session to update.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session updateMany
+   */
+  export type SessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session updateManyAndReturn
+   */
+  export type SessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session upsert
+   */
+  export type SessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Session to update in case it exists.
+     */
+    where: SessionWhereUniqueInput
+    /**
+     * In case the Session found by the `where` argument doesn't exist, create a new Session with this data.
+     */
+    create: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+    /**
+     * In case the Session was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+  }
+
+  /**
+   * Session delete
+   */
+  export type SessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter which Session to delete.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session deleteMany
+   */
+  export type SessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sessions to delete
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session without action
+   */
+  export type SessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VerificationToken
+   */
+
+  export type AggregateVerificationToken = {
+    _count: VerificationTokenCountAggregateOutputType | null
+    _min: VerificationTokenMinAggregateOutputType | null
+    _max: VerificationTokenMaxAggregateOutputType | null
+  }
+
+  export type VerificationTokenMinAggregateOutputType = {
+    identifier: string | null
+    token: string | null
+    expires: Date | null
+  }
+
+  export type VerificationTokenMaxAggregateOutputType = {
+    identifier: string | null
+    token: string | null
+    expires: Date | null
+  }
+
+  export type VerificationTokenCountAggregateOutputType = {
+    identifier: number
+    token: number
+    expires: number
+    _all: number
+  }
+
+
+  export type VerificationTokenMinAggregateInputType = {
+    identifier?: true
+    token?: true
+    expires?: true
+  }
+
+  export type VerificationTokenMaxAggregateInputType = {
+    identifier?: true
+    token?: true
+    expires?: true
+  }
+
+  export type VerificationTokenCountAggregateInputType = {
+    identifier?: true
+    token?: true
+    expires?: true
+    _all?: true
+  }
+
+  export type VerificationTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VerificationToken to aggregate.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VerificationTokens
+    **/
+    _count?: true | VerificationTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VerificationTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VerificationTokenMaxAggregateInputType
+  }
+
+  export type GetVerificationTokenAggregateType<T extends VerificationTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateVerificationToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVerificationToken[P]>
+      : GetScalarType<T[P], AggregateVerificationToken[P]>
+  }
+
+
+
+
+  export type VerificationTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VerificationTokenWhereInput
+    orderBy?: VerificationTokenOrderByWithAggregationInput | VerificationTokenOrderByWithAggregationInput[]
+    by: VerificationTokenScalarFieldEnum[] | VerificationTokenScalarFieldEnum
+    having?: VerificationTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VerificationTokenCountAggregateInputType | true
+    _min?: VerificationTokenMinAggregateInputType
+    _max?: VerificationTokenMaxAggregateInputType
+  }
+
+  export type VerificationTokenGroupByOutputType = {
+    identifier: string
+    token: string
+    expires: Date
+    _count: VerificationTokenCountAggregateOutputType | null
+    _min: VerificationTokenMinAggregateOutputType | null
+    _max: VerificationTokenMaxAggregateOutputType | null
+  }
+
+  type GetVerificationTokenGroupByPayload<T extends VerificationTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VerificationTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VerificationTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VerificationTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectScalar = {
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }
+
+  export type VerificationTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"identifier" | "token" | "expires", ExtArgs["result"]["verificationToken"]>
+
+  export type $VerificationTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VerificationToken"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      identifier: string
+      token: string
+      expires: Date
+    }, ExtArgs["result"]["verificationToken"]>
+    composites: {}
+  }
+
+  type VerificationTokenGetPayload<S extends boolean | null | undefined | VerificationTokenDefaultArgs> = $Result.GetResult<Prisma.$VerificationTokenPayload, S>
+
+  type VerificationTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VerificationTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VerificationTokenCountAggregateInputType | true
+    }
+
+  export interface VerificationTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VerificationToken'], meta: { name: 'VerificationToken' } }
+    /**
+     * Find zero or one VerificationToken that matches the filter.
+     * @param {VerificationTokenFindUniqueArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VerificationTokenFindUniqueArgs>(args: SelectSubset<T, VerificationTokenFindUniqueArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VerificationToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VerificationTokenFindUniqueOrThrowArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VerificationTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, VerificationTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VerificationToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindFirstArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VerificationTokenFindFirstArgs>(args?: SelectSubset<T, VerificationTokenFindFirstArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VerificationToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindFirstOrThrowArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VerificationTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, VerificationTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VerificationTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VerificationTokens
+     * const verificationTokens = await prisma.verificationToken.findMany()
+     * 
+     * // Get first 10 VerificationTokens
+     * const verificationTokens = await prisma.verificationToken.findMany({ take: 10 })
+     * 
+     * // Only select the `identifier`
+     * const verificationTokenWithIdentifierOnly = await prisma.verificationToken.findMany({ select: { identifier: true } })
+     * 
+     */
+    findMany<T extends VerificationTokenFindManyArgs>(args?: SelectSubset<T, VerificationTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VerificationToken.
+     * @param {VerificationTokenCreateArgs} args - Arguments to create a VerificationToken.
+     * @example
+     * // Create one VerificationToken
+     * const VerificationToken = await prisma.verificationToken.create({
+     *   data: {
+     *     // ... data to create a VerificationToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends VerificationTokenCreateArgs>(args: SelectSubset<T, VerificationTokenCreateArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VerificationTokens.
+     * @param {VerificationTokenCreateManyArgs} args - Arguments to create many VerificationTokens.
+     * @example
+     * // Create many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VerificationTokenCreateManyArgs>(args?: SelectSubset<T, VerificationTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VerificationTokens and returns the data saved in the database.
+     * @param {VerificationTokenCreateManyAndReturnArgs} args - Arguments to create many VerificationTokens.
+     * @example
+     * // Create many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VerificationTokens and only return the `identifier`
+     * const verificationTokenWithIdentifierOnly = await prisma.verificationToken.createManyAndReturn({
+     *   select: { identifier: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VerificationTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, VerificationTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VerificationToken.
+     * @param {VerificationTokenDeleteArgs} args - Arguments to delete one VerificationToken.
+     * @example
+     * // Delete one VerificationToken
+     * const VerificationToken = await prisma.verificationToken.delete({
+     *   where: {
+     *     // ... filter to delete one VerificationToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VerificationTokenDeleteArgs>(args: SelectSubset<T, VerificationTokenDeleteArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VerificationToken.
+     * @param {VerificationTokenUpdateArgs} args - Arguments to update one VerificationToken.
+     * @example
+     * // Update one VerificationToken
+     * const verificationToken = await prisma.verificationToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VerificationTokenUpdateArgs>(args: SelectSubset<T, VerificationTokenUpdateArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VerificationTokens.
+     * @param {VerificationTokenDeleteManyArgs} args - Arguments to filter VerificationTokens to delete.
+     * @example
+     * // Delete a few VerificationTokens
+     * const { count } = await prisma.verificationToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VerificationTokenDeleteManyArgs>(args?: SelectSubset<T, VerificationTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VerificationTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VerificationTokenUpdateManyArgs>(args: SelectSubset<T, VerificationTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VerificationTokens and returns the data updated in the database.
+     * @param {VerificationTokenUpdateManyAndReturnArgs} args - Arguments to update many VerificationTokens.
+     * @example
+     * // Update many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VerificationTokens and only return the `identifier`
+     * const verificationTokenWithIdentifierOnly = await prisma.verificationToken.updateManyAndReturn({
+     *   select: { identifier: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VerificationTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, VerificationTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VerificationToken.
+     * @param {VerificationTokenUpsertArgs} args - Arguments to update or create a VerificationToken.
+     * @example
+     * // Update or create a VerificationToken
+     * const verificationToken = await prisma.verificationToken.upsert({
+     *   create: {
+     *     // ... data to create a VerificationToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VerificationToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VerificationTokenUpsertArgs>(args: SelectSubset<T, VerificationTokenUpsertArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VerificationTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenCountArgs} args - Arguments to filter VerificationTokens to count.
+     * @example
+     * // Count the number of VerificationTokens
+     * const count = await prisma.verificationToken.count({
+     *   where: {
+     *     // ... the filter for the VerificationTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends VerificationTokenCountArgs>(
+      args?: Subset<T, VerificationTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VerificationTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VerificationToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VerificationTokenAggregateArgs>(args: Subset<T, VerificationTokenAggregateArgs>): Prisma.PrismaPromise<GetVerificationTokenAggregateType<T>>
+
+    /**
+     * Group by VerificationToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VerificationTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VerificationTokenGroupByArgs['orderBy'] }
+        : { orderBy?: VerificationTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VerificationTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVerificationTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VerificationToken model
+   */
+  readonly fields: VerificationTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VerificationToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VerificationTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VerificationToken model
+   */
+  interface VerificationTokenFieldRefs {
+    readonly identifier: FieldRef<"VerificationToken", 'String'>
+    readonly token: FieldRef<"VerificationToken", 'String'>
+    readonly expires: FieldRef<"VerificationToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VerificationToken findUnique
+   */
+  export type VerificationTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken findUniqueOrThrow
+   */
+  export type VerificationTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken findFirst
+   */
+  export type VerificationTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VerificationTokens.
+     */
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken findFirstOrThrow
+   */
+  export type VerificationTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VerificationTokens.
+     */
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken findMany
+   */
+  export type VerificationTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationTokens to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VerificationTokens.
+     */
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken create
+   */
+  export type VerificationTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data needed to create a VerificationToken.
+     */
+    data: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
+  }
+
+  /**
+   * VerificationToken createMany
+   */
+  export type VerificationTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VerificationTokens.
+     */
+    data: VerificationTokenCreateManyInput | VerificationTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VerificationToken createManyAndReturn
+   */
+  export type VerificationTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many VerificationTokens.
+     */
+    data: VerificationTokenCreateManyInput | VerificationTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VerificationToken update
+   */
+  export type VerificationTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data needed to update a VerificationToken.
+     */
+    data: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
+    /**
+     * Choose, which VerificationToken to update.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken updateMany
+   */
+  export type VerificationTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VerificationTokens.
+     */
+    data: XOR<VerificationTokenUpdateManyMutationInput, VerificationTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which VerificationTokens to update
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * Limit how many VerificationTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VerificationToken updateManyAndReturn
+   */
+  export type VerificationTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update VerificationTokens.
+     */
+    data: XOR<VerificationTokenUpdateManyMutationInput, VerificationTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which VerificationTokens to update
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * Limit how many VerificationTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VerificationToken upsert
+   */
+  export type VerificationTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The filter to search for the VerificationToken to update in case it exists.
+     */
+    where: VerificationTokenWhereUniqueInput
+    /**
+     * In case the VerificationToken found by the `where` argument doesn't exist, create a new VerificationToken with this data.
+     */
+    create: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
+    /**
+     * In case the VerificationToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * VerificationToken delete
+   */
+  export type VerificationTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter which VerificationToken to delete.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken deleteMany
+   */
+  export type VerificationTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VerificationTokens to delete
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * Limit how many VerificationTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VerificationToken without action
+   */
+  export type VerificationTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
   }
 
 
@@ -7724,6 +11693,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    remittanceTransfers?: boolean | Beneficiary$remittanceTransfersArgs<ExtArgs>
+    _count?: boolean | BeneficiaryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["beneficiary"]>
 
   export type BeneficiarySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7776,6 +11747,8 @@ export namespace Prisma {
   export type BeneficiaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "deliveryChannel" | "fullName" | "country" | "bankName" | "accountNumber" | "swiftBic" | "mobileMoneyProvider" | "mobileNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["beneficiary"]>
   export type BeneficiaryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    remittanceTransfers?: boolean | Beneficiary$remittanceTransfersArgs<ExtArgs>
+    _count?: boolean | BeneficiaryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BeneficiaryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7788,6 +11761,7 @@ export namespace Prisma {
     name: "Beneficiary"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      remittanceTransfers: Prisma.$RemittanceTransferPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8197,6 +12171,7 @@ export namespace Prisma {
   export interface Prisma__BeneficiaryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    remittanceTransfers<T extends Beneficiary$remittanceTransfersArgs<ExtArgs> = {}>(args?: Subset<T, Beneficiary$remittanceTransfersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8639,6 +12614,30 @@ export namespace Prisma {
   }
 
   /**
+   * Beneficiary.remittanceTransfers
+   */
+  export type Beneficiary$remittanceTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    where?: RemittanceTransferWhereInput
+    orderBy?: RemittanceTransferOrderByWithRelationInput | RemittanceTransferOrderByWithRelationInput[]
+    cursor?: RemittanceTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RemittanceTransferScalarFieldEnum | RemittanceTransferScalarFieldEnum[]
+  }
+
+  /**
    * Beneficiary without action
    */
   export type BeneficiaryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8654,6 +12653,3625 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BeneficiaryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RemittanceTransfer
+   */
+
+  export type AggregateRemittanceTransfer = {
+    _count: RemittanceTransferCountAggregateOutputType | null
+    _avg: RemittanceTransferAvgAggregateOutputType | null
+    _sum: RemittanceTransferSumAggregateOutputType | null
+    _min: RemittanceTransferMinAggregateOutputType | null
+    _max: RemittanceTransferMaxAggregateOutputType | null
+  }
+
+  export type RemittanceTransferAvgAggregateOutputType = {
+    currentStep: number | null
+    payAmount: Decimal | null
+    receiveAmount: Decimal | null
+    fxRateSnapshot: Decimal | null
+    feeAmount: Decimal | null
+  }
+
+  export type RemittanceTransferSumAggregateOutputType = {
+    currentStep: number | null
+    payAmount: Decimal | null
+    receiveAmount: Decimal | null
+    fxRateSnapshot: Decimal | null
+    feeAmount: Decimal | null
+  }
+
+  export type RemittanceTransferMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    referenceCode: string | null
+    status: $Enums.RemittanceStatus | null
+    currentStep: number | null
+    senderCountryIso2: string | null
+    payCurrency: string | null
+    payAmount: Decimal | null
+    recipientCountryLabel: string | null
+    recipientCountryIso2: string | null
+    receiveCurrency: string | null
+    receiveAmount: Decimal | null
+    fxRateSnapshot: Decimal | null
+    feeAmount: Decimal | null
+    quoteExpiresAt: Date | null
+    beneficiaryId: string | null
+    sourceOfIncome: string | null
+    transferPurpose: string | null
+    relationshipToRecipient: string | null
+    complianceAccepted: boolean | null
+    payInMethod: $Enums.PayInMethod | null
+    payerPhone: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RemittanceTransferMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    referenceCode: string | null
+    status: $Enums.RemittanceStatus | null
+    currentStep: number | null
+    senderCountryIso2: string | null
+    payCurrency: string | null
+    payAmount: Decimal | null
+    recipientCountryLabel: string | null
+    recipientCountryIso2: string | null
+    receiveCurrency: string | null
+    receiveAmount: Decimal | null
+    fxRateSnapshot: Decimal | null
+    feeAmount: Decimal | null
+    quoteExpiresAt: Date | null
+    beneficiaryId: string | null
+    sourceOfIncome: string | null
+    transferPurpose: string | null
+    relationshipToRecipient: string | null
+    complianceAccepted: boolean | null
+    payInMethod: $Enums.PayInMethod | null
+    payerPhone: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RemittanceTransferCountAggregateOutputType = {
+    id: number
+    userId: number
+    referenceCode: number
+    status: number
+    currentStep: number
+    senderCountryIso2: number
+    payCurrency: number
+    payAmount: number
+    recipientCountryLabel: number
+    recipientCountryIso2: number
+    receiveCurrency: number
+    receiveAmount: number
+    fxRateSnapshot: number
+    feeAmount: number
+    quoteExpiresAt: number
+    beneficiaryId: number
+    sourceOfIncome: number
+    transferPurpose: number
+    relationshipToRecipient: number
+    complianceAccepted: number
+    payInMethod: number
+    payerPhone: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RemittanceTransferAvgAggregateInputType = {
+    currentStep?: true
+    payAmount?: true
+    receiveAmount?: true
+    fxRateSnapshot?: true
+    feeAmount?: true
+  }
+
+  export type RemittanceTransferSumAggregateInputType = {
+    currentStep?: true
+    payAmount?: true
+    receiveAmount?: true
+    fxRateSnapshot?: true
+    feeAmount?: true
+  }
+
+  export type RemittanceTransferMinAggregateInputType = {
+    id?: true
+    userId?: true
+    referenceCode?: true
+    status?: true
+    currentStep?: true
+    senderCountryIso2?: true
+    payCurrency?: true
+    payAmount?: true
+    recipientCountryLabel?: true
+    recipientCountryIso2?: true
+    receiveCurrency?: true
+    receiveAmount?: true
+    fxRateSnapshot?: true
+    feeAmount?: true
+    quoteExpiresAt?: true
+    beneficiaryId?: true
+    sourceOfIncome?: true
+    transferPurpose?: true
+    relationshipToRecipient?: true
+    complianceAccepted?: true
+    payInMethod?: true
+    payerPhone?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RemittanceTransferMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    referenceCode?: true
+    status?: true
+    currentStep?: true
+    senderCountryIso2?: true
+    payCurrency?: true
+    payAmount?: true
+    recipientCountryLabel?: true
+    recipientCountryIso2?: true
+    receiveCurrency?: true
+    receiveAmount?: true
+    fxRateSnapshot?: true
+    feeAmount?: true
+    quoteExpiresAt?: true
+    beneficiaryId?: true
+    sourceOfIncome?: true
+    transferPurpose?: true
+    relationshipToRecipient?: true
+    complianceAccepted?: true
+    payInMethod?: true
+    payerPhone?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RemittanceTransferCountAggregateInputType = {
+    id?: true
+    userId?: true
+    referenceCode?: true
+    status?: true
+    currentStep?: true
+    senderCountryIso2?: true
+    payCurrency?: true
+    payAmount?: true
+    recipientCountryLabel?: true
+    recipientCountryIso2?: true
+    receiveCurrency?: true
+    receiveAmount?: true
+    fxRateSnapshot?: true
+    feeAmount?: true
+    quoteExpiresAt?: true
+    beneficiaryId?: true
+    sourceOfIncome?: true
+    transferPurpose?: true
+    relationshipToRecipient?: true
+    complianceAccepted?: true
+    payInMethod?: true
+    payerPhone?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RemittanceTransferAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RemittanceTransfer to aggregate.
+     */
+    where?: RemittanceTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemittanceTransfers to fetch.
+     */
+    orderBy?: RemittanceTransferOrderByWithRelationInput | RemittanceTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RemittanceTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemittanceTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemittanceTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RemittanceTransfers
+    **/
+    _count?: true | RemittanceTransferCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RemittanceTransferAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RemittanceTransferSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RemittanceTransferMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RemittanceTransferMaxAggregateInputType
+  }
+
+  export type GetRemittanceTransferAggregateType<T extends RemittanceTransferAggregateArgs> = {
+        [P in keyof T & keyof AggregateRemittanceTransfer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRemittanceTransfer[P]>
+      : GetScalarType<T[P], AggregateRemittanceTransfer[P]>
+  }
+
+
+
+
+  export type RemittanceTransferGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RemittanceTransferWhereInput
+    orderBy?: RemittanceTransferOrderByWithAggregationInput | RemittanceTransferOrderByWithAggregationInput[]
+    by: RemittanceTransferScalarFieldEnum[] | RemittanceTransferScalarFieldEnum
+    having?: RemittanceTransferScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RemittanceTransferCountAggregateInputType | true
+    _avg?: RemittanceTransferAvgAggregateInputType
+    _sum?: RemittanceTransferSumAggregateInputType
+    _min?: RemittanceTransferMinAggregateInputType
+    _max?: RemittanceTransferMaxAggregateInputType
+  }
+
+  export type RemittanceTransferGroupByOutputType = {
+    id: string
+    userId: string
+    referenceCode: string
+    status: $Enums.RemittanceStatus
+    currentStep: number
+    senderCountryIso2: string | null
+    payCurrency: string | null
+    payAmount: Decimal | null
+    recipientCountryLabel: string | null
+    recipientCountryIso2: string | null
+    receiveCurrency: string | null
+    receiveAmount: Decimal | null
+    fxRateSnapshot: Decimal | null
+    feeAmount: Decimal | null
+    quoteExpiresAt: Date | null
+    beneficiaryId: string | null
+    sourceOfIncome: string | null
+    transferPurpose: string | null
+    relationshipToRecipient: string | null
+    complianceAccepted: boolean
+    payInMethod: $Enums.PayInMethod | null
+    payerPhone: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RemittanceTransferCountAggregateOutputType | null
+    _avg: RemittanceTransferAvgAggregateOutputType | null
+    _sum: RemittanceTransferSumAggregateOutputType | null
+    _min: RemittanceTransferMinAggregateOutputType | null
+    _max: RemittanceTransferMaxAggregateOutputType | null
+  }
+
+  type GetRemittanceTransferGroupByPayload<T extends RemittanceTransferGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RemittanceTransferGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RemittanceTransferGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RemittanceTransferGroupByOutputType[P]>
+            : GetScalarType<T[P], RemittanceTransferGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RemittanceTransferSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    referenceCode?: boolean
+    status?: boolean
+    currentStep?: boolean
+    senderCountryIso2?: boolean
+    payCurrency?: boolean
+    payAmount?: boolean
+    recipientCountryLabel?: boolean
+    recipientCountryIso2?: boolean
+    receiveCurrency?: boolean
+    receiveAmount?: boolean
+    fxRateSnapshot?: boolean
+    feeAmount?: boolean
+    quoteExpiresAt?: boolean
+    beneficiaryId?: boolean
+    sourceOfIncome?: boolean
+    transferPurpose?: boolean
+    relationshipToRecipient?: boolean
+    complianceAccepted?: boolean
+    payInMethod?: boolean
+    payerPhone?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    beneficiary?: boolean | RemittanceTransfer$beneficiaryArgs<ExtArgs>
+  }, ExtArgs["result"]["remittanceTransfer"]>
+
+  export type RemittanceTransferSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    referenceCode?: boolean
+    status?: boolean
+    currentStep?: boolean
+    senderCountryIso2?: boolean
+    payCurrency?: boolean
+    payAmount?: boolean
+    recipientCountryLabel?: boolean
+    recipientCountryIso2?: boolean
+    receiveCurrency?: boolean
+    receiveAmount?: boolean
+    fxRateSnapshot?: boolean
+    feeAmount?: boolean
+    quoteExpiresAt?: boolean
+    beneficiaryId?: boolean
+    sourceOfIncome?: boolean
+    transferPurpose?: boolean
+    relationshipToRecipient?: boolean
+    complianceAccepted?: boolean
+    payInMethod?: boolean
+    payerPhone?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    beneficiary?: boolean | RemittanceTransfer$beneficiaryArgs<ExtArgs>
+  }, ExtArgs["result"]["remittanceTransfer"]>
+
+  export type RemittanceTransferSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    referenceCode?: boolean
+    status?: boolean
+    currentStep?: boolean
+    senderCountryIso2?: boolean
+    payCurrency?: boolean
+    payAmount?: boolean
+    recipientCountryLabel?: boolean
+    recipientCountryIso2?: boolean
+    receiveCurrency?: boolean
+    receiveAmount?: boolean
+    fxRateSnapshot?: boolean
+    feeAmount?: boolean
+    quoteExpiresAt?: boolean
+    beneficiaryId?: boolean
+    sourceOfIncome?: boolean
+    transferPurpose?: boolean
+    relationshipToRecipient?: boolean
+    complianceAccepted?: boolean
+    payInMethod?: boolean
+    payerPhone?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    beneficiary?: boolean | RemittanceTransfer$beneficiaryArgs<ExtArgs>
+  }, ExtArgs["result"]["remittanceTransfer"]>
+
+  export type RemittanceTransferSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    referenceCode?: boolean
+    status?: boolean
+    currentStep?: boolean
+    senderCountryIso2?: boolean
+    payCurrency?: boolean
+    payAmount?: boolean
+    recipientCountryLabel?: boolean
+    recipientCountryIso2?: boolean
+    receiveCurrency?: boolean
+    receiveAmount?: boolean
+    fxRateSnapshot?: boolean
+    feeAmount?: boolean
+    quoteExpiresAt?: boolean
+    beneficiaryId?: boolean
+    sourceOfIncome?: boolean
+    transferPurpose?: boolean
+    relationshipToRecipient?: boolean
+    complianceAccepted?: boolean
+    payInMethod?: boolean
+    payerPhone?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RemittanceTransferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "referenceCode" | "status" | "currentStep" | "senderCountryIso2" | "payCurrency" | "payAmount" | "recipientCountryLabel" | "recipientCountryIso2" | "receiveCurrency" | "receiveAmount" | "fxRateSnapshot" | "feeAmount" | "quoteExpiresAt" | "beneficiaryId" | "sourceOfIncome" | "transferPurpose" | "relationshipToRecipient" | "complianceAccepted" | "payInMethod" | "payerPhone" | "createdAt" | "updatedAt", ExtArgs["result"]["remittanceTransfer"]>
+  export type RemittanceTransferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    beneficiary?: boolean | RemittanceTransfer$beneficiaryArgs<ExtArgs>
+  }
+  export type RemittanceTransferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    beneficiary?: boolean | RemittanceTransfer$beneficiaryArgs<ExtArgs>
+  }
+  export type RemittanceTransferIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    beneficiary?: boolean | RemittanceTransfer$beneficiaryArgs<ExtArgs>
+  }
+
+  export type $RemittanceTransferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RemittanceTransfer"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      beneficiary: Prisma.$BeneficiaryPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      referenceCode: string
+      status: $Enums.RemittanceStatus
+      currentStep: number
+      senderCountryIso2: string | null
+      payCurrency: string | null
+      payAmount: Prisma.Decimal | null
+      recipientCountryLabel: string | null
+      recipientCountryIso2: string | null
+      receiveCurrency: string | null
+      receiveAmount: Prisma.Decimal | null
+      fxRateSnapshot: Prisma.Decimal | null
+      feeAmount: Prisma.Decimal | null
+      quoteExpiresAt: Date | null
+      beneficiaryId: string | null
+      sourceOfIncome: string | null
+      transferPurpose: string | null
+      relationshipToRecipient: string | null
+      complianceAccepted: boolean
+      payInMethod: $Enums.PayInMethod | null
+      payerPhone: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["remittanceTransfer"]>
+    composites: {}
+  }
+
+  type RemittanceTransferGetPayload<S extends boolean | null | undefined | RemittanceTransferDefaultArgs> = $Result.GetResult<Prisma.$RemittanceTransferPayload, S>
+
+  type RemittanceTransferCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RemittanceTransferFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RemittanceTransferCountAggregateInputType | true
+    }
+
+  export interface RemittanceTransferDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RemittanceTransfer'], meta: { name: 'RemittanceTransfer' } }
+    /**
+     * Find zero or one RemittanceTransfer that matches the filter.
+     * @param {RemittanceTransferFindUniqueArgs} args - Arguments to find a RemittanceTransfer
+     * @example
+     * // Get one RemittanceTransfer
+     * const remittanceTransfer = await prisma.remittanceTransfer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RemittanceTransferFindUniqueArgs>(args: SelectSubset<T, RemittanceTransferFindUniqueArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RemittanceTransfer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RemittanceTransferFindUniqueOrThrowArgs} args - Arguments to find a RemittanceTransfer
+     * @example
+     * // Get one RemittanceTransfer
+     * const remittanceTransfer = await prisma.remittanceTransfer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RemittanceTransferFindUniqueOrThrowArgs>(args: SelectSubset<T, RemittanceTransferFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RemittanceTransfer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemittanceTransferFindFirstArgs} args - Arguments to find a RemittanceTransfer
+     * @example
+     * // Get one RemittanceTransfer
+     * const remittanceTransfer = await prisma.remittanceTransfer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RemittanceTransferFindFirstArgs>(args?: SelectSubset<T, RemittanceTransferFindFirstArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RemittanceTransfer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemittanceTransferFindFirstOrThrowArgs} args - Arguments to find a RemittanceTransfer
+     * @example
+     * // Get one RemittanceTransfer
+     * const remittanceTransfer = await prisma.remittanceTransfer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RemittanceTransferFindFirstOrThrowArgs>(args?: SelectSubset<T, RemittanceTransferFindFirstOrThrowArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RemittanceTransfers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemittanceTransferFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RemittanceTransfers
+     * const remittanceTransfers = await prisma.remittanceTransfer.findMany()
+     * 
+     * // Get first 10 RemittanceTransfers
+     * const remittanceTransfers = await prisma.remittanceTransfer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const remittanceTransferWithIdOnly = await prisma.remittanceTransfer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RemittanceTransferFindManyArgs>(args?: SelectSubset<T, RemittanceTransferFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RemittanceTransfer.
+     * @param {RemittanceTransferCreateArgs} args - Arguments to create a RemittanceTransfer.
+     * @example
+     * // Create one RemittanceTransfer
+     * const RemittanceTransfer = await prisma.remittanceTransfer.create({
+     *   data: {
+     *     // ... data to create a RemittanceTransfer
+     *   }
+     * })
+     * 
+     */
+    create<T extends RemittanceTransferCreateArgs>(args: SelectSubset<T, RemittanceTransferCreateArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RemittanceTransfers.
+     * @param {RemittanceTransferCreateManyArgs} args - Arguments to create many RemittanceTransfers.
+     * @example
+     * // Create many RemittanceTransfers
+     * const remittanceTransfer = await prisma.remittanceTransfer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RemittanceTransferCreateManyArgs>(args?: SelectSubset<T, RemittanceTransferCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RemittanceTransfers and returns the data saved in the database.
+     * @param {RemittanceTransferCreateManyAndReturnArgs} args - Arguments to create many RemittanceTransfers.
+     * @example
+     * // Create many RemittanceTransfers
+     * const remittanceTransfer = await prisma.remittanceTransfer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RemittanceTransfers and only return the `id`
+     * const remittanceTransferWithIdOnly = await prisma.remittanceTransfer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RemittanceTransferCreateManyAndReturnArgs>(args?: SelectSubset<T, RemittanceTransferCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RemittanceTransfer.
+     * @param {RemittanceTransferDeleteArgs} args - Arguments to delete one RemittanceTransfer.
+     * @example
+     * // Delete one RemittanceTransfer
+     * const RemittanceTransfer = await prisma.remittanceTransfer.delete({
+     *   where: {
+     *     // ... filter to delete one RemittanceTransfer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RemittanceTransferDeleteArgs>(args: SelectSubset<T, RemittanceTransferDeleteArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RemittanceTransfer.
+     * @param {RemittanceTransferUpdateArgs} args - Arguments to update one RemittanceTransfer.
+     * @example
+     * // Update one RemittanceTransfer
+     * const remittanceTransfer = await prisma.remittanceTransfer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RemittanceTransferUpdateArgs>(args: SelectSubset<T, RemittanceTransferUpdateArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RemittanceTransfers.
+     * @param {RemittanceTransferDeleteManyArgs} args - Arguments to filter RemittanceTransfers to delete.
+     * @example
+     * // Delete a few RemittanceTransfers
+     * const { count } = await prisma.remittanceTransfer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RemittanceTransferDeleteManyArgs>(args?: SelectSubset<T, RemittanceTransferDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RemittanceTransfers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemittanceTransferUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RemittanceTransfers
+     * const remittanceTransfer = await prisma.remittanceTransfer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RemittanceTransferUpdateManyArgs>(args: SelectSubset<T, RemittanceTransferUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RemittanceTransfers and returns the data updated in the database.
+     * @param {RemittanceTransferUpdateManyAndReturnArgs} args - Arguments to update many RemittanceTransfers.
+     * @example
+     * // Update many RemittanceTransfers
+     * const remittanceTransfer = await prisma.remittanceTransfer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RemittanceTransfers and only return the `id`
+     * const remittanceTransferWithIdOnly = await prisma.remittanceTransfer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RemittanceTransferUpdateManyAndReturnArgs>(args: SelectSubset<T, RemittanceTransferUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RemittanceTransfer.
+     * @param {RemittanceTransferUpsertArgs} args - Arguments to update or create a RemittanceTransfer.
+     * @example
+     * // Update or create a RemittanceTransfer
+     * const remittanceTransfer = await prisma.remittanceTransfer.upsert({
+     *   create: {
+     *     // ... data to create a RemittanceTransfer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RemittanceTransfer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RemittanceTransferUpsertArgs>(args: SelectSubset<T, RemittanceTransferUpsertArgs<ExtArgs>>): Prisma__RemittanceTransferClient<$Result.GetResult<Prisma.$RemittanceTransferPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RemittanceTransfers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemittanceTransferCountArgs} args - Arguments to filter RemittanceTransfers to count.
+     * @example
+     * // Count the number of RemittanceTransfers
+     * const count = await prisma.remittanceTransfer.count({
+     *   where: {
+     *     // ... the filter for the RemittanceTransfers we want to count
+     *   }
+     * })
+    **/
+    count<T extends RemittanceTransferCountArgs>(
+      args?: Subset<T, RemittanceTransferCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RemittanceTransferCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RemittanceTransfer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemittanceTransferAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RemittanceTransferAggregateArgs>(args: Subset<T, RemittanceTransferAggregateArgs>): Prisma.PrismaPromise<GetRemittanceTransferAggregateType<T>>
+
+    /**
+     * Group by RemittanceTransfer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemittanceTransferGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RemittanceTransferGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RemittanceTransferGroupByArgs['orderBy'] }
+        : { orderBy?: RemittanceTransferGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RemittanceTransferGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRemittanceTransferGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RemittanceTransfer model
+   */
+  readonly fields: RemittanceTransferFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RemittanceTransfer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RemittanceTransferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    beneficiary<T extends RemittanceTransfer$beneficiaryArgs<ExtArgs> = {}>(args?: Subset<T, RemittanceTransfer$beneficiaryArgs<ExtArgs>>): Prisma__BeneficiaryClient<$Result.GetResult<Prisma.$BeneficiaryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RemittanceTransfer model
+   */
+  interface RemittanceTransferFieldRefs {
+    readonly id: FieldRef<"RemittanceTransfer", 'String'>
+    readonly userId: FieldRef<"RemittanceTransfer", 'String'>
+    readonly referenceCode: FieldRef<"RemittanceTransfer", 'String'>
+    readonly status: FieldRef<"RemittanceTransfer", 'RemittanceStatus'>
+    readonly currentStep: FieldRef<"RemittanceTransfer", 'Int'>
+    readonly senderCountryIso2: FieldRef<"RemittanceTransfer", 'String'>
+    readonly payCurrency: FieldRef<"RemittanceTransfer", 'String'>
+    readonly payAmount: FieldRef<"RemittanceTransfer", 'Decimal'>
+    readonly recipientCountryLabel: FieldRef<"RemittanceTransfer", 'String'>
+    readonly recipientCountryIso2: FieldRef<"RemittanceTransfer", 'String'>
+    readonly receiveCurrency: FieldRef<"RemittanceTransfer", 'String'>
+    readonly receiveAmount: FieldRef<"RemittanceTransfer", 'Decimal'>
+    readonly fxRateSnapshot: FieldRef<"RemittanceTransfer", 'Decimal'>
+    readonly feeAmount: FieldRef<"RemittanceTransfer", 'Decimal'>
+    readonly quoteExpiresAt: FieldRef<"RemittanceTransfer", 'DateTime'>
+    readonly beneficiaryId: FieldRef<"RemittanceTransfer", 'String'>
+    readonly sourceOfIncome: FieldRef<"RemittanceTransfer", 'String'>
+    readonly transferPurpose: FieldRef<"RemittanceTransfer", 'String'>
+    readonly relationshipToRecipient: FieldRef<"RemittanceTransfer", 'String'>
+    readonly complianceAccepted: FieldRef<"RemittanceTransfer", 'Boolean'>
+    readonly payInMethod: FieldRef<"RemittanceTransfer", 'PayInMethod'>
+    readonly payerPhone: FieldRef<"RemittanceTransfer", 'String'>
+    readonly createdAt: FieldRef<"RemittanceTransfer", 'DateTime'>
+    readonly updatedAt: FieldRef<"RemittanceTransfer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RemittanceTransfer findUnique
+   */
+  export type RemittanceTransferFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which RemittanceTransfer to fetch.
+     */
+    where: RemittanceTransferWhereUniqueInput
+  }
+
+  /**
+   * RemittanceTransfer findUniqueOrThrow
+   */
+  export type RemittanceTransferFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which RemittanceTransfer to fetch.
+     */
+    where: RemittanceTransferWhereUniqueInput
+  }
+
+  /**
+   * RemittanceTransfer findFirst
+   */
+  export type RemittanceTransferFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which RemittanceTransfer to fetch.
+     */
+    where?: RemittanceTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemittanceTransfers to fetch.
+     */
+    orderBy?: RemittanceTransferOrderByWithRelationInput | RemittanceTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RemittanceTransfers.
+     */
+    cursor?: RemittanceTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemittanceTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemittanceTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RemittanceTransfers.
+     */
+    distinct?: RemittanceTransferScalarFieldEnum | RemittanceTransferScalarFieldEnum[]
+  }
+
+  /**
+   * RemittanceTransfer findFirstOrThrow
+   */
+  export type RemittanceTransferFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which RemittanceTransfer to fetch.
+     */
+    where?: RemittanceTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemittanceTransfers to fetch.
+     */
+    orderBy?: RemittanceTransferOrderByWithRelationInput | RemittanceTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RemittanceTransfers.
+     */
+    cursor?: RemittanceTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemittanceTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemittanceTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RemittanceTransfers.
+     */
+    distinct?: RemittanceTransferScalarFieldEnum | RemittanceTransferScalarFieldEnum[]
+  }
+
+  /**
+   * RemittanceTransfer findMany
+   */
+  export type RemittanceTransferFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * Filter, which RemittanceTransfers to fetch.
+     */
+    where?: RemittanceTransferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemittanceTransfers to fetch.
+     */
+    orderBy?: RemittanceTransferOrderByWithRelationInput | RemittanceTransferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RemittanceTransfers.
+     */
+    cursor?: RemittanceTransferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemittanceTransfers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemittanceTransfers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RemittanceTransfers.
+     */
+    distinct?: RemittanceTransferScalarFieldEnum | RemittanceTransferScalarFieldEnum[]
+  }
+
+  /**
+   * RemittanceTransfer create
+   */
+  export type RemittanceTransferCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RemittanceTransfer.
+     */
+    data: XOR<RemittanceTransferCreateInput, RemittanceTransferUncheckedCreateInput>
+  }
+
+  /**
+   * RemittanceTransfer createMany
+   */
+  export type RemittanceTransferCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RemittanceTransfers.
+     */
+    data: RemittanceTransferCreateManyInput | RemittanceTransferCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RemittanceTransfer createManyAndReturn
+   */
+  export type RemittanceTransferCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * The data used to create many RemittanceTransfers.
+     */
+    data: RemittanceTransferCreateManyInput | RemittanceTransferCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RemittanceTransfer update
+   */
+  export type RemittanceTransferUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RemittanceTransfer.
+     */
+    data: XOR<RemittanceTransferUpdateInput, RemittanceTransferUncheckedUpdateInput>
+    /**
+     * Choose, which RemittanceTransfer to update.
+     */
+    where: RemittanceTransferWhereUniqueInput
+  }
+
+  /**
+   * RemittanceTransfer updateMany
+   */
+  export type RemittanceTransferUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RemittanceTransfers.
+     */
+    data: XOR<RemittanceTransferUpdateManyMutationInput, RemittanceTransferUncheckedUpdateManyInput>
+    /**
+     * Filter which RemittanceTransfers to update
+     */
+    where?: RemittanceTransferWhereInput
+    /**
+     * Limit how many RemittanceTransfers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RemittanceTransfer updateManyAndReturn
+   */
+  export type RemittanceTransferUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * The data used to update RemittanceTransfers.
+     */
+    data: XOR<RemittanceTransferUpdateManyMutationInput, RemittanceTransferUncheckedUpdateManyInput>
+    /**
+     * Filter which RemittanceTransfers to update
+     */
+    where?: RemittanceTransferWhereInput
+    /**
+     * Limit how many RemittanceTransfers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RemittanceTransfer upsert
+   */
+  export type RemittanceTransferUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RemittanceTransfer to update in case it exists.
+     */
+    where: RemittanceTransferWhereUniqueInput
+    /**
+     * In case the RemittanceTransfer found by the `where` argument doesn't exist, create a new RemittanceTransfer with this data.
+     */
+    create: XOR<RemittanceTransferCreateInput, RemittanceTransferUncheckedCreateInput>
+    /**
+     * In case the RemittanceTransfer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RemittanceTransferUpdateInput, RemittanceTransferUncheckedUpdateInput>
+  }
+
+  /**
+   * RemittanceTransfer delete
+   */
+  export type RemittanceTransferDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+    /**
+     * Filter which RemittanceTransfer to delete.
+     */
+    where: RemittanceTransferWhereUniqueInput
+  }
+
+  /**
+   * RemittanceTransfer deleteMany
+   */
+  export type RemittanceTransferDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RemittanceTransfers to delete
+     */
+    where?: RemittanceTransferWhereInput
+    /**
+     * Limit how many RemittanceTransfers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RemittanceTransfer.beneficiary
+   */
+  export type RemittanceTransfer$beneficiaryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Beneficiary
+     */
+    select?: BeneficiarySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Beneficiary
+     */
+    omit?: BeneficiaryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BeneficiaryInclude<ExtArgs> | null
+    where?: BeneficiaryWhereInput
+  }
+
+  /**
+   * RemittanceTransfer without action
+   */
+  export type RemittanceTransferDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemittanceTransfer
+     */
+    select?: RemittanceTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemittanceTransfer
+     */
+    omit?: RemittanceTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemittanceTransferInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FxRate
+   */
+
+  export type AggregateFxRate = {
+    _count: FxRateCountAggregateOutputType | null
+    _avg: FxRateAvgAggregateOutputType | null
+    _sum: FxRateSumAggregateOutputType | null
+    _min: FxRateMinAggregateOutputType | null
+    _max: FxRateMaxAggregateOutputType | null
+  }
+
+  export type FxRateAvgAggregateOutputType = {
+    rate: Decimal | null
+    feePercent: Decimal | null
+    feeFixed: Decimal | null
+  }
+
+  export type FxRateSumAggregateOutputType = {
+    rate: Decimal | null
+    feePercent: Decimal | null
+    feeFixed: Decimal | null
+  }
+
+  export type FxRateMinAggregateOutputType = {
+    id: string | null
+    fromCurrency: string | null
+    toCurrency: string | null
+    rate: Decimal | null
+    feePercent: Decimal | null
+    feeFixed: Decimal | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FxRateMaxAggregateOutputType = {
+    id: string | null
+    fromCurrency: string | null
+    toCurrency: string | null
+    rate: Decimal | null
+    feePercent: Decimal | null
+    feeFixed: Decimal | null
+    active: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FxRateCountAggregateOutputType = {
+    id: number
+    fromCurrency: number
+    toCurrency: number
+    rate: number
+    feePercent: number
+    feeFixed: number
+    active: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FxRateAvgAggregateInputType = {
+    rate?: true
+    feePercent?: true
+    feeFixed?: true
+  }
+
+  export type FxRateSumAggregateInputType = {
+    rate?: true
+    feePercent?: true
+    feeFixed?: true
+  }
+
+  export type FxRateMinAggregateInputType = {
+    id?: true
+    fromCurrency?: true
+    toCurrency?: true
+    rate?: true
+    feePercent?: true
+    feeFixed?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FxRateMaxAggregateInputType = {
+    id?: true
+    fromCurrency?: true
+    toCurrency?: true
+    rate?: true
+    feePercent?: true
+    feeFixed?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FxRateCountAggregateInputType = {
+    id?: true
+    fromCurrency?: true
+    toCurrency?: true
+    rate?: true
+    feePercent?: true
+    feeFixed?: true
+    active?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FxRateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FxRate to aggregate.
+     */
+    where?: FxRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FxRates to fetch.
+     */
+    orderBy?: FxRateOrderByWithRelationInput | FxRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FxRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FxRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FxRates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FxRates
+    **/
+    _count?: true | FxRateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FxRateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FxRateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FxRateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FxRateMaxAggregateInputType
+  }
+
+  export type GetFxRateAggregateType<T extends FxRateAggregateArgs> = {
+        [P in keyof T & keyof AggregateFxRate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFxRate[P]>
+      : GetScalarType<T[P], AggregateFxRate[P]>
+  }
+
+
+
+
+  export type FxRateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FxRateWhereInput
+    orderBy?: FxRateOrderByWithAggregationInput | FxRateOrderByWithAggregationInput[]
+    by: FxRateScalarFieldEnum[] | FxRateScalarFieldEnum
+    having?: FxRateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FxRateCountAggregateInputType | true
+    _avg?: FxRateAvgAggregateInputType
+    _sum?: FxRateSumAggregateInputType
+    _min?: FxRateMinAggregateInputType
+    _max?: FxRateMaxAggregateInputType
+  }
+
+  export type FxRateGroupByOutputType = {
+    id: string
+    fromCurrency: string
+    toCurrency: string
+    rate: Decimal
+    feePercent: Decimal
+    feeFixed: Decimal
+    active: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: FxRateCountAggregateOutputType | null
+    _avg: FxRateAvgAggregateOutputType | null
+    _sum: FxRateSumAggregateOutputType | null
+    _min: FxRateMinAggregateOutputType | null
+    _max: FxRateMaxAggregateOutputType | null
+  }
+
+  type GetFxRateGroupByPayload<T extends FxRateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FxRateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FxRateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FxRateGroupByOutputType[P]>
+            : GetScalarType<T[P], FxRateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FxRateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    feePercent?: boolean
+    feeFixed?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fxRate"]>
+
+  export type FxRateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    feePercent?: boolean
+    feeFixed?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fxRate"]>
+
+  export type FxRateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    feePercent?: boolean
+    feeFixed?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fxRate"]>
+
+  export type FxRateSelectScalar = {
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    feePercent?: boolean
+    feeFixed?: boolean
+    active?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FxRateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromCurrency" | "toCurrency" | "rate" | "feePercent" | "feeFixed" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["fxRate"]>
+
+  export type $FxRatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FxRate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      fromCurrency: string
+      toCurrency: string
+      rate: Prisma.Decimal
+      feePercent: Prisma.Decimal
+      feeFixed: Prisma.Decimal
+      active: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["fxRate"]>
+    composites: {}
+  }
+
+  type FxRateGetPayload<S extends boolean | null | undefined | FxRateDefaultArgs> = $Result.GetResult<Prisma.$FxRatePayload, S>
+
+  type FxRateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FxRateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FxRateCountAggregateInputType | true
+    }
+
+  export interface FxRateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FxRate'], meta: { name: 'FxRate' } }
+    /**
+     * Find zero or one FxRate that matches the filter.
+     * @param {FxRateFindUniqueArgs} args - Arguments to find a FxRate
+     * @example
+     * // Get one FxRate
+     * const fxRate = await prisma.fxRate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FxRateFindUniqueArgs>(args: SelectSubset<T, FxRateFindUniqueArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FxRate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FxRateFindUniqueOrThrowArgs} args - Arguments to find a FxRate
+     * @example
+     * // Get one FxRate
+     * const fxRate = await prisma.fxRate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FxRateFindUniqueOrThrowArgs>(args: SelectSubset<T, FxRateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FxRate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxRateFindFirstArgs} args - Arguments to find a FxRate
+     * @example
+     * // Get one FxRate
+     * const fxRate = await prisma.fxRate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FxRateFindFirstArgs>(args?: SelectSubset<T, FxRateFindFirstArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FxRate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxRateFindFirstOrThrowArgs} args - Arguments to find a FxRate
+     * @example
+     * // Get one FxRate
+     * const fxRate = await prisma.fxRate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FxRateFindFirstOrThrowArgs>(args?: SelectSubset<T, FxRateFindFirstOrThrowArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FxRates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxRateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FxRates
+     * const fxRates = await prisma.fxRate.findMany()
+     * 
+     * // Get first 10 FxRates
+     * const fxRates = await prisma.fxRate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fxRateWithIdOnly = await prisma.fxRate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FxRateFindManyArgs>(args?: SelectSubset<T, FxRateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FxRate.
+     * @param {FxRateCreateArgs} args - Arguments to create a FxRate.
+     * @example
+     * // Create one FxRate
+     * const FxRate = await prisma.fxRate.create({
+     *   data: {
+     *     // ... data to create a FxRate
+     *   }
+     * })
+     * 
+     */
+    create<T extends FxRateCreateArgs>(args: SelectSubset<T, FxRateCreateArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FxRates.
+     * @param {FxRateCreateManyArgs} args - Arguments to create many FxRates.
+     * @example
+     * // Create many FxRates
+     * const fxRate = await prisma.fxRate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FxRateCreateManyArgs>(args?: SelectSubset<T, FxRateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FxRates and returns the data saved in the database.
+     * @param {FxRateCreateManyAndReturnArgs} args - Arguments to create many FxRates.
+     * @example
+     * // Create many FxRates
+     * const fxRate = await prisma.fxRate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FxRates and only return the `id`
+     * const fxRateWithIdOnly = await prisma.fxRate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FxRateCreateManyAndReturnArgs>(args?: SelectSubset<T, FxRateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FxRate.
+     * @param {FxRateDeleteArgs} args - Arguments to delete one FxRate.
+     * @example
+     * // Delete one FxRate
+     * const FxRate = await prisma.fxRate.delete({
+     *   where: {
+     *     // ... filter to delete one FxRate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FxRateDeleteArgs>(args: SelectSubset<T, FxRateDeleteArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FxRate.
+     * @param {FxRateUpdateArgs} args - Arguments to update one FxRate.
+     * @example
+     * // Update one FxRate
+     * const fxRate = await prisma.fxRate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FxRateUpdateArgs>(args: SelectSubset<T, FxRateUpdateArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FxRates.
+     * @param {FxRateDeleteManyArgs} args - Arguments to filter FxRates to delete.
+     * @example
+     * // Delete a few FxRates
+     * const { count } = await prisma.fxRate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FxRateDeleteManyArgs>(args?: SelectSubset<T, FxRateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FxRates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxRateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FxRates
+     * const fxRate = await prisma.fxRate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FxRateUpdateManyArgs>(args: SelectSubset<T, FxRateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FxRates and returns the data updated in the database.
+     * @param {FxRateUpdateManyAndReturnArgs} args - Arguments to update many FxRates.
+     * @example
+     * // Update many FxRates
+     * const fxRate = await prisma.fxRate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FxRates and only return the `id`
+     * const fxRateWithIdOnly = await prisma.fxRate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FxRateUpdateManyAndReturnArgs>(args: SelectSubset<T, FxRateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FxRate.
+     * @param {FxRateUpsertArgs} args - Arguments to update or create a FxRate.
+     * @example
+     * // Update or create a FxRate
+     * const fxRate = await prisma.fxRate.upsert({
+     *   create: {
+     *     // ... data to create a FxRate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FxRate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FxRateUpsertArgs>(args: SelectSubset<T, FxRateUpsertArgs<ExtArgs>>): Prisma__FxRateClient<$Result.GetResult<Prisma.$FxRatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FxRates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxRateCountArgs} args - Arguments to filter FxRates to count.
+     * @example
+     * // Count the number of FxRates
+     * const count = await prisma.fxRate.count({
+     *   where: {
+     *     // ... the filter for the FxRates we want to count
+     *   }
+     * })
+    **/
+    count<T extends FxRateCountArgs>(
+      args?: Subset<T, FxRateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FxRateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FxRate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxRateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FxRateAggregateArgs>(args: Subset<T, FxRateAggregateArgs>): Prisma.PrismaPromise<GetFxRateAggregateType<T>>
+
+    /**
+     * Group by FxRate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxRateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FxRateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FxRateGroupByArgs['orderBy'] }
+        : { orderBy?: FxRateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FxRateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFxRateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FxRate model
+   */
+  readonly fields: FxRateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FxRate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FxRateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FxRate model
+   */
+  interface FxRateFieldRefs {
+    readonly id: FieldRef<"FxRate", 'String'>
+    readonly fromCurrency: FieldRef<"FxRate", 'String'>
+    readonly toCurrency: FieldRef<"FxRate", 'String'>
+    readonly rate: FieldRef<"FxRate", 'Decimal'>
+    readonly feePercent: FieldRef<"FxRate", 'Decimal'>
+    readonly feeFixed: FieldRef<"FxRate", 'Decimal'>
+    readonly active: FieldRef<"FxRate", 'Boolean'>
+    readonly createdAt: FieldRef<"FxRate", 'DateTime'>
+    readonly updatedAt: FieldRef<"FxRate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FxRate findUnique
+   */
+  export type FxRateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * Filter, which FxRate to fetch.
+     */
+    where: FxRateWhereUniqueInput
+  }
+
+  /**
+   * FxRate findUniqueOrThrow
+   */
+  export type FxRateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * Filter, which FxRate to fetch.
+     */
+    where: FxRateWhereUniqueInput
+  }
+
+  /**
+   * FxRate findFirst
+   */
+  export type FxRateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * Filter, which FxRate to fetch.
+     */
+    where?: FxRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FxRates to fetch.
+     */
+    orderBy?: FxRateOrderByWithRelationInput | FxRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FxRates.
+     */
+    cursor?: FxRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FxRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FxRates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FxRates.
+     */
+    distinct?: FxRateScalarFieldEnum | FxRateScalarFieldEnum[]
+  }
+
+  /**
+   * FxRate findFirstOrThrow
+   */
+  export type FxRateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * Filter, which FxRate to fetch.
+     */
+    where?: FxRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FxRates to fetch.
+     */
+    orderBy?: FxRateOrderByWithRelationInput | FxRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FxRates.
+     */
+    cursor?: FxRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FxRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FxRates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FxRates.
+     */
+    distinct?: FxRateScalarFieldEnum | FxRateScalarFieldEnum[]
+  }
+
+  /**
+   * FxRate findMany
+   */
+  export type FxRateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * Filter, which FxRates to fetch.
+     */
+    where?: FxRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FxRates to fetch.
+     */
+    orderBy?: FxRateOrderByWithRelationInput | FxRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FxRates.
+     */
+    cursor?: FxRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FxRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FxRates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FxRates.
+     */
+    distinct?: FxRateScalarFieldEnum | FxRateScalarFieldEnum[]
+  }
+
+  /**
+   * FxRate create
+   */
+  export type FxRateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FxRate.
+     */
+    data: XOR<FxRateCreateInput, FxRateUncheckedCreateInput>
+  }
+
+  /**
+   * FxRate createMany
+   */
+  export type FxRateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FxRates.
+     */
+    data: FxRateCreateManyInput | FxRateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FxRate createManyAndReturn
+   */
+  export type FxRateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * The data used to create many FxRates.
+     */
+    data: FxRateCreateManyInput | FxRateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FxRate update
+   */
+  export type FxRateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FxRate.
+     */
+    data: XOR<FxRateUpdateInput, FxRateUncheckedUpdateInput>
+    /**
+     * Choose, which FxRate to update.
+     */
+    where: FxRateWhereUniqueInput
+  }
+
+  /**
+   * FxRate updateMany
+   */
+  export type FxRateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FxRates.
+     */
+    data: XOR<FxRateUpdateManyMutationInput, FxRateUncheckedUpdateManyInput>
+    /**
+     * Filter which FxRates to update
+     */
+    where?: FxRateWhereInput
+    /**
+     * Limit how many FxRates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FxRate updateManyAndReturn
+   */
+  export type FxRateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * The data used to update FxRates.
+     */
+    data: XOR<FxRateUpdateManyMutationInput, FxRateUncheckedUpdateManyInput>
+    /**
+     * Filter which FxRates to update
+     */
+    where?: FxRateWhereInput
+    /**
+     * Limit how many FxRates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FxRate upsert
+   */
+  export type FxRateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FxRate to update in case it exists.
+     */
+    where: FxRateWhereUniqueInput
+    /**
+     * In case the FxRate found by the `where` argument doesn't exist, create a new FxRate with this data.
+     */
+    create: XOR<FxRateCreateInput, FxRateUncheckedCreateInput>
+    /**
+     * In case the FxRate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FxRateUpdateInput, FxRateUncheckedUpdateInput>
+  }
+
+  /**
+   * FxRate delete
+   */
+  export type FxRateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+    /**
+     * Filter which FxRate to delete.
+     */
+    where: FxRateWhereUniqueInput
+  }
+
+  /**
+   * FxRate deleteMany
+   */
+  export type FxRateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FxRates to delete
+     */
+    where?: FxRateWhereInput
+    /**
+     * Limit how many FxRates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FxRate without action
+   */
+  export type FxRateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FxRate
+     */
+    select?: FxRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FxRate
+     */
+    omit?: FxRateOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CompanyBankAccount
+   */
+
+  export type AggregateCompanyBankAccount = {
+    _count: CompanyBankAccountCountAggregateOutputType | null
+    _avg: CompanyBankAccountAvgAggregateOutputType | null
+    _sum: CompanyBankAccountSumAggregateOutputType | null
+    _min: CompanyBankAccountMinAggregateOutputType | null
+    _max: CompanyBankAccountMaxAggregateOutputType | null
+  }
+
+  export type CompanyBankAccountAvgAggregateOutputType = {
+    sortOrder: number | null
+  }
+
+  export type CompanyBankAccountSumAggregateOutputType = {
+    sortOrder: number | null
+  }
+
+  export type CompanyBankAccountMinAggregateOutputType = {
+    id: string | null
+    bankName: string | null
+    accountName: string | null
+    accountNumber: string | null
+    swiftBic: string | null
+    iban: string | null
+    currency: string | null
+    countryNote: string | null
+    instructions: string | null
+    active: boolean | null
+    sortOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanyBankAccountMaxAggregateOutputType = {
+    id: string | null
+    bankName: string | null
+    accountName: string | null
+    accountNumber: string | null
+    swiftBic: string | null
+    iban: string | null
+    currency: string | null
+    countryNote: string | null
+    instructions: string | null
+    active: boolean | null
+    sortOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanyBankAccountCountAggregateOutputType = {
+    id: number
+    bankName: number
+    accountName: number
+    accountNumber: number
+    swiftBic: number
+    iban: number
+    currency: number
+    countryNote: number
+    instructions: number
+    active: number
+    sortOrder: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompanyBankAccountAvgAggregateInputType = {
+    sortOrder?: true
+  }
+
+  export type CompanyBankAccountSumAggregateInputType = {
+    sortOrder?: true
+  }
+
+  export type CompanyBankAccountMinAggregateInputType = {
+    id?: true
+    bankName?: true
+    accountName?: true
+    accountNumber?: true
+    swiftBic?: true
+    iban?: true
+    currency?: true
+    countryNote?: true
+    instructions?: true
+    active?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanyBankAccountMaxAggregateInputType = {
+    id?: true
+    bankName?: true
+    accountName?: true
+    accountNumber?: true
+    swiftBic?: true
+    iban?: true
+    currency?: true
+    countryNote?: true
+    instructions?: true
+    active?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanyBankAccountCountAggregateInputType = {
+    id?: true
+    bankName?: true
+    accountName?: true
+    accountNumber?: true
+    swiftBic?: true
+    iban?: true
+    currency?: true
+    countryNote?: true
+    instructions?: true
+    active?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompanyBankAccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanyBankAccount to aggregate.
+     */
+    where?: CompanyBankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyBankAccounts to fetch.
+     */
+    orderBy?: CompanyBankAccountOrderByWithRelationInput | CompanyBankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompanyBankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyBankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyBankAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CompanyBankAccounts
+    **/
+    _count?: true | CompanyBankAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompanyBankAccountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompanyBankAccountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompanyBankAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompanyBankAccountMaxAggregateInputType
+  }
+
+  export type GetCompanyBankAccountAggregateType<T extends CompanyBankAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompanyBankAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompanyBankAccount[P]>
+      : GetScalarType<T[P], AggregateCompanyBankAccount[P]>
+  }
+
+
+
+
+  export type CompanyBankAccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyBankAccountWhereInput
+    orderBy?: CompanyBankAccountOrderByWithAggregationInput | CompanyBankAccountOrderByWithAggregationInput[]
+    by: CompanyBankAccountScalarFieldEnum[] | CompanyBankAccountScalarFieldEnum
+    having?: CompanyBankAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompanyBankAccountCountAggregateInputType | true
+    _avg?: CompanyBankAccountAvgAggregateInputType
+    _sum?: CompanyBankAccountSumAggregateInputType
+    _min?: CompanyBankAccountMinAggregateInputType
+    _max?: CompanyBankAccountMaxAggregateInputType
+  }
+
+  export type CompanyBankAccountGroupByOutputType = {
+    id: string
+    bankName: string
+    accountName: string
+    accountNumber: string
+    swiftBic: string | null
+    iban: string | null
+    currency: string
+    countryNote: string | null
+    instructions: string | null
+    active: boolean
+    sortOrder: number
+    createdAt: Date
+    updatedAt: Date
+    _count: CompanyBankAccountCountAggregateOutputType | null
+    _avg: CompanyBankAccountAvgAggregateOutputType | null
+    _sum: CompanyBankAccountSumAggregateOutputType | null
+    _min: CompanyBankAccountMinAggregateOutputType | null
+    _max: CompanyBankAccountMaxAggregateOutputType | null
+  }
+
+  type GetCompanyBankAccountGroupByPayload<T extends CompanyBankAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompanyBankAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompanyBankAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompanyBankAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], CompanyBankAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompanyBankAccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    bankName?: boolean
+    accountName?: boolean
+    accountNumber?: boolean
+    swiftBic?: boolean
+    iban?: boolean
+    currency?: boolean
+    countryNote?: boolean
+    instructions?: boolean
+    active?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companyBankAccount"]>
+
+  export type CompanyBankAccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    bankName?: boolean
+    accountName?: boolean
+    accountNumber?: boolean
+    swiftBic?: boolean
+    iban?: boolean
+    currency?: boolean
+    countryNote?: boolean
+    instructions?: boolean
+    active?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companyBankAccount"]>
+
+  export type CompanyBankAccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    bankName?: boolean
+    accountName?: boolean
+    accountNumber?: boolean
+    swiftBic?: boolean
+    iban?: boolean
+    currency?: boolean
+    countryNote?: boolean
+    instructions?: boolean
+    active?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companyBankAccount"]>
+
+  export type CompanyBankAccountSelectScalar = {
+    id?: boolean
+    bankName?: boolean
+    accountName?: boolean
+    accountNumber?: boolean
+    swiftBic?: boolean
+    iban?: boolean
+    currency?: boolean
+    countryNote?: boolean
+    instructions?: boolean
+    active?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompanyBankAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "bankName" | "accountName" | "accountNumber" | "swiftBic" | "iban" | "currency" | "countryNote" | "instructions" | "active" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["companyBankAccount"]>
+
+  export type $CompanyBankAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CompanyBankAccount"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      bankName: string
+      accountName: string
+      accountNumber: string
+      swiftBic: string | null
+      iban: string | null
+      currency: string
+      countryNote: string | null
+      instructions: string | null
+      active: boolean
+      sortOrder: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["companyBankAccount"]>
+    composites: {}
+  }
+
+  type CompanyBankAccountGetPayload<S extends boolean | null | undefined | CompanyBankAccountDefaultArgs> = $Result.GetResult<Prisma.$CompanyBankAccountPayload, S>
+
+  type CompanyBankAccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompanyBankAccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompanyBankAccountCountAggregateInputType | true
+    }
+
+  export interface CompanyBankAccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CompanyBankAccount'], meta: { name: 'CompanyBankAccount' } }
+    /**
+     * Find zero or one CompanyBankAccount that matches the filter.
+     * @param {CompanyBankAccountFindUniqueArgs} args - Arguments to find a CompanyBankAccount
+     * @example
+     * // Get one CompanyBankAccount
+     * const companyBankAccount = await prisma.companyBankAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompanyBankAccountFindUniqueArgs>(args: SelectSubset<T, CompanyBankAccountFindUniqueArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CompanyBankAccount that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompanyBankAccountFindUniqueOrThrowArgs} args - Arguments to find a CompanyBankAccount
+     * @example
+     * // Get one CompanyBankAccount
+     * const companyBankAccount = await prisma.companyBankAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompanyBankAccountFindUniqueOrThrowArgs>(args: SelectSubset<T, CompanyBankAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanyBankAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyBankAccountFindFirstArgs} args - Arguments to find a CompanyBankAccount
+     * @example
+     * // Get one CompanyBankAccount
+     * const companyBankAccount = await prisma.companyBankAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompanyBankAccountFindFirstArgs>(args?: SelectSubset<T, CompanyBankAccountFindFirstArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanyBankAccount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyBankAccountFindFirstOrThrowArgs} args - Arguments to find a CompanyBankAccount
+     * @example
+     * // Get one CompanyBankAccount
+     * const companyBankAccount = await prisma.companyBankAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompanyBankAccountFindFirstOrThrowArgs>(args?: SelectSubset<T, CompanyBankAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CompanyBankAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyBankAccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CompanyBankAccounts
+     * const companyBankAccounts = await prisma.companyBankAccount.findMany()
+     * 
+     * // Get first 10 CompanyBankAccounts
+     * const companyBankAccounts = await prisma.companyBankAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const companyBankAccountWithIdOnly = await prisma.companyBankAccount.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompanyBankAccountFindManyArgs>(args?: SelectSubset<T, CompanyBankAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CompanyBankAccount.
+     * @param {CompanyBankAccountCreateArgs} args - Arguments to create a CompanyBankAccount.
+     * @example
+     * // Create one CompanyBankAccount
+     * const CompanyBankAccount = await prisma.companyBankAccount.create({
+     *   data: {
+     *     // ... data to create a CompanyBankAccount
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompanyBankAccountCreateArgs>(args: SelectSubset<T, CompanyBankAccountCreateArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CompanyBankAccounts.
+     * @param {CompanyBankAccountCreateManyArgs} args - Arguments to create many CompanyBankAccounts.
+     * @example
+     * // Create many CompanyBankAccounts
+     * const companyBankAccount = await prisma.companyBankAccount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompanyBankAccountCreateManyArgs>(args?: SelectSubset<T, CompanyBankAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CompanyBankAccounts and returns the data saved in the database.
+     * @param {CompanyBankAccountCreateManyAndReturnArgs} args - Arguments to create many CompanyBankAccounts.
+     * @example
+     * // Create many CompanyBankAccounts
+     * const companyBankAccount = await prisma.companyBankAccount.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CompanyBankAccounts and only return the `id`
+     * const companyBankAccountWithIdOnly = await prisma.companyBankAccount.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompanyBankAccountCreateManyAndReturnArgs>(args?: SelectSubset<T, CompanyBankAccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CompanyBankAccount.
+     * @param {CompanyBankAccountDeleteArgs} args - Arguments to delete one CompanyBankAccount.
+     * @example
+     * // Delete one CompanyBankAccount
+     * const CompanyBankAccount = await prisma.companyBankAccount.delete({
+     *   where: {
+     *     // ... filter to delete one CompanyBankAccount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompanyBankAccountDeleteArgs>(args: SelectSubset<T, CompanyBankAccountDeleteArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CompanyBankAccount.
+     * @param {CompanyBankAccountUpdateArgs} args - Arguments to update one CompanyBankAccount.
+     * @example
+     * // Update one CompanyBankAccount
+     * const companyBankAccount = await prisma.companyBankAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompanyBankAccountUpdateArgs>(args: SelectSubset<T, CompanyBankAccountUpdateArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CompanyBankAccounts.
+     * @param {CompanyBankAccountDeleteManyArgs} args - Arguments to filter CompanyBankAccounts to delete.
+     * @example
+     * // Delete a few CompanyBankAccounts
+     * const { count } = await prisma.companyBankAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompanyBankAccountDeleteManyArgs>(args?: SelectSubset<T, CompanyBankAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanyBankAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyBankAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CompanyBankAccounts
+     * const companyBankAccount = await prisma.companyBankAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompanyBankAccountUpdateManyArgs>(args: SelectSubset<T, CompanyBankAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanyBankAccounts and returns the data updated in the database.
+     * @param {CompanyBankAccountUpdateManyAndReturnArgs} args - Arguments to update many CompanyBankAccounts.
+     * @example
+     * // Update many CompanyBankAccounts
+     * const companyBankAccount = await prisma.companyBankAccount.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CompanyBankAccounts and only return the `id`
+     * const companyBankAccountWithIdOnly = await prisma.companyBankAccount.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompanyBankAccountUpdateManyAndReturnArgs>(args: SelectSubset<T, CompanyBankAccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CompanyBankAccount.
+     * @param {CompanyBankAccountUpsertArgs} args - Arguments to update or create a CompanyBankAccount.
+     * @example
+     * // Update or create a CompanyBankAccount
+     * const companyBankAccount = await prisma.companyBankAccount.upsert({
+     *   create: {
+     *     // ... data to create a CompanyBankAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CompanyBankAccount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompanyBankAccountUpsertArgs>(args: SelectSubset<T, CompanyBankAccountUpsertArgs<ExtArgs>>): Prisma__CompanyBankAccountClient<$Result.GetResult<Prisma.$CompanyBankAccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CompanyBankAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyBankAccountCountArgs} args - Arguments to filter CompanyBankAccounts to count.
+     * @example
+     * // Count the number of CompanyBankAccounts
+     * const count = await prisma.companyBankAccount.count({
+     *   where: {
+     *     // ... the filter for the CompanyBankAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompanyBankAccountCountArgs>(
+      args?: Subset<T, CompanyBankAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompanyBankAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CompanyBankAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyBankAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompanyBankAccountAggregateArgs>(args: Subset<T, CompanyBankAccountAggregateArgs>): Prisma.PrismaPromise<GetCompanyBankAccountAggregateType<T>>
+
+    /**
+     * Group by CompanyBankAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyBankAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompanyBankAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompanyBankAccountGroupByArgs['orderBy'] }
+        : { orderBy?: CompanyBankAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompanyBankAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompanyBankAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CompanyBankAccount model
+   */
+  readonly fields: CompanyBankAccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CompanyBankAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompanyBankAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CompanyBankAccount model
+   */
+  interface CompanyBankAccountFieldRefs {
+    readonly id: FieldRef<"CompanyBankAccount", 'String'>
+    readonly bankName: FieldRef<"CompanyBankAccount", 'String'>
+    readonly accountName: FieldRef<"CompanyBankAccount", 'String'>
+    readonly accountNumber: FieldRef<"CompanyBankAccount", 'String'>
+    readonly swiftBic: FieldRef<"CompanyBankAccount", 'String'>
+    readonly iban: FieldRef<"CompanyBankAccount", 'String'>
+    readonly currency: FieldRef<"CompanyBankAccount", 'String'>
+    readonly countryNote: FieldRef<"CompanyBankAccount", 'String'>
+    readonly instructions: FieldRef<"CompanyBankAccount", 'String'>
+    readonly active: FieldRef<"CompanyBankAccount", 'Boolean'>
+    readonly sortOrder: FieldRef<"CompanyBankAccount", 'Int'>
+    readonly createdAt: FieldRef<"CompanyBankAccount", 'DateTime'>
+    readonly updatedAt: FieldRef<"CompanyBankAccount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CompanyBankAccount findUnique
+   */
+  export type CompanyBankAccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanyBankAccount to fetch.
+     */
+    where: CompanyBankAccountWhereUniqueInput
+  }
+
+  /**
+   * CompanyBankAccount findUniqueOrThrow
+   */
+  export type CompanyBankAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanyBankAccount to fetch.
+     */
+    where: CompanyBankAccountWhereUniqueInput
+  }
+
+  /**
+   * CompanyBankAccount findFirst
+   */
+  export type CompanyBankAccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanyBankAccount to fetch.
+     */
+    where?: CompanyBankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyBankAccounts to fetch.
+     */
+    orderBy?: CompanyBankAccountOrderByWithRelationInput | CompanyBankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanyBankAccounts.
+     */
+    cursor?: CompanyBankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyBankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyBankAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanyBankAccounts.
+     */
+    distinct?: CompanyBankAccountScalarFieldEnum | CompanyBankAccountScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyBankAccount findFirstOrThrow
+   */
+  export type CompanyBankAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanyBankAccount to fetch.
+     */
+    where?: CompanyBankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyBankAccounts to fetch.
+     */
+    orderBy?: CompanyBankAccountOrderByWithRelationInput | CompanyBankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanyBankAccounts.
+     */
+    cursor?: CompanyBankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyBankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyBankAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanyBankAccounts.
+     */
+    distinct?: CompanyBankAccountScalarFieldEnum | CompanyBankAccountScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyBankAccount findMany
+   */
+  export type CompanyBankAccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanyBankAccounts to fetch.
+     */
+    where?: CompanyBankAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyBankAccounts to fetch.
+     */
+    orderBy?: CompanyBankAccountOrderByWithRelationInput | CompanyBankAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CompanyBankAccounts.
+     */
+    cursor?: CompanyBankAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyBankAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyBankAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanyBankAccounts.
+     */
+    distinct?: CompanyBankAccountScalarFieldEnum | CompanyBankAccountScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyBankAccount create
+   */
+  export type CompanyBankAccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * The data needed to create a CompanyBankAccount.
+     */
+    data: XOR<CompanyBankAccountCreateInput, CompanyBankAccountUncheckedCreateInput>
+  }
+
+  /**
+   * CompanyBankAccount createMany
+   */
+  export type CompanyBankAccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CompanyBankAccounts.
+     */
+    data: CompanyBankAccountCreateManyInput | CompanyBankAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompanyBankAccount createManyAndReturn
+   */
+  export type CompanyBankAccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many CompanyBankAccounts.
+     */
+    data: CompanyBankAccountCreateManyInput | CompanyBankAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompanyBankAccount update
+   */
+  export type CompanyBankAccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * The data needed to update a CompanyBankAccount.
+     */
+    data: XOR<CompanyBankAccountUpdateInput, CompanyBankAccountUncheckedUpdateInput>
+    /**
+     * Choose, which CompanyBankAccount to update.
+     */
+    where: CompanyBankAccountWhereUniqueInput
+  }
+
+  /**
+   * CompanyBankAccount updateMany
+   */
+  export type CompanyBankAccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CompanyBankAccounts.
+     */
+    data: XOR<CompanyBankAccountUpdateManyMutationInput, CompanyBankAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanyBankAccounts to update
+     */
+    where?: CompanyBankAccountWhereInput
+    /**
+     * Limit how many CompanyBankAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyBankAccount updateManyAndReturn
+   */
+  export type CompanyBankAccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * The data used to update CompanyBankAccounts.
+     */
+    data: XOR<CompanyBankAccountUpdateManyMutationInput, CompanyBankAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanyBankAccounts to update
+     */
+    where?: CompanyBankAccountWhereInput
+    /**
+     * Limit how many CompanyBankAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyBankAccount upsert
+   */
+  export type CompanyBankAccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * The filter to search for the CompanyBankAccount to update in case it exists.
+     */
+    where: CompanyBankAccountWhereUniqueInput
+    /**
+     * In case the CompanyBankAccount found by the `where` argument doesn't exist, create a new CompanyBankAccount with this data.
+     */
+    create: XOR<CompanyBankAccountCreateInput, CompanyBankAccountUncheckedCreateInput>
+    /**
+     * In case the CompanyBankAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompanyBankAccountUpdateInput, CompanyBankAccountUncheckedUpdateInput>
+  }
+
+  /**
+   * CompanyBankAccount delete
+   */
+  export type CompanyBankAccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
+    /**
+     * Filter which CompanyBankAccount to delete.
+     */
+    where: CompanyBankAccountWhereUniqueInput
+  }
+
+  /**
+   * CompanyBankAccount deleteMany
+   */
+  export type CompanyBankAccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanyBankAccounts to delete
+     */
+    where?: CompanyBankAccountWhereInput
+    /**
+     * Limit how many CompanyBankAccounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyBankAccount without action
+   */
+  export type CompanyBankAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyBankAccount
+     */
+    select?: CompanyBankAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyBankAccount
+     */
+    omit?: CompanyBankAccountOmit<ExtArgs> | null
   }
 
 
@@ -8677,6 +16295,9 @@ export namespace Prisma {
     phone: 'phone',
     country: 'country',
     passwordHash: 'passwordHash',
+    name: 'name',
+    image: 'image',
+    googleId: 'googleId',
     role: 'role',
     kycStatus: 'kycStatus',
     emailVerified: 'emailVerified',
@@ -8686,6 +16307,43 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const AccountScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    provider: 'provider',
+    providerAccountId: 'providerAccountId',
+    refresh_token: 'refresh_token',
+    access_token: 'access_token',
+    expires_at: 'expires_at',
+    token_type: 'token_type',
+    scope: 'scope',
+    id_token: 'id_token',
+    session_state: 'session_state'
+  };
+
+  export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+  export const SessionScalarFieldEnum: {
+    id: 'id',
+    sessionToken: 'sessionToken',
+    userId: 'userId',
+    expires: 'expires'
+  };
+
+  export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+  export const VerificationTokenScalarFieldEnum: {
+    identifier: 'identifier',
+    token: 'token',
+    expires: 'expires'
+  };
+
+  export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
   export const OtpScalarFieldEnum: {
@@ -8787,6 +16445,70 @@ export namespace Prisma {
   };
 
   export type BeneficiaryScalarFieldEnum = (typeof BeneficiaryScalarFieldEnum)[keyof typeof BeneficiaryScalarFieldEnum]
+
+
+  export const RemittanceTransferScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    referenceCode: 'referenceCode',
+    status: 'status',
+    currentStep: 'currentStep',
+    senderCountryIso2: 'senderCountryIso2',
+    payCurrency: 'payCurrency',
+    payAmount: 'payAmount',
+    recipientCountryLabel: 'recipientCountryLabel',
+    recipientCountryIso2: 'recipientCountryIso2',
+    receiveCurrency: 'receiveCurrency',
+    receiveAmount: 'receiveAmount',
+    fxRateSnapshot: 'fxRateSnapshot',
+    feeAmount: 'feeAmount',
+    quoteExpiresAt: 'quoteExpiresAt',
+    beneficiaryId: 'beneficiaryId',
+    sourceOfIncome: 'sourceOfIncome',
+    transferPurpose: 'transferPurpose',
+    relationshipToRecipient: 'relationshipToRecipient',
+    complianceAccepted: 'complianceAccepted',
+    payInMethod: 'payInMethod',
+    payerPhone: 'payerPhone',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RemittanceTransferScalarFieldEnum = (typeof RemittanceTransferScalarFieldEnum)[keyof typeof RemittanceTransferScalarFieldEnum]
+
+
+  export const FxRateScalarFieldEnum: {
+    id: 'id',
+    fromCurrency: 'fromCurrency',
+    toCurrency: 'toCurrency',
+    rate: 'rate',
+    feePercent: 'feePercent',
+    feeFixed: 'feeFixed',
+    active: 'active',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FxRateScalarFieldEnum = (typeof FxRateScalarFieldEnum)[keyof typeof FxRateScalarFieldEnum]
+
+
+  export const CompanyBankAccountScalarFieldEnum: {
+    id: 'id',
+    bankName: 'bankName',
+    accountName: 'accountName',
+    accountNumber: 'accountNumber',
+    swiftBic: 'swiftBic',
+    iban: 'iban',
+    currency: 'currency',
+    countryNote: 'countryNote',
+    instructions: 'instructions',
+    active: 'active',
+    sortOrder: 'sortOrder',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompanyBankAccountScalarFieldEnum = (typeof CompanyBankAccountScalarFieldEnum)[keyof typeof CompanyBankAccountScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8899,6 +16621,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'OtpType'
    */
   export type EnumOtpTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OtpType'>
@@ -8941,20 +16677,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'DocumentStatus'
    */
   export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>
@@ -8979,6 +16701,48 @@ export namespace Prisma {
    * Reference to a field of type 'DeliveryChannel[]'
    */
   export type ListEnumDeliveryChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryChannel[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'RemittanceStatus'
+   */
+  export type EnumRemittanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RemittanceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'RemittanceStatus[]'
+   */
+  export type ListEnumRemittanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RemittanceStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PayInMethod'
+   */
+  export type EnumPayInMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayInMethod'>
+    
+
+
+  /**
+   * Reference to a field of type 'PayInMethod[]'
+   */
+  export type ListEnumPayInMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayInMethod[]'>
     
 
 
@@ -9008,6 +16772,9 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     country?: StringNullableFilter<"User"> | string | null
     passwordHash?: StringNullableFilter<"User"> | string | null
+    name?: StringNullableFilter<"User"> | string | null
+    image?: StringNullableFilter<"User"> | string | null
+    googleId?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     kycStatus?: EnumKycStatusFilter<"User"> | $Enums.KycStatus
     emailVerified?: BoolFilter<"User"> | boolean
@@ -9018,7 +16785,10 @@ export namespace Prisma {
     corporateProfile?: XOR<CorporateProfileNullableScalarRelationFilter, CorporateProfileWhereInput> | null
     documents?: KycDocumentListRelationFilter
     beneficiaries?: BeneficiaryListRelationFilter
+    remittanceTransfers?: RemittanceTransferListRelationFilter
     otps?: OtpListRelationFilter
+    accounts?: AccountListRelationFilter
+    sessions?: SessionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -9027,6 +16797,9 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     country?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
+    name?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
+    googleId?: SortOrderInput | SortOrder
     role?: SortOrder
     kycStatus?: SortOrder
     emailVerified?: SortOrder
@@ -9037,18 +16810,24 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileOrderByWithRelationInput
     documents?: KycDocumentOrderByRelationAggregateInput
     beneficiaries?: BeneficiaryOrderByRelationAggregateInput
+    remittanceTransfers?: RemittanceTransferOrderByRelationAggregateInput
     otps?: OtpOrderByRelationAggregateInput
+    accounts?: AccountOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
     phone?: string
+    googleId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     country?: StringNullableFilter<"User"> | string | null
     passwordHash?: StringNullableFilter<"User"> | string | null
+    name?: StringNullableFilter<"User"> | string | null
+    image?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     kycStatus?: EnumKycStatusFilter<"User"> | $Enums.KycStatus
     emailVerified?: BoolFilter<"User"> | boolean
@@ -9059,8 +16838,11 @@ export namespace Prisma {
     corporateProfile?: XOR<CorporateProfileNullableScalarRelationFilter, CorporateProfileWhereInput> | null
     documents?: KycDocumentListRelationFilter
     beneficiaries?: BeneficiaryListRelationFilter
+    remittanceTransfers?: RemittanceTransferListRelationFilter
     otps?: OtpListRelationFilter
-  }, "id" | "email" | "phone">
+    accounts?: AccountListRelationFilter
+    sessions?: SessionListRelationFilter
+  }, "id" | "email" | "phone" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9068,6 +16850,9 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     country?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
+    name?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
+    googleId?: SortOrderInput | SortOrder
     role?: SortOrder
     kycStatus?: SortOrder
     emailVerified?: SortOrder
@@ -9088,12 +16873,201 @@ export namespace Prisma {
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
     country?: StringNullableWithAggregatesFilter<"User"> | string | null
     passwordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
+    name?: StringNullableWithAggregatesFilter<"User"> | string | null
+    image?: StringNullableWithAggregatesFilter<"User"> | string | null
+    googleId?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     kycStatus?: EnumKycStatusWithAggregatesFilter<"User"> | $Enums.KycStatus
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     phoneVerified?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type AccountWhereInput = {
+    AND?: AccountWhereInput | AccountWhereInput[]
+    OR?: AccountWhereInput[]
+    NOT?: AccountWhereInput | AccountWhereInput[]
+    id?: StringFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
+    type?: StringFilter<"Account"> | string
+    provider?: StringFilter<"Account"> | string
+    providerAccountId?: StringFilter<"Account"> | string
+    refresh_token?: StringNullableFilter<"Account"> | string | null
+    access_token?: StringNullableFilter<"Account"> | string | null
+    expires_at?: IntNullableFilter<"Account"> | number | null
+    token_type?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    id_token?: StringNullableFilter<"Account"> | string | null
+    session_state?: StringNullableFilter<"Account"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AccountOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrderInput | SortOrder
+    access_token?: SortOrderInput | SortOrder
+    expires_at?: SortOrderInput | SortOrder
+    token_type?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    id_token?: SortOrderInput | SortOrder
+    session_state?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    provider_providerAccountId?: AccountProviderProviderAccountIdCompoundUniqueInput
+    AND?: AccountWhereInput | AccountWhereInput[]
+    OR?: AccountWhereInput[]
+    NOT?: AccountWhereInput | AccountWhereInput[]
+    userId?: StringFilter<"Account"> | string
+    type?: StringFilter<"Account"> | string
+    provider?: StringFilter<"Account"> | string
+    providerAccountId?: StringFilter<"Account"> | string
+    refresh_token?: StringNullableFilter<"Account"> | string | null
+    access_token?: StringNullableFilter<"Account"> | string | null
+    expires_at?: IntNullableFilter<"Account"> | number | null
+    token_type?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    id_token?: StringNullableFilter<"Account"> | string | null
+    session_state?: StringNullableFilter<"Account"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "provider_providerAccountId">
+
+  export type AccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrderInput | SortOrder
+    access_token?: SortOrderInput | SortOrder
+    expires_at?: SortOrderInput | SortOrder
+    token_type?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    id_token?: SortOrderInput | SortOrder
+    session_state?: SortOrderInput | SortOrder
+    _count?: AccountCountOrderByAggregateInput
+    _avg?: AccountAvgOrderByAggregateInput
+    _max?: AccountMaxOrderByAggregateInput
+    _min?: AccountMinOrderByAggregateInput
+    _sum?: AccountSumOrderByAggregateInput
+  }
+
+  export type AccountScalarWhereWithAggregatesInput = {
+    AND?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
+    OR?: AccountScalarWhereWithAggregatesInput[]
+    NOT?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Account"> | string
+    userId?: StringWithAggregatesFilter<"Account"> | string
+    type?: StringWithAggregatesFilter<"Account"> | string
+    provider?: StringWithAggregatesFilter<"Account"> | string
+    providerAccountId?: StringWithAggregatesFilter<"Account"> | string
+    refresh_token?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    access_token?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    expires_at?: IntNullableWithAggregatesFilter<"Account"> | number | null
+    token_type?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    scope?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    id_token?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    session_state?: StringNullableWithAggregatesFilter<"Account"> | string | null
+  }
+
+  export type SessionWhereInput = {
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    expires?: DateTimeFilter<"Session"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SessionOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionToken?: string
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    userId?: StringFilter<"Session"> | string
+    expires?: DateTimeFilter<"Session"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "sessionToken">
+
+  export type SessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+    _count?: SessionCountOrderByAggregateInput
+    _max?: SessionMaxOrderByAggregateInput
+    _min?: SessionMinOrderByAggregateInput
+  }
+
+  export type SessionScalarWhereWithAggregatesInput = {
+    AND?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    OR?: SessionScalarWhereWithAggregatesInput[]
+    NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Session"> | string
+    sessionToken?: StringWithAggregatesFilter<"Session"> | string
+    userId?: StringWithAggregatesFilter<"Session"> | string
+    expires?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+  }
+
+  export type VerificationTokenWhereInput = {
+    AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    OR?: VerificationTokenWhereInput[]
+    NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    identifier?: StringFilter<"VerificationToken"> | string
+    token?: StringFilter<"VerificationToken"> | string
+    expires?: DateTimeFilter<"VerificationToken"> | Date | string
+  }
+
+  export type VerificationTokenOrderByWithRelationInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenWhereUniqueInput = Prisma.AtLeast<{
+    token?: string
+    identifier_token?: VerificationTokenIdentifierTokenCompoundUniqueInput
+    AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    OR?: VerificationTokenWhereInput[]
+    NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    identifier?: StringFilter<"VerificationToken"> | string
+    expires?: DateTimeFilter<"VerificationToken"> | Date | string
+  }, "token" | "identifier_token">
+
+  export type VerificationTokenOrderByWithAggregationInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+    _count?: VerificationTokenCountOrderByAggregateInput
+    _max?: VerificationTokenMaxOrderByAggregateInput
+    _min?: VerificationTokenMinOrderByAggregateInput
+  }
+
+  export type VerificationTokenScalarWhereWithAggregatesInput = {
+    AND?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
+    OR?: VerificationTokenScalarWhereWithAggregatesInput[]
+    NOT?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
+    identifier?: StringWithAggregatesFilter<"VerificationToken"> | string
+    token?: StringWithAggregatesFilter<"VerificationToken"> | string
+    expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
   }
 
   export type OtpWhereInput = {
@@ -9530,6 +17504,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Beneficiary"> | Date | string
     updatedAt?: DateTimeFilter<"Beneficiary"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    remittanceTransfers?: RemittanceTransferListRelationFilter
   }
 
   export type BeneficiaryOrderByWithRelationInput = {
@@ -9546,6 +17521,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    remittanceTransfers?: RemittanceTransferOrderByRelationAggregateInput
   }
 
   export type BeneficiaryWhereUniqueInput = Prisma.AtLeast<{
@@ -9565,6 +17541,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Beneficiary"> | Date | string
     updatedAt?: DateTimeFilter<"Beneficiary"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    remittanceTransfers?: RemittanceTransferListRelationFilter
   }, "id">
 
   export type BeneficiaryOrderByWithAggregationInput = {
@@ -9603,12 +17580,339 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Beneficiary"> | Date | string
   }
 
+  export type RemittanceTransferWhereInput = {
+    AND?: RemittanceTransferWhereInput | RemittanceTransferWhereInput[]
+    OR?: RemittanceTransferWhereInput[]
+    NOT?: RemittanceTransferWhereInput | RemittanceTransferWhereInput[]
+    id?: StringFilter<"RemittanceTransfer"> | string
+    userId?: StringFilter<"RemittanceTransfer"> | string
+    referenceCode?: StringFilter<"RemittanceTransfer"> | string
+    status?: EnumRemittanceStatusFilter<"RemittanceTransfer"> | $Enums.RemittanceStatus
+    currentStep?: IntFilter<"RemittanceTransfer"> | number
+    senderCountryIso2?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    payCurrency?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    payAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    recipientCountryIso2?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    receiveCurrency?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    receiveAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: DateTimeNullableFilter<"RemittanceTransfer"> | Date | string | null
+    beneficiaryId?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    sourceOfIncome?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    transferPurpose?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    relationshipToRecipient?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    complianceAccepted?: BoolFilter<"RemittanceTransfer"> | boolean
+    payInMethod?: EnumPayInMethodNullableFilter<"RemittanceTransfer"> | $Enums.PayInMethod | null
+    payerPhone?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    createdAt?: DateTimeFilter<"RemittanceTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"RemittanceTransfer"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    beneficiary?: XOR<BeneficiaryNullableScalarRelationFilter, BeneficiaryWhereInput> | null
+  }
+
+  export type RemittanceTransferOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    referenceCode?: SortOrder
+    status?: SortOrder
+    currentStep?: SortOrder
+    senderCountryIso2?: SortOrderInput | SortOrder
+    payCurrency?: SortOrderInput | SortOrder
+    payAmount?: SortOrderInput | SortOrder
+    recipientCountryLabel?: SortOrderInput | SortOrder
+    recipientCountryIso2?: SortOrderInput | SortOrder
+    receiveCurrency?: SortOrderInput | SortOrder
+    receiveAmount?: SortOrderInput | SortOrder
+    fxRateSnapshot?: SortOrderInput | SortOrder
+    feeAmount?: SortOrderInput | SortOrder
+    quoteExpiresAt?: SortOrderInput | SortOrder
+    beneficiaryId?: SortOrderInput | SortOrder
+    sourceOfIncome?: SortOrderInput | SortOrder
+    transferPurpose?: SortOrderInput | SortOrder
+    relationshipToRecipient?: SortOrderInput | SortOrder
+    complianceAccepted?: SortOrder
+    payInMethod?: SortOrderInput | SortOrder
+    payerPhone?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    beneficiary?: BeneficiaryOrderByWithRelationInput
+  }
+
+  export type RemittanceTransferWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    referenceCode?: string
+    AND?: RemittanceTransferWhereInput | RemittanceTransferWhereInput[]
+    OR?: RemittanceTransferWhereInput[]
+    NOT?: RemittanceTransferWhereInput | RemittanceTransferWhereInput[]
+    userId?: StringFilter<"RemittanceTransfer"> | string
+    status?: EnumRemittanceStatusFilter<"RemittanceTransfer"> | $Enums.RemittanceStatus
+    currentStep?: IntFilter<"RemittanceTransfer"> | number
+    senderCountryIso2?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    payCurrency?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    payAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    recipientCountryIso2?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    receiveCurrency?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    receiveAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: DateTimeNullableFilter<"RemittanceTransfer"> | Date | string | null
+    beneficiaryId?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    sourceOfIncome?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    transferPurpose?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    relationshipToRecipient?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    complianceAccepted?: BoolFilter<"RemittanceTransfer"> | boolean
+    payInMethod?: EnumPayInMethodNullableFilter<"RemittanceTransfer"> | $Enums.PayInMethod | null
+    payerPhone?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    createdAt?: DateTimeFilter<"RemittanceTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"RemittanceTransfer"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    beneficiary?: XOR<BeneficiaryNullableScalarRelationFilter, BeneficiaryWhereInput> | null
+  }, "id" | "referenceCode">
+
+  export type RemittanceTransferOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    referenceCode?: SortOrder
+    status?: SortOrder
+    currentStep?: SortOrder
+    senderCountryIso2?: SortOrderInput | SortOrder
+    payCurrency?: SortOrderInput | SortOrder
+    payAmount?: SortOrderInput | SortOrder
+    recipientCountryLabel?: SortOrderInput | SortOrder
+    recipientCountryIso2?: SortOrderInput | SortOrder
+    receiveCurrency?: SortOrderInput | SortOrder
+    receiveAmount?: SortOrderInput | SortOrder
+    fxRateSnapshot?: SortOrderInput | SortOrder
+    feeAmount?: SortOrderInput | SortOrder
+    quoteExpiresAt?: SortOrderInput | SortOrder
+    beneficiaryId?: SortOrderInput | SortOrder
+    sourceOfIncome?: SortOrderInput | SortOrder
+    transferPurpose?: SortOrderInput | SortOrder
+    relationshipToRecipient?: SortOrderInput | SortOrder
+    complianceAccepted?: SortOrder
+    payInMethod?: SortOrderInput | SortOrder
+    payerPhone?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RemittanceTransferCountOrderByAggregateInput
+    _avg?: RemittanceTransferAvgOrderByAggregateInput
+    _max?: RemittanceTransferMaxOrderByAggregateInput
+    _min?: RemittanceTransferMinOrderByAggregateInput
+    _sum?: RemittanceTransferSumOrderByAggregateInput
+  }
+
+  export type RemittanceTransferScalarWhereWithAggregatesInput = {
+    AND?: RemittanceTransferScalarWhereWithAggregatesInput | RemittanceTransferScalarWhereWithAggregatesInput[]
+    OR?: RemittanceTransferScalarWhereWithAggregatesInput[]
+    NOT?: RemittanceTransferScalarWhereWithAggregatesInput | RemittanceTransferScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RemittanceTransfer"> | string
+    userId?: StringWithAggregatesFilter<"RemittanceTransfer"> | string
+    referenceCode?: StringWithAggregatesFilter<"RemittanceTransfer"> | string
+    status?: EnumRemittanceStatusWithAggregatesFilter<"RemittanceTransfer"> | $Enums.RemittanceStatus
+    currentStep?: IntWithAggregatesFilter<"RemittanceTransfer"> | number
+    senderCountryIso2?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    payCurrency?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    payAmount?: DecimalNullableWithAggregatesFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    recipientCountryIso2?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    receiveCurrency?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    receiveAmount?: DecimalNullableWithAggregatesFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: DecimalNullableWithAggregatesFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: DecimalNullableWithAggregatesFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: DateTimeNullableWithAggregatesFilter<"RemittanceTransfer"> | Date | string | null
+    beneficiaryId?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    sourceOfIncome?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    transferPurpose?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    relationshipToRecipient?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    complianceAccepted?: BoolWithAggregatesFilter<"RemittanceTransfer"> | boolean
+    payInMethod?: EnumPayInMethodNullableWithAggregatesFilter<"RemittanceTransfer"> | $Enums.PayInMethod | null
+    payerPhone?: StringNullableWithAggregatesFilter<"RemittanceTransfer"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RemittanceTransfer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RemittanceTransfer"> | Date | string
+  }
+
+  export type FxRateWhereInput = {
+    AND?: FxRateWhereInput | FxRateWhereInput[]
+    OR?: FxRateWhereInput[]
+    NOT?: FxRateWhereInput | FxRateWhereInput[]
+    id?: StringFilter<"FxRate"> | string
+    fromCurrency?: StringFilter<"FxRate"> | string
+    toCurrency?: StringFilter<"FxRate"> | string
+    rate?: DecimalFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    feePercent?: DecimalFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    feeFixed?: DecimalFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    active?: BoolFilter<"FxRate"> | boolean
+    createdAt?: DateTimeFilter<"FxRate"> | Date | string
+    updatedAt?: DateTimeFilter<"FxRate"> | Date | string
+  }
+
+  export type FxRateOrderByWithRelationInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    feePercent?: SortOrder
+    feeFixed?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FxRateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    fromCurrency_toCurrency?: FxRateFromCurrencyToCurrencyCompoundUniqueInput
+    AND?: FxRateWhereInput | FxRateWhereInput[]
+    OR?: FxRateWhereInput[]
+    NOT?: FxRateWhereInput | FxRateWhereInput[]
+    fromCurrency?: StringFilter<"FxRate"> | string
+    toCurrency?: StringFilter<"FxRate"> | string
+    rate?: DecimalFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    feePercent?: DecimalFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    feeFixed?: DecimalFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    active?: BoolFilter<"FxRate"> | boolean
+    createdAt?: DateTimeFilter<"FxRate"> | Date | string
+    updatedAt?: DateTimeFilter<"FxRate"> | Date | string
+  }, "id" | "fromCurrency_toCurrency">
+
+  export type FxRateOrderByWithAggregationInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    feePercent?: SortOrder
+    feeFixed?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FxRateCountOrderByAggregateInput
+    _avg?: FxRateAvgOrderByAggregateInput
+    _max?: FxRateMaxOrderByAggregateInput
+    _min?: FxRateMinOrderByAggregateInput
+    _sum?: FxRateSumOrderByAggregateInput
+  }
+
+  export type FxRateScalarWhereWithAggregatesInput = {
+    AND?: FxRateScalarWhereWithAggregatesInput | FxRateScalarWhereWithAggregatesInput[]
+    OR?: FxRateScalarWhereWithAggregatesInput[]
+    NOT?: FxRateScalarWhereWithAggregatesInput | FxRateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FxRate"> | string
+    fromCurrency?: StringWithAggregatesFilter<"FxRate"> | string
+    toCurrency?: StringWithAggregatesFilter<"FxRate"> | string
+    rate?: DecimalWithAggregatesFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    feePercent?: DecimalWithAggregatesFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    feeFixed?: DecimalWithAggregatesFilter<"FxRate"> | Decimal | DecimalJsLike | number | string
+    active?: BoolWithAggregatesFilter<"FxRate"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"FxRate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FxRate"> | Date | string
+  }
+
+  export type CompanyBankAccountWhereInput = {
+    AND?: CompanyBankAccountWhereInput | CompanyBankAccountWhereInput[]
+    OR?: CompanyBankAccountWhereInput[]
+    NOT?: CompanyBankAccountWhereInput | CompanyBankAccountWhereInput[]
+    id?: StringFilter<"CompanyBankAccount"> | string
+    bankName?: StringFilter<"CompanyBankAccount"> | string
+    accountName?: StringFilter<"CompanyBankAccount"> | string
+    accountNumber?: StringFilter<"CompanyBankAccount"> | string
+    swiftBic?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    iban?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    currency?: StringFilter<"CompanyBankAccount"> | string
+    countryNote?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    instructions?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    active?: BoolFilter<"CompanyBankAccount"> | boolean
+    sortOrder?: IntFilter<"CompanyBankAccount"> | number
+    createdAt?: DateTimeFilter<"CompanyBankAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanyBankAccount"> | Date | string
+  }
+
+  export type CompanyBankAccountOrderByWithRelationInput = {
+    id?: SortOrder
+    bankName?: SortOrder
+    accountName?: SortOrder
+    accountNumber?: SortOrder
+    swiftBic?: SortOrderInput | SortOrder
+    iban?: SortOrderInput | SortOrder
+    currency?: SortOrder
+    countryNote?: SortOrderInput | SortOrder
+    instructions?: SortOrderInput | SortOrder
+    active?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyBankAccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CompanyBankAccountWhereInput | CompanyBankAccountWhereInput[]
+    OR?: CompanyBankAccountWhereInput[]
+    NOT?: CompanyBankAccountWhereInput | CompanyBankAccountWhereInput[]
+    bankName?: StringFilter<"CompanyBankAccount"> | string
+    accountName?: StringFilter<"CompanyBankAccount"> | string
+    accountNumber?: StringFilter<"CompanyBankAccount"> | string
+    swiftBic?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    iban?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    currency?: StringFilter<"CompanyBankAccount"> | string
+    countryNote?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    instructions?: StringNullableFilter<"CompanyBankAccount"> | string | null
+    active?: BoolFilter<"CompanyBankAccount"> | boolean
+    sortOrder?: IntFilter<"CompanyBankAccount"> | number
+    createdAt?: DateTimeFilter<"CompanyBankAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanyBankAccount"> | Date | string
+  }, "id">
+
+  export type CompanyBankAccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    bankName?: SortOrder
+    accountName?: SortOrder
+    accountNumber?: SortOrder
+    swiftBic?: SortOrderInput | SortOrder
+    iban?: SortOrderInput | SortOrder
+    currency?: SortOrder
+    countryNote?: SortOrderInput | SortOrder
+    instructions?: SortOrderInput | SortOrder
+    active?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompanyBankAccountCountOrderByAggregateInput
+    _avg?: CompanyBankAccountAvgOrderByAggregateInput
+    _max?: CompanyBankAccountMaxOrderByAggregateInput
+    _min?: CompanyBankAccountMinOrderByAggregateInput
+    _sum?: CompanyBankAccountSumOrderByAggregateInput
+  }
+
+  export type CompanyBankAccountScalarWhereWithAggregatesInput = {
+    AND?: CompanyBankAccountScalarWhereWithAggregatesInput | CompanyBankAccountScalarWhereWithAggregatesInput[]
+    OR?: CompanyBankAccountScalarWhereWithAggregatesInput[]
+    NOT?: CompanyBankAccountScalarWhereWithAggregatesInput | CompanyBankAccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CompanyBankAccount"> | string
+    bankName?: StringWithAggregatesFilter<"CompanyBankAccount"> | string
+    accountName?: StringWithAggregatesFilter<"CompanyBankAccount"> | string
+    accountNumber?: StringWithAggregatesFilter<"CompanyBankAccount"> | string
+    swiftBic?: StringNullableWithAggregatesFilter<"CompanyBankAccount"> | string | null
+    iban?: StringNullableWithAggregatesFilter<"CompanyBankAccount"> | string | null
+    currency?: StringWithAggregatesFilter<"CompanyBankAccount"> | string
+    countryNote?: StringNullableWithAggregatesFilter<"CompanyBankAccount"> | string | null
+    instructions?: StringNullableWithAggregatesFilter<"CompanyBankAccount"> | string | null
+    active?: BoolWithAggregatesFilter<"CompanyBankAccount"> | boolean
+    sortOrder?: IntWithAggregatesFilter<"CompanyBankAccount"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"CompanyBankAccount"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CompanyBankAccount"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email?: string | null
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -9619,7 +17923,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
     documents?: KycDocumentCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
     otps?: OtpCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -9628,6 +17935,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -9638,7 +17948,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
     documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
     otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -9647,6 +17960,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -9657,7 +17973,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
     otps?: OtpUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9666,6 +17985,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -9676,7 +17998,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
     otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9685,6 +18010,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -9699,6 +18027,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -9713,12 +18044,209 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     phoneVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountCreateInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+    user: UserCreateNestedOneWithoutAccountsInput
+  }
+
+  export type AccountUncheckedCreateInput = {
+    id?: string
+    userId: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
+  }
+
+  export type AccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountCreateManyInput = {
+    id?: string
+    userId: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionCreateInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+    user: UserCreateNestedOneWithoutSessionsInput
+  }
+
+  export type SessionUncheckedCreateInput = {
+    id?: string
+    sessionToken: string
+    userId: string
+    expires: Date | string
+  }
+
+  export type SessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSessionsNestedInput
+  }
+
+  export type SessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionCreateManyInput = {
+    id?: string
+    sessionToken: string
+    userId: string
+    expires: Date | string
+  }
+
+  export type SessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenCreateInput = {
+    identifier: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUncheckedCreateInput = {
+    identifier: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUpdateInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenUncheckedUpdateInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenCreateManyInput = {
+    identifier: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUpdateManyMutationInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenUncheckedUpdateManyInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OtpCreateInput = {
@@ -10227,6 +18755,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBeneficiariesInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutBeneficiaryInput
   }
 
   export type BeneficiaryUncheckedCreateInput = {
@@ -10242,6 +18771,7 @@ export namespace Prisma {
     mobileNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutBeneficiaryInput
   }
 
   export type BeneficiaryUpdateInput = {
@@ -10257,6 +18787,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBeneficiariesNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutBeneficiaryNestedInput
   }
 
   export type BeneficiaryUncheckedUpdateInput = {
@@ -10272,6 +18803,7 @@ export namespace Prisma {
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutBeneficiaryNestedInput
   }
 
   export type BeneficiaryCreateManyInput = {
@@ -10314,6 +18846,389 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemittanceTransferCreateInput = {
+    id?: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRemittanceTransfersInput
+    beneficiary?: BeneficiaryCreateNestedOneWithoutRemittanceTransfersInput
+  }
+
+  export type RemittanceTransferUncheckedCreateInput = {
+    id?: string
+    userId: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    beneficiaryId?: string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemittanceTransferUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRemittanceTransfersNestedInput
+    beneficiary?: BeneficiaryUpdateOneWithoutRemittanceTransfersNestedInput
+  }
+
+  export type RemittanceTransferUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    beneficiaryId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemittanceTransferCreateManyInput = {
+    id?: string
+    userId: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    beneficiaryId?: string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemittanceTransferUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemittanceTransferUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    beneficiaryId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FxRateCreateInput = {
+    id?: string
+    fromCurrency: string
+    toCurrency: string
+    rate: Decimal | DecimalJsLike | number | string
+    feePercent?: Decimal | DecimalJsLike | number | string
+    feeFixed?: Decimal | DecimalJsLike | number | string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FxRateUncheckedCreateInput = {
+    id?: string
+    fromCurrency: string
+    toCurrency: string
+    rate: Decimal | DecimalJsLike | number | string
+    feePercent?: Decimal | DecimalJsLike | number | string
+    feeFixed?: Decimal | DecimalJsLike | number | string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FxRateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrency?: StringFieldUpdateOperationsInput | string
+    toCurrency?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercent?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeFixed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FxRateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrency?: StringFieldUpdateOperationsInput | string
+    toCurrency?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercent?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeFixed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FxRateCreateManyInput = {
+    id?: string
+    fromCurrency: string
+    toCurrency: string
+    rate: Decimal | DecimalJsLike | number | string
+    feePercent?: Decimal | DecimalJsLike | number | string
+    feeFixed?: Decimal | DecimalJsLike | number | string
+    active?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FxRateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrency?: StringFieldUpdateOperationsInput | string
+    toCurrency?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercent?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeFixed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FxRateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrency?: StringFieldUpdateOperationsInput | string
+    toCurrency?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercent?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeFixed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyBankAccountCreateInput = {
+    id?: string
+    bankName: string
+    accountName: string
+    accountNumber: string
+    swiftBic?: string | null
+    iban?: string | null
+    currency: string
+    countryNote?: string | null
+    instructions?: string | null
+    active?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyBankAccountUncheckedCreateInput = {
+    id?: string
+    bankName: string
+    accountName: string
+    accountNumber: string
+    swiftBic?: string | null
+    iban?: string | null
+    currency: string
+    countryNote?: string | null
+    instructions?: string | null
+    active?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyBankAccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
+    iban?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: StringFieldUpdateOperationsInput | string
+    countryNote?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyBankAccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
+    iban?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: StringFieldUpdateOperationsInput | string
+    countryNote?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyBankAccountCreateManyInput = {
+    id?: string
+    bankName: string
+    accountName: string
+    accountNumber: string
+    swiftBic?: string | null
+    iban?: string | null
+    currency: string
+    countryNote?: string | null
+    instructions?: string | null
+    active?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyBankAccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
+    iban?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: StringFieldUpdateOperationsInput | string
+    countryNote?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyBankAccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
+    iban?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: StringFieldUpdateOperationsInput | string
+    countryNote?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10400,10 +19315,28 @@ export namespace Prisma {
     none?: BeneficiaryWhereInput
   }
 
+  export type RemittanceTransferListRelationFilter = {
+    every?: RemittanceTransferWhereInput
+    some?: RemittanceTransferWhereInput
+    none?: RemittanceTransferWhereInput
+  }
+
   export type OtpListRelationFilter = {
     every?: OtpWhereInput
     some?: OtpWhereInput
     none?: OtpWhereInput
+  }
+
+  export type AccountListRelationFilter = {
+    every?: AccountWhereInput
+    some?: AccountWhereInput
+    none?: AccountWhereInput
+  }
+
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
   }
 
   export type SortOrderInput = {
@@ -10419,7 +19352,19 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type RemittanceTransferOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type OtpOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10429,6 +19374,9 @@ export namespace Prisma {
     phone?: SortOrder
     country?: SortOrder
     passwordHash?: SortOrder
+    name?: SortOrder
+    image?: SortOrder
+    googleId?: SortOrder
     role?: SortOrder
     kycStatus?: SortOrder
     emailVerified?: SortOrder
@@ -10443,6 +19391,9 @@ export namespace Prisma {
     phone?: SortOrder
     country?: SortOrder
     passwordHash?: SortOrder
+    name?: SortOrder
+    image?: SortOrder
+    googleId?: SortOrder
     role?: SortOrder
     kycStatus?: SortOrder
     emailVerified?: SortOrder
@@ -10457,6 +19408,9 @@ export namespace Prisma {
     phone?: SortOrder
     country?: SortOrder
     passwordHash?: SortOrder
+    name?: SortOrder
+    image?: SortOrder
+    googleId?: SortOrder
     role?: SortOrder
     kycStatus?: SortOrder
     emailVerified?: SortOrder
@@ -10543,16 +19497,145 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type EnumOtpTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.OtpType | EnumOtpTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.OtpType[] | ListEnumOtpTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.OtpType[] | ListEnumOtpTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumOtpTypeFilter<$PrismaModel> | $Enums.OtpType
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type AccountProviderProviderAccountIdCompoundUniqueInput = {
+    provider: string
+    providerAccountId: string
+  }
+
+  export type AccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrder
+    access_token?: SortOrder
+    expires_at?: SortOrder
+    token_type?: SortOrder
+    scope?: SortOrder
+    id_token?: SortOrder
+    session_state?: SortOrder
+  }
+
+  export type AccountAvgOrderByAggregateInput = {
+    expires_at?: SortOrder
+  }
+
+  export type AccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrder
+    access_token?: SortOrder
+    expires_at?: SortOrder
+    token_type?: SortOrder
+    scope?: SortOrder
+    id_token?: SortOrder
+    session_state?: SortOrder
+  }
+
+  export type AccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrder
+    access_token?: SortOrder
+    expires_at?: SortOrder
+    token_type?: SortOrder
+    scope?: SortOrder
+    id_token?: SortOrder
+    session_state?: SortOrder
+  }
+
+  export type AccountSumOrderByAggregateInput = {
+    expires_at?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type SessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type SessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type SessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenIdentifierTokenCompoundUniqueInput = {
+    identifier: string
+    token: string
+  }
+
+  export type VerificationTokenCountOrderByAggregateInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenMaxOrderByAggregateInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenMinOrderByAggregateInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type EnumOtpTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.OtpType | EnumOtpTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.OtpType[] | ListEnumOtpTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OtpType[] | ListEnumOtpTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumOtpTypeFilter<$PrismaModel> | $Enums.OtpType
   }
 
   export type OtpCountOrderByAggregateInput = {
@@ -10819,17 +19902,6 @@ export namespace Prisma {
     not?: NestedEnumDocumentTypeFilter<$PrismaModel> | $Enums.DocumentType
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type EnumDocumentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.DocumentStatus | EnumDocumentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DocumentStatus[] | ListEnumDocumentStatusFieldRefInput<$PrismaModel>
@@ -10889,22 +19961,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDocumentTypeFilter<$PrismaModel>
     _max?: NestedEnumDocumentTypeFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type EnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -10979,6 +20035,332 @@ export namespace Prisma {
     _max?: NestedEnumDeliveryChannelFilter<$PrismaModel>
   }
 
+  export type EnumRemittanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RemittanceStatus | EnumRemittanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRemittanceStatusFilter<$PrismaModel> | $Enums.RemittanceStatus
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type EnumPayInMethodNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayInMethod | EnumPayInMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPayInMethodNullableFilter<$PrismaModel> | $Enums.PayInMethod | null
+  }
+
+  export type BeneficiaryNullableScalarRelationFilter = {
+    is?: BeneficiaryWhereInput | null
+    isNot?: BeneficiaryWhereInput | null
+  }
+
+  export type RemittanceTransferCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    referenceCode?: SortOrder
+    status?: SortOrder
+    currentStep?: SortOrder
+    senderCountryIso2?: SortOrder
+    payCurrency?: SortOrder
+    payAmount?: SortOrder
+    recipientCountryLabel?: SortOrder
+    recipientCountryIso2?: SortOrder
+    receiveCurrency?: SortOrder
+    receiveAmount?: SortOrder
+    fxRateSnapshot?: SortOrder
+    feeAmount?: SortOrder
+    quoteExpiresAt?: SortOrder
+    beneficiaryId?: SortOrder
+    sourceOfIncome?: SortOrder
+    transferPurpose?: SortOrder
+    relationshipToRecipient?: SortOrder
+    complianceAccepted?: SortOrder
+    payInMethod?: SortOrder
+    payerPhone?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RemittanceTransferAvgOrderByAggregateInput = {
+    currentStep?: SortOrder
+    payAmount?: SortOrder
+    receiveAmount?: SortOrder
+    fxRateSnapshot?: SortOrder
+    feeAmount?: SortOrder
+  }
+
+  export type RemittanceTransferMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    referenceCode?: SortOrder
+    status?: SortOrder
+    currentStep?: SortOrder
+    senderCountryIso2?: SortOrder
+    payCurrency?: SortOrder
+    payAmount?: SortOrder
+    recipientCountryLabel?: SortOrder
+    recipientCountryIso2?: SortOrder
+    receiveCurrency?: SortOrder
+    receiveAmount?: SortOrder
+    fxRateSnapshot?: SortOrder
+    feeAmount?: SortOrder
+    quoteExpiresAt?: SortOrder
+    beneficiaryId?: SortOrder
+    sourceOfIncome?: SortOrder
+    transferPurpose?: SortOrder
+    relationshipToRecipient?: SortOrder
+    complianceAccepted?: SortOrder
+    payInMethod?: SortOrder
+    payerPhone?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RemittanceTransferMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    referenceCode?: SortOrder
+    status?: SortOrder
+    currentStep?: SortOrder
+    senderCountryIso2?: SortOrder
+    payCurrency?: SortOrder
+    payAmount?: SortOrder
+    recipientCountryLabel?: SortOrder
+    recipientCountryIso2?: SortOrder
+    receiveCurrency?: SortOrder
+    receiveAmount?: SortOrder
+    fxRateSnapshot?: SortOrder
+    feeAmount?: SortOrder
+    quoteExpiresAt?: SortOrder
+    beneficiaryId?: SortOrder
+    sourceOfIncome?: SortOrder
+    transferPurpose?: SortOrder
+    relationshipToRecipient?: SortOrder
+    complianceAccepted?: SortOrder
+    payInMethod?: SortOrder
+    payerPhone?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RemittanceTransferSumOrderByAggregateInput = {
+    currentStep?: SortOrder
+    payAmount?: SortOrder
+    receiveAmount?: SortOrder
+    fxRateSnapshot?: SortOrder
+    feeAmount?: SortOrder
+  }
+
+  export type EnumRemittanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RemittanceStatus | EnumRemittanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRemittanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.RemittanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRemittanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumRemittanceStatusFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type EnumPayInMethodNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayInMethod | EnumPayInMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPayInMethodNullableWithAggregatesFilter<$PrismaModel> | $Enums.PayInMethod | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumPayInMethodNullableFilter<$PrismaModel>
+    _max?: NestedEnumPayInMethodNullableFilter<$PrismaModel>
+  }
+
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type FxRateFromCurrencyToCurrencyCompoundUniqueInput = {
+    fromCurrency: string
+    toCurrency: string
+  }
+
+  export type FxRateCountOrderByAggregateInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    feePercent?: SortOrder
+    feeFixed?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FxRateAvgOrderByAggregateInput = {
+    rate?: SortOrder
+    feePercent?: SortOrder
+    feeFixed?: SortOrder
+  }
+
+  export type FxRateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    feePercent?: SortOrder
+    feeFixed?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FxRateMinOrderByAggregateInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    feePercent?: SortOrder
+    feeFixed?: SortOrder
+    active?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FxRateSumOrderByAggregateInput = {
+    rate?: SortOrder
+    feePercent?: SortOrder
+    feeFixed?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type CompanyBankAccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    bankName?: SortOrder
+    accountName?: SortOrder
+    accountNumber?: SortOrder
+    swiftBic?: SortOrder
+    iban?: SortOrder
+    currency?: SortOrder
+    countryNote?: SortOrder
+    instructions?: SortOrder
+    active?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyBankAccountAvgOrderByAggregateInput = {
+    sortOrder?: SortOrder
+  }
+
+  export type CompanyBankAccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    bankName?: SortOrder
+    accountName?: SortOrder
+    accountNumber?: SortOrder
+    swiftBic?: SortOrder
+    iban?: SortOrder
+    currency?: SortOrder
+    countryNote?: SortOrder
+    instructions?: SortOrder
+    active?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyBankAccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    bankName?: SortOrder
+    accountName?: SortOrder
+    accountNumber?: SortOrder
+    swiftBic?: SortOrder
+    iban?: SortOrder
+    currency?: SortOrder
+    countryNote?: SortOrder
+    instructions?: SortOrder
+    active?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanyBankAccountSumOrderByAggregateInput = {
+    sortOrder?: SortOrder
+  }
+
   export type IndividualProfileCreateNestedOneWithoutUserInput = {
     create?: XOR<IndividualProfileCreateWithoutUserInput, IndividualProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: IndividualProfileCreateOrConnectWithoutUserInput
@@ -11005,11 +20387,32 @@ export namespace Prisma {
     connect?: BeneficiaryWhereUniqueInput | BeneficiaryWhereUniqueInput[]
   }
 
+  export type RemittanceTransferCreateNestedManyWithoutUserInput = {
+    create?: XOR<RemittanceTransferCreateWithoutUserInput, RemittanceTransferUncheckedCreateWithoutUserInput> | RemittanceTransferCreateWithoutUserInput[] | RemittanceTransferUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutUserInput | RemittanceTransferCreateOrConnectWithoutUserInput[]
+    createMany?: RemittanceTransferCreateManyUserInputEnvelope
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+  }
+
   export type OtpCreateNestedManyWithoutUserInput = {
     create?: XOR<OtpCreateWithoutUserInput, OtpUncheckedCreateWithoutUserInput> | OtpCreateWithoutUserInput[] | OtpUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OtpCreateOrConnectWithoutUserInput | OtpCreateOrConnectWithoutUserInput[]
     createMany?: OtpCreateManyUserInputEnvelope
     connect?: OtpWhereUniqueInput | OtpWhereUniqueInput[]
+  }
+
+  export type AccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type IndividualProfileUncheckedCreateNestedOneWithoutUserInput = {
@@ -11038,11 +20441,32 @@ export namespace Prisma {
     connect?: BeneficiaryWhereUniqueInput | BeneficiaryWhereUniqueInput[]
   }
 
+  export type RemittanceTransferUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RemittanceTransferCreateWithoutUserInput, RemittanceTransferUncheckedCreateWithoutUserInput> | RemittanceTransferCreateWithoutUserInput[] | RemittanceTransferUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutUserInput | RemittanceTransferCreateOrConnectWithoutUserInput[]
+    createMany?: RemittanceTransferCreateManyUserInputEnvelope
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+  }
+
   export type OtpUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<OtpCreateWithoutUserInput, OtpUncheckedCreateWithoutUserInput> | OtpCreateWithoutUserInput[] | OtpUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OtpCreateOrConnectWithoutUserInput | OtpCreateOrConnectWithoutUserInput[]
     createMany?: OtpCreateManyUserInputEnvelope
     connect?: OtpWhereUniqueInput | OtpWhereUniqueInput[]
+  }
+
+  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -11117,6 +20541,20 @@ export namespace Prisma {
     deleteMany?: BeneficiaryScalarWhereInput | BeneficiaryScalarWhereInput[]
   }
 
+  export type RemittanceTransferUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RemittanceTransferCreateWithoutUserInput, RemittanceTransferUncheckedCreateWithoutUserInput> | RemittanceTransferCreateWithoutUserInput[] | RemittanceTransferUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutUserInput | RemittanceTransferCreateOrConnectWithoutUserInput[]
+    upsert?: RemittanceTransferUpsertWithWhereUniqueWithoutUserInput | RemittanceTransferUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RemittanceTransferCreateManyUserInputEnvelope
+    set?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    disconnect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    delete?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    update?: RemittanceTransferUpdateWithWhereUniqueWithoutUserInput | RemittanceTransferUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RemittanceTransferUpdateManyWithWhereWithoutUserInput | RemittanceTransferUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RemittanceTransferScalarWhereInput | RemittanceTransferScalarWhereInput[]
+  }
+
   export type OtpUpdateManyWithoutUserNestedInput = {
     create?: XOR<OtpCreateWithoutUserInput, OtpUncheckedCreateWithoutUserInput> | OtpCreateWithoutUserInput[] | OtpUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OtpCreateOrConnectWithoutUserInput | OtpCreateOrConnectWithoutUserInput[]
@@ -11129,6 +20567,34 @@ export namespace Prisma {
     update?: OtpUpdateWithWhereUniqueWithoutUserInput | OtpUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: OtpUpdateManyWithWhereWithoutUserInput | OtpUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: OtpScalarWhereInput | OtpScalarWhereInput[]
+  }
+
+  export type AccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type IndividualProfileUncheckedUpdateOneWithoutUserNestedInput = {
@@ -11179,6 +20645,20 @@ export namespace Prisma {
     deleteMany?: BeneficiaryScalarWhereInput | BeneficiaryScalarWhereInput[]
   }
 
+  export type RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RemittanceTransferCreateWithoutUserInput, RemittanceTransferUncheckedCreateWithoutUserInput> | RemittanceTransferCreateWithoutUserInput[] | RemittanceTransferUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutUserInput | RemittanceTransferCreateOrConnectWithoutUserInput[]
+    upsert?: RemittanceTransferUpsertWithWhereUniqueWithoutUserInput | RemittanceTransferUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RemittanceTransferCreateManyUserInputEnvelope
+    set?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    disconnect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    delete?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    update?: RemittanceTransferUpdateWithWhereUniqueWithoutUserInput | RemittanceTransferUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RemittanceTransferUpdateManyWithWhereWithoutUserInput | RemittanceTransferUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RemittanceTransferScalarWhereInput | RemittanceTransferScalarWhereInput[]
+  }
+
   export type OtpUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<OtpCreateWithoutUserInput, OtpUncheckedCreateWithoutUserInput> | OtpCreateWithoutUserInput[] | OtpUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OtpCreateOrConnectWithoutUserInput | OtpCreateOrConnectWithoutUserInput[]
@@ -11191,6 +20671,70 @@ export namespace Prisma {
     update?: OtpUpdateWithWhereUniqueWithoutUserInput | OtpUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: OtpUpdateManyWithWhereWithoutUserInput | OtpUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: OtpScalarWhereInput | OtpScalarWhereInput[]
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutAccountsInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    upsert?: UserUpsertWithoutAccountsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSessionsInput = {
+    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
+    upsert?: UserUpsertWithoutSessionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
   export type UserCreateNestedOneWithoutOtpsInput = {
@@ -11253,14 +20797,6 @@ export namespace Prisma {
     set?: $Enums.DocumentType
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type EnumDocumentStatusFieldUpdateOperationsInput = {
     set?: $Enums.DocumentStatus
   }
@@ -11279,6 +20815,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type RemittanceTransferCreateNestedManyWithoutBeneficiaryInput = {
+    create?: XOR<RemittanceTransferCreateWithoutBeneficiaryInput, RemittanceTransferUncheckedCreateWithoutBeneficiaryInput> | RemittanceTransferCreateWithoutBeneficiaryInput[] | RemittanceTransferUncheckedCreateWithoutBeneficiaryInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutBeneficiaryInput | RemittanceTransferCreateOrConnectWithoutBeneficiaryInput[]
+    createMany?: RemittanceTransferCreateManyBeneficiaryInputEnvelope
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+  }
+
+  export type RemittanceTransferUncheckedCreateNestedManyWithoutBeneficiaryInput = {
+    create?: XOR<RemittanceTransferCreateWithoutBeneficiaryInput, RemittanceTransferUncheckedCreateWithoutBeneficiaryInput> | RemittanceTransferCreateWithoutBeneficiaryInput[] | RemittanceTransferUncheckedCreateWithoutBeneficiaryInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutBeneficiaryInput | RemittanceTransferCreateOrConnectWithoutBeneficiaryInput[]
+    createMany?: RemittanceTransferCreateManyBeneficiaryInputEnvelope
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+  }
+
   export type EnumDeliveryChannelFieldUpdateOperationsInput = {
     set?: $Enums.DeliveryChannel
   }
@@ -11289,6 +20839,96 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutBeneficiariesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBeneficiariesInput, UserUpdateWithoutBeneficiariesInput>, UserUncheckedUpdateWithoutBeneficiariesInput>
+  }
+
+  export type RemittanceTransferUpdateManyWithoutBeneficiaryNestedInput = {
+    create?: XOR<RemittanceTransferCreateWithoutBeneficiaryInput, RemittanceTransferUncheckedCreateWithoutBeneficiaryInput> | RemittanceTransferCreateWithoutBeneficiaryInput[] | RemittanceTransferUncheckedCreateWithoutBeneficiaryInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutBeneficiaryInput | RemittanceTransferCreateOrConnectWithoutBeneficiaryInput[]
+    upsert?: RemittanceTransferUpsertWithWhereUniqueWithoutBeneficiaryInput | RemittanceTransferUpsertWithWhereUniqueWithoutBeneficiaryInput[]
+    createMany?: RemittanceTransferCreateManyBeneficiaryInputEnvelope
+    set?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    disconnect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    delete?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    update?: RemittanceTransferUpdateWithWhereUniqueWithoutBeneficiaryInput | RemittanceTransferUpdateWithWhereUniqueWithoutBeneficiaryInput[]
+    updateMany?: RemittanceTransferUpdateManyWithWhereWithoutBeneficiaryInput | RemittanceTransferUpdateManyWithWhereWithoutBeneficiaryInput[]
+    deleteMany?: RemittanceTransferScalarWhereInput | RemittanceTransferScalarWhereInput[]
+  }
+
+  export type RemittanceTransferUncheckedUpdateManyWithoutBeneficiaryNestedInput = {
+    create?: XOR<RemittanceTransferCreateWithoutBeneficiaryInput, RemittanceTransferUncheckedCreateWithoutBeneficiaryInput> | RemittanceTransferCreateWithoutBeneficiaryInput[] | RemittanceTransferUncheckedCreateWithoutBeneficiaryInput[]
+    connectOrCreate?: RemittanceTransferCreateOrConnectWithoutBeneficiaryInput | RemittanceTransferCreateOrConnectWithoutBeneficiaryInput[]
+    upsert?: RemittanceTransferUpsertWithWhereUniqueWithoutBeneficiaryInput | RemittanceTransferUpsertWithWhereUniqueWithoutBeneficiaryInput[]
+    createMany?: RemittanceTransferCreateManyBeneficiaryInputEnvelope
+    set?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    disconnect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    delete?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    connect?: RemittanceTransferWhereUniqueInput | RemittanceTransferWhereUniqueInput[]
+    update?: RemittanceTransferUpdateWithWhereUniqueWithoutBeneficiaryInput | RemittanceTransferUpdateWithWhereUniqueWithoutBeneficiaryInput[]
+    updateMany?: RemittanceTransferUpdateManyWithWhereWithoutBeneficiaryInput | RemittanceTransferUpdateManyWithWhereWithoutBeneficiaryInput[]
+    deleteMany?: RemittanceTransferScalarWhereInput | RemittanceTransferScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutRemittanceTransfersInput = {
+    create?: XOR<UserCreateWithoutRemittanceTransfersInput, UserUncheckedCreateWithoutRemittanceTransfersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRemittanceTransfersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BeneficiaryCreateNestedOneWithoutRemittanceTransfersInput = {
+    create?: XOR<BeneficiaryCreateWithoutRemittanceTransfersInput, BeneficiaryUncheckedCreateWithoutRemittanceTransfersInput>
+    connectOrCreate?: BeneficiaryCreateOrConnectWithoutRemittanceTransfersInput
+    connect?: BeneficiaryWhereUniqueInput
+  }
+
+  export type EnumRemittanceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.RemittanceStatus
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type NullableEnumPayInMethodFieldUpdateOperationsInput = {
+    set?: $Enums.PayInMethod | null
+  }
+
+  export type UserUpdateOneRequiredWithoutRemittanceTransfersNestedInput = {
+    create?: XOR<UserCreateWithoutRemittanceTransfersInput, UserUncheckedCreateWithoutRemittanceTransfersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRemittanceTransfersInput
+    upsert?: UserUpsertWithoutRemittanceTransfersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRemittanceTransfersInput, UserUpdateWithoutRemittanceTransfersInput>, UserUncheckedUpdateWithoutRemittanceTransfersInput>
+  }
+
+  export type BeneficiaryUpdateOneWithoutRemittanceTransfersNestedInput = {
+    create?: XOR<BeneficiaryCreateWithoutRemittanceTransfersInput, BeneficiaryUncheckedCreateWithoutRemittanceTransfersInput>
+    connectOrCreate?: BeneficiaryCreateOrConnectWithoutRemittanceTransfersInput
+    upsert?: BeneficiaryUpsertWithoutRemittanceTransfersInput
+    disconnect?: BeneficiaryWhereInput | boolean
+    delete?: BeneficiaryWhereInput | boolean
+    connect?: BeneficiaryWhereUniqueInput
+    update?: XOR<XOR<BeneficiaryUpdateToOneWithWhereWithoutRemittanceTransfersInput, BeneficiaryUpdateWithoutRemittanceTransfersInput>, BeneficiaryUncheckedUpdateWithoutRemittanceTransfersInput>
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -11447,6 +21087,33 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedEnumOtpTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.OtpType | EnumOtpTypeFieldRefInput<$PrismaModel>
     in?: $Enums.OtpType[] | ListEnumOtpTypeFieldRefInput<$PrismaModel>
@@ -11536,33 +21203,6 @@ export namespace Prisma {
     _max?: NestedEnumDocumentTypeFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedEnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.DocumentStatus | EnumDocumentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DocumentStatus[] | ListEnumDocumentStatusFieldRefInput<$PrismaModel>
@@ -11588,6 +21228,121 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDeliveryChannelFilter<$PrismaModel>
     _max?: NestedEnumDeliveryChannelFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRemittanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RemittanceStatus | EnumRemittanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRemittanceStatusFilter<$PrismaModel> | $Enums.RemittanceStatus
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedEnumPayInMethodNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayInMethod | EnumPayInMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPayInMethodNullableFilter<$PrismaModel> | $Enums.PayInMethod | null
+  }
+
+  export type NestedEnumRemittanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RemittanceStatus | EnumRemittanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RemittanceStatus[] | ListEnumRemittanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRemittanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.RemittanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRemittanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumRemittanceStatusFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPayInMethodNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PayInMethod | EnumPayInMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.PayInMethod[] | ListEnumPayInMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumPayInMethodNullableWithAggregatesFilter<$PrismaModel> | $Enums.PayInMethod | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumPayInMethodNullableFilter<$PrismaModel>
+    _max?: NestedEnumPayInMethodNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type IndividualProfileCreateWithoutUserInput = {
@@ -11738,6 +21493,7 @@ export namespace Prisma {
     mobileNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutBeneficiaryInput
   }
 
   export type BeneficiaryUncheckedCreateWithoutUserInput = {
@@ -11752,6 +21508,7 @@ export namespace Prisma {
     mobileNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutBeneficiaryInput
   }
 
   export type BeneficiaryCreateOrConnectWithoutUserInput = {
@@ -11761,6 +21518,68 @@ export namespace Prisma {
 
   export type BeneficiaryCreateManyUserInputEnvelope = {
     data: BeneficiaryCreateManyUserInput | BeneficiaryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RemittanceTransferCreateWithoutUserInput = {
+    id?: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    beneficiary?: BeneficiaryCreateNestedOneWithoutRemittanceTransfersInput
+  }
+
+  export type RemittanceTransferUncheckedCreateWithoutUserInput = {
+    id?: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    beneficiaryId?: string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemittanceTransferCreateOrConnectWithoutUserInput = {
+    where: RemittanceTransferWhereUniqueInput
+    create: XOR<RemittanceTransferCreateWithoutUserInput, RemittanceTransferUncheckedCreateWithoutUserInput>
+  }
+
+  export type RemittanceTransferCreateManyUserInputEnvelope = {
+    data: RemittanceTransferCreateManyUserInput | RemittanceTransferCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -11789,6 +21608,66 @@ export namespace Prisma {
 
   export type OtpCreateManyUserInputEnvelope = {
     data: OtpCreateManyUserInput | OtpCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AccountCreateWithoutUserInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountCreateOrConnectWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountCreateManyUserInputEnvelope = {
+    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SessionCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -11973,6 +21852,52 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Beneficiary"> | Date | string
   }
 
+  export type RemittanceTransferUpsertWithWhereUniqueWithoutUserInput = {
+    where: RemittanceTransferWhereUniqueInput
+    update: XOR<RemittanceTransferUpdateWithoutUserInput, RemittanceTransferUncheckedUpdateWithoutUserInput>
+    create: XOR<RemittanceTransferCreateWithoutUserInput, RemittanceTransferUncheckedCreateWithoutUserInput>
+  }
+
+  export type RemittanceTransferUpdateWithWhereUniqueWithoutUserInput = {
+    where: RemittanceTransferWhereUniqueInput
+    data: XOR<RemittanceTransferUpdateWithoutUserInput, RemittanceTransferUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RemittanceTransferUpdateManyWithWhereWithoutUserInput = {
+    where: RemittanceTransferScalarWhereInput
+    data: XOR<RemittanceTransferUpdateManyMutationInput, RemittanceTransferUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type RemittanceTransferScalarWhereInput = {
+    AND?: RemittanceTransferScalarWhereInput | RemittanceTransferScalarWhereInput[]
+    OR?: RemittanceTransferScalarWhereInput[]
+    NOT?: RemittanceTransferScalarWhereInput | RemittanceTransferScalarWhereInput[]
+    id?: StringFilter<"RemittanceTransfer"> | string
+    userId?: StringFilter<"RemittanceTransfer"> | string
+    referenceCode?: StringFilter<"RemittanceTransfer"> | string
+    status?: EnumRemittanceStatusFilter<"RemittanceTransfer"> | $Enums.RemittanceStatus
+    currentStep?: IntFilter<"RemittanceTransfer"> | number
+    senderCountryIso2?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    payCurrency?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    payAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    recipientCountryIso2?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    receiveCurrency?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    receiveAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: DecimalNullableFilter<"RemittanceTransfer"> | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: DateTimeNullableFilter<"RemittanceTransfer"> | Date | string | null
+    beneficiaryId?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    sourceOfIncome?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    transferPurpose?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    relationshipToRecipient?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    complianceAccepted?: BoolFilter<"RemittanceTransfer"> | boolean
+    payInMethod?: EnumPayInMethodNullableFilter<"RemittanceTransfer"> | $Enums.PayInMethod | null
+    payerPhone?: StringNullableFilter<"RemittanceTransfer"> | string | null
+    createdAt?: DateTimeFilter<"RemittanceTransfer"> | Date | string
+    updatedAt?: DateTimeFilter<"RemittanceTransfer"> | Date | string
+  }
+
   export type OtpUpsertWithWhereUniqueWithoutUserInput = {
     where: OtpWhereUniqueInput
     update: XOR<OtpUpdateWithoutUserInput, OtpUncheckedUpdateWithoutUserInput>
@@ -12002,12 +21927,75 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Otp"> | Date | string
   }
 
-  export type UserCreateWithoutOtpsInput = {
+  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AccountUpdateManyWithWhereWithoutUserInput = {
+    where: AccountScalarWhereInput
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AccountScalarWhereInput = {
+    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    OR?: AccountScalarWhereInput[]
+    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    id?: StringFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
+    type?: StringFilter<"Account"> | string
+    provider?: StringFilter<"Account"> | string
+    providerAccountId?: StringFilter<"Account"> | string
+    refresh_token?: StringNullableFilter<"Account"> | string | null
+    access_token?: StringNullableFilter<"Account"> | string | null
+    expires_at?: IntNullableFilter<"Account"> | number | null
+    token_type?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    id_token?: StringNullableFilter<"Account"> | string | null
+    session_state?: StringNullableFilter<"Account"> | string | null
+  }
+
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    expires?: DateTimeFilter<"Session"> | Date | string
+  }
+
+  export type UserCreateWithoutAccountsInput = {
     id?: string
     email?: string | null
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12018,14 +22006,20 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
     documents?: KycDocumentCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
+    otps?: OtpCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutOtpsInput = {
+  export type UserUncheckedCreateWithoutAccountsInput = {
     id?: string
     email?: string | null
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12036,6 +22030,233 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
     documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
+    otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAccountsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+  }
+
+  export type UserUpsertWithoutAccountsInput = {
+    update: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserUpdateWithoutAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    individualProfile?: IndividualProfileUpdateOneWithoutUserNestedInput
+    corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
+    documents?: KycDocumentUpdateManyWithoutUserNestedInput
+    beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
+    otps?: OtpUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    individualProfile?: IndividualProfileUncheckedUpdateOneWithoutUserNestedInput
+    corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
+    documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
+    otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutSessionsInput = {
+    id?: string
+    email?: string | null
+    phone?: string | null
+    country?: string | null
+    passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    kycStatus?: $Enums.KycStatus
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    individualProfile?: IndividualProfileCreateNestedOneWithoutUserInput
+    corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
+    documents?: KycDocumentCreateNestedManyWithoutUserInput
+    beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
+    otps?: OtpCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSessionsInput = {
+    id?: string
+    email?: string | null
+    phone?: string | null
+    country?: string | null
+    passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    kycStatus?: $Enums.KycStatus
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    individualProfile?: IndividualProfileUncheckedCreateNestedOneWithoutUserInput
+    corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
+    documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
+    otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+  }
+
+  export type UserUpsertWithoutSessionsInput = {
+    update: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
+    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type UserUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    individualProfile?: IndividualProfileUpdateOneWithoutUserNestedInput
+    corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
+    documents?: KycDocumentUpdateManyWithoutUserNestedInput
+    beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
+    otps?: OtpUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    individualProfile?: IndividualProfileUncheckedUpdateOneWithoutUserNestedInput
+    corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
+    documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
+    otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutOtpsInput = {
+    id?: string
+    email?: string | null
+    phone?: string | null
+    country?: string | null
+    passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    kycStatus?: $Enums.KycStatus
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    individualProfile?: IndividualProfileCreateNestedOneWithoutUserInput
+    corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
+    documents?: KycDocumentCreateNestedManyWithoutUserInput
+    beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutOtpsInput = {
+    id?: string
+    email?: string | null
+    phone?: string | null
+    country?: string | null
+    passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    kycStatus?: $Enums.KycStatus
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    individualProfile?: IndividualProfileUncheckedCreateNestedOneWithoutUserInput
+    corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
+    documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOtpsInput = {
@@ -12060,6 +22281,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12070,6 +22294,9 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOtpsInput = {
@@ -12078,6 +22305,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12088,6 +22318,9 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutIndividualProfileInput = {
@@ -12096,6 +22329,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12105,7 +22341,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
     documents?: KycDocumentCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
     otps?: OtpCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutIndividualProfileInput = {
@@ -12114,6 +22353,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12123,7 +22365,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
     documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
     otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutIndividualProfileInput = {
@@ -12148,6 +22393,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12157,7 +22405,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
     otps?: OtpUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutIndividualProfileInput = {
@@ -12166,6 +22417,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12175,7 +22429,10 @@ export namespace Prisma {
     corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
     otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCorporateProfileInput = {
@@ -12184,6 +22441,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12193,7 +22453,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileCreateNestedOneWithoutUserInput
     documents?: KycDocumentCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
     otps?: OtpCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCorporateProfileInput = {
@@ -12202,6 +22465,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12211,7 +22477,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUncheckedCreateNestedOneWithoutUserInput
     documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
     otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCorporateProfileInput = {
@@ -12236,6 +22505,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12245,7 +22517,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
     otps?: OtpUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCorporateProfileInput = {
@@ -12254,6 +22529,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12263,7 +22541,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUncheckedUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
     otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDocumentsInput = {
@@ -12272,6 +22553,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12281,7 +22565,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileCreateNestedOneWithoutUserInput
     corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
     beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
     otps?: OtpCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -12290,6 +22577,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12299,7 +22589,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUncheckedCreateNestedOneWithoutUserInput
     corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
     beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
     otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -12324,6 +22617,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12333,7 +22629,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUpdateOneWithoutUserNestedInput
     corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
     beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
     otps?: OtpUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -12342,6 +22641,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12351,7 +22653,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUncheckedUpdateOneWithoutUserNestedInput
     corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
     beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
     otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutBeneficiariesInput = {
@@ -12360,6 +22665,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12369,7 +22677,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileCreateNestedOneWithoutUserInput
     corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
     documents?: KycDocumentCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutUserInput
     otps?: OtpCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBeneficiariesInput = {
@@ -12378,6 +22689,9 @@ export namespace Prisma {
     phone?: string | null
     country?: string | null
     passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
     role?: $Enums.UserRole
     kycStatus?: $Enums.KycStatus
     emailVerified?: boolean
@@ -12387,12 +22701,77 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUncheckedCreateNestedOneWithoutUserInput
     corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
     documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutUserInput
     otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBeneficiariesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutBeneficiariesInput, UserUncheckedCreateWithoutBeneficiariesInput>
+  }
+
+  export type RemittanceTransferCreateWithoutBeneficiaryInput = {
+    id?: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRemittanceTransfersInput
+  }
+
+  export type RemittanceTransferUncheckedCreateWithoutBeneficiaryInput = {
+    id?: string
+    userId: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemittanceTransferCreateOrConnectWithoutBeneficiaryInput = {
+    where: RemittanceTransferWhereUniqueInput
+    create: XOR<RemittanceTransferCreateWithoutBeneficiaryInput, RemittanceTransferUncheckedCreateWithoutBeneficiaryInput>
+  }
+
+  export type RemittanceTransferCreateManyBeneficiaryInputEnvelope = {
+    data: RemittanceTransferCreateManyBeneficiaryInput | RemittanceTransferCreateManyBeneficiaryInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutBeneficiariesInput = {
@@ -12412,6 +22791,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12421,7 +22803,10 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUpdateOneWithoutUserNestedInput
     corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutUserNestedInput
     otps?: OtpUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBeneficiariesInput = {
@@ -12430,6 +22815,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -12439,7 +22827,214 @@ export namespace Prisma {
     individualProfile?: IndividualProfileUncheckedUpdateOneWithoutUserNestedInput
     corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
     documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutUserNestedInput
     otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type RemittanceTransferUpsertWithWhereUniqueWithoutBeneficiaryInput = {
+    where: RemittanceTransferWhereUniqueInput
+    update: XOR<RemittanceTransferUpdateWithoutBeneficiaryInput, RemittanceTransferUncheckedUpdateWithoutBeneficiaryInput>
+    create: XOR<RemittanceTransferCreateWithoutBeneficiaryInput, RemittanceTransferUncheckedCreateWithoutBeneficiaryInput>
+  }
+
+  export type RemittanceTransferUpdateWithWhereUniqueWithoutBeneficiaryInput = {
+    where: RemittanceTransferWhereUniqueInput
+    data: XOR<RemittanceTransferUpdateWithoutBeneficiaryInput, RemittanceTransferUncheckedUpdateWithoutBeneficiaryInput>
+  }
+
+  export type RemittanceTransferUpdateManyWithWhereWithoutBeneficiaryInput = {
+    where: RemittanceTransferScalarWhereInput
+    data: XOR<RemittanceTransferUpdateManyMutationInput, RemittanceTransferUncheckedUpdateManyWithoutBeneficiaryInput>
+  }
+
+  export type UserCreateWithoutRemittanceTransfersInput = {
+    id?: string
+    email?: string | null
+    phone?: string | null
+    country?: string | null
+    passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    kycStatus?: $Enums.KycStatus
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    individualProfile?: IndividualProfileCreateNestedOneWithoutUserInput
+    corporateProfile?: CorporateProfileCreateNestedOneWithoutUserInput
+    documents?: KycDocumentCreateNestedManyWithoutUserInput
+    beneficiaries?: BeneficiaryCreateNestedManyWithoutUserInput
+    otps?: OtpCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRemittanceTransfersInput = {
+    id?: string
+    email?: string | null
+    phone?: string | null
+    country?: string | null
+    passwordHash?: string | null
+    name?: string | null
+    image?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    kycStatus?: $Enums.KycStatus
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    individualProfile?: IndividualProfileUncheckedCreateNestedOneWithoutUserInput
+    corporateProfile?: CorporateProfileUncheckedCreateNestedOneWithoutUserInput
+    documents?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    beneficiaries?: BeneficiaryUncheckedCreateNestedManyWithoutUserInput
+    otps?: OtpUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRemittanceTransfersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRemittanceTransfersInput, UserUncheckedCreateWithoutRemittanceTransfersInput>
+  }
+
+  export type BeneficiaryCreateWithoutRemittanceTransfersInput = {
+    id?: string
+    deliveryChannel: $Enums.DeliveryChannel
+    fullName: string
+    country?: string | null
+    bankName?: string | null
+    accountNumber?: string | null
+    swiftBic?: string | null
+    mobileMoneyProvider?: string | null
+    mobileNumber?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutBeneficiariesInput
+  }
+
+  export type BeneficiaryUncheckedCreateWithoutRemittanceTransfersInput = {
+    id?: string
+    userId: string
+    deliveryChannel: $Enums.DeliveryChannel
+    fullName: string
+    country?: string | null
+    bankName?: string | null
+    accountNumber?: string | null
+    swiftBic?: string | null
+    mobileMoneyProvider?: string | null
+    mobileNumber?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BeneficiaryCreateOrConnectWithoutRemittanceTransfersInput = {
+    where: BeneficiaryWhereUniqueInput
+    create: XOR<BeneficiaryCreateWithoutRemittanceTransfersInput, BeneficiaryUncheckedCreateWithoutRemittanceTransfersInput>
+  }
+
+  export type UserUpsertWithoutRemittanceTransfersInput = {
+    update: XOR<UserUpdateWithoutRemittanceTransfersInput, UserUncheckedUpdateWithoutRemittanceTransfersInput>
+    create: XOR<UserCreateWithoutRemittanceTransfersInput, UserUncheckedCreateWithoutRemittanceTransfersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRemittanceTransfersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRemittanceTransfersInput, UserUncheckedUpdateWithoutRemittanceTransfersInput>
+  }
+
+  export type UserUpdateWithoutRemittanceTransfersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    individualProfile?: IndividualProfileUpdateOneWithoutUserNestedInput
+    corporateProfile?: CorporateProfileUpdateOneWithoutUserNestedInput
+    documents?: KycDocumentUpdateManyWithoutUserNestedInput
+    beneficiaries?: BeneficiaryUpdateManyWithoutUserNestedInput
+    otps?: OtpUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRemittanceTransfersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    phoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    individualProfile?: IndividualProfileUncheckedUpdateOneWithoutUserNestedInput
+    corporateProfile?: CorporateProfileUncheckedUpdateOneWithoutUserNestedInput
+    documents?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    beneficiaries?: BeneficiaryUncheckedUpdateManyWithoutUserNestedInput
+    otps?: OtpUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type BeneficiaryUpsertWithoutRemittanceTransfersInput = {
+    update: XOR<BeneficiaryUpdateWithoutRemittanceTransfersInput, BeneficiaryUncheckedUpdateWithoutRemittanceTransfersInput>
+    create: XOR<BeneficiaryCreateWithoutRemittanceTransfersInput, BeneficiaryUncheckedCreateWithoutRemittanceTransfersInput>
+    where?: BeneficiaryWhereInput
+  }
+
+  export type BeneficiaryUpdateToOneWithWhereWithoutRemittanceTransfersInput = {
+    where?: BeneficiaryWhereInput
+    data: XOR<BeneficiaryUpdateWithoutRemittanceTransfersInput, BeneficiaryUncheckedUpdateWithoutRemittanceTransfersInput>
+  }
+
+  export type BeneficiaryUpdateWithoutRemittanceTransfersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryChannel?: EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
+    fullName?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutBeneficiariesNestedInput
+  }
+
+  export type BeneficiaryUncheckedUpdateWithoutRemittanceTransfersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    deliveryChannel?: EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
+    fullName?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    accountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type KycDocumentCreateManyUserInput = {
@@ -12467,6 +23062,32 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type RemittanceTransferCreateManyUserInput = {
+    id?: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    beneficiaryId?: string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type OtpCreateManyUserInput = {
     id?: string
     type: $Enums.OtpType
@@ -12474,6 +23095,26 @@ export namespace Prisma {
     expiresAt: Date | string
     verified?: boolean
     createdAt?: Date | string
+  }
+
+  export type AccountCreateManyUserInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type SessionCreateManyUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
   }
 
   export type KycDocumentUpdateWithoutUserInput = {
@@ -12521,6 +23162,7 @@ export namespace Prisma {
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    remittanceTransfers?: RemittanceTransferUpdateManyWithoutBeneficiaryNestedInput
   }
 
   export type BeneficiaryUncheckedUpdateWithoutUserInput = {
@@ -12535,6 +23177,7 @@ export namespace Prisma {
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutBeneficiaryNestedInput
   }
 
   export type BeneficiaryUncheckedUpdateManyWithoutUserInput = {
@@ -12547,6 +23190,84 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemittanceTransferUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    beneficiary?: BeneficiaryUpdateOneWithoutRemittanceTransfersNestedInput
+  }
+
+  export type RemittanceTransferUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    beneficiaryId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemittanceTransferUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    beneficiaryId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12576,6 +23297,170 @@ export namespace Prisma {
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemittanceTransferCreateManyBeneficiaryInput = {
+    id?: string
+    userId: string
+    referenceCode: string
+    status?: $Enums.RemittanceStatus
+    currentStep?: number
+    senderCountryIso2?: string | null
+    payCurrency?: string | null
+    payAmount?: Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: string | null
+    recipientCountryIso2?: string | null
+    receiveCurrency?: string | null
+    receiveAmount?: Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: Decimal | DecimalJsLike | number | string | null
+    feeAmount?: Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: Date | string | null
+    sourceOfIncome?: string | null
+    transferPurpose?: string | null
+    relationshipToRecipient?: string | null
+    complianceAccepted?: boolean
+    payInMethod?: $Enums.PayInMethod | null
+    payerPhone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemittanceTransferUpdateWithoutBeneficiaryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRemittanceTransfersNestedInput
+  }
+
+  export type RemittanceTransferUncheckedUpdateWithoutBeneficiaryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemittanceTransferUncheckedUpdateManyWithoutBeneficiaryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    referenceCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumRemittanceStatusFieldUpdateOperationsInput | $Enums.RemittanceStatus
+    currentStep?: IntFieldUpdateOperationsInput | number
+    senderCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    payCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    payAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    recipientCountryLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientCountryIso2?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    receiveAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fxRateSnapshot?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    feeAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quoteExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceOfIncome?: NullableStringFieldUpdateOperationsInput | string | null
+    transferPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    relationshipToRecipient?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceAccepted?: BoolFieldUpdateOperationsInput | boolean
+    payInMethod?: NullableEnumPayInMethodFieldUpdateOperationsInput | $Enums.PayInMethod | null
+    payerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

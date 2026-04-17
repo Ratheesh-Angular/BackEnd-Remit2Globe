@@ -51,6 +51,11 @@ class FlexClient {
     return await this.fetchToken();
   }
 
+  /** Used by Flex integrations that need Bearer + custom headers (STK, etc.). */
+  public async getAccessToken(): Promise<string> {
+    return await this.getToken();
+  }
+
   // 🌐 Generic request wrapper
   public async request<T = any>(
     method: "GET" | "POST",

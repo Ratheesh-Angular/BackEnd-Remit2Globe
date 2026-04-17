@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { flexClient } from "../integrations/flex/flex.client";
-import { generateFlexMD5 } from "../integrations/flex/flex.service";
+import {
+  generateFlexMD5,
+  getFlexBanks,
+} from "../integrations/flex/flex.service";
 import { getFlexCountries } from "../integrations/flex/flex.service";
 // ✅ Test Token
 export const getFlexTokenController = async (req: Request, res: Response) => {
@@ -78,5 +81,37 @@ export const getFlexCountriesController = async (
       success: false,
       error: error.response?.data || error.message,
     });
+  }
+};
+
+export const getFlexBanksController = async (req: Request, res: Response) => {
+  try {
+    const data = await getFlexBanks(req.params.couCode as string);
+
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (error: any) {
+    console.error("Banks Error:", error.response?.data || error.message);
+
+    res.status(500).json({
+      success: false,
+      error: error.response?.data || error.message,
+    });
+  }
+};
+
+/** Flex server-to-server callback after STK; extend when payload shape is confirmed. */
+export const flexStkCallbackController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    console.info("[Flex STK callback]", JSON.stringify(req.body ?? {}));
+    res.status(200).json({ ok: true });
+  } catch (e: unknown) {
+    console.error("[Flex STK callback] error", e);
+    res.status(200).json({ ok: true });
   }
 };

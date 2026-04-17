@@ -12,6 +12,7 @@ import beneficiaryRoutes from "./routes/beneficiary.routes";
 import otpRoutes from "./routes/otp.routes";
 import path from "path";
 import flexRoutes from "./routes/flex.routes";
+import remittanceRoutes from "./routes/remittance.routes";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT ?? 5000;
@@ -38,6 +39,7 @@ app.use("/api/otp", otpRoutes);
 // Remove this line
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/flex", flexRoutes);
+app.use("/api/remittance", remittanceRoutes);
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });
 });

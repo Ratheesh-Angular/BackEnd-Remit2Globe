@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const remittance_controller_1 = require("../controllers/remittance.controller");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.protect);
+router.get("/context", remittance_controller_1.remittanceController.context);
+router.get("/lookups", remittance_controller_1.remittanceController.lookups);
+router.get("/quote", remittance_controller_1.remittanceController.quote);
+router.get("/company-accounts", remittance_controller_1.remittanceController.companyAccounts);
+router.get("/transfers", remittance_controller_1.remittanceController.listTransfers);
+router.post("/transfers", remittance_controller_1.remittanceController.createTransfer);
+router.get("/transfers/:id", remittance_controller_1.remittanceController.getTransfer);
+router.patch("/transfers/:id", remittance_controller_1.remittanceController.patchTransfer);
+router.post("/transfers/:id/confirm", remittance_controller_1.remittanceController.confirm);
+exports.default = router;

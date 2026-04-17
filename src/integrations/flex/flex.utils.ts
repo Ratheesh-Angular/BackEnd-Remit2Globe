@@ -20,6 +20,6 @@ export const generateMD5 = (
   timestamp: string,
   rawPassword: string,
 ): string => {
-  const raw = `${userCode}${timestamp}${rawPassword}`;
+  const raw = `${userCode}${rawPassword}${timestamp}`;
   return crypto.createHash("md5").update(raw).digest("hex");
 };

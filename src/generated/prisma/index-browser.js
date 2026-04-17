@@ -126,12 +126,43 @@ exports.Prisma.UserScalarFieldEnum = {
   phone: 'phone',
   country: 'country',
   passwordHash: 'passwordHash',
+  name: 'name',
+  image: 'image',
+  googleId: 'googleId',
   role: 'role',
   kycStatus: 'kycStatus',
   emailVerified: 'emailVerified',
   phoneVerified: 'phoneVerified',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
 };
 
 exports.Prisma.OtpScalarFieldEnum = {
@@ -220,6 +251,61 @@ exports.Prisma.BeneficiaryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RemittanceTransferScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  referenceCode: 'referenceCode',
+  status: 'status',
+  currentStep: 'currentStep',
+  senderCountryIso2: 'senderCountryIso2',
+  payCurrency: 'payCurrency',
+  payAmount: 'payAmount',
+  recipientCountryLabel: 'recipientCountryLabel',
+  recipientCountryIso2: 'recipientCountryIso2',
+  receiveCurrency: 'receiveCurrency',
+  receiveAmount: 'receiveAmount',
+  fxRateSnapshot: 'fxRateSnapshot',
+  feeAmount: 'feeAmount',
+  quoteExpiresAt: 'quoteExpiresAt',
+  beneficiaryId: 'beneficiaryId',
+  sourceOfIncome: 'sourceOfIncome',
+  transferPurpose: 'transferPurpose',
+  relationshipToRecipient: 'relationshipToRecipient',
+  complianceAccepted: 'complianceAccepted',
+  payInMethod: 'payInMethod',
+  payerPhone: 'payerPhone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FxRateScalarFieldEnum = {
+  id: 'id',
+  fromCurrency: 'fromCurrency',
+  toCurrency: 'toCurrency',
+  rate: 'rate',
+  feePercent: 'feePercent',
+  feeFixed: 'feeFixed',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CompanyBankAccountScalarFieldEnum = {
+  id: 'id',
+  bankName: 'bankName',
+  accountName: 'accountName',
+  accountNumber: 'accountNumber',
+  swiftBic: 'swiftBic',
+  iban: 'iban',
+  currency: 'currency',
+  countryNote: 'countryNote',
+  instructions: 'instructions',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -292,13 +378,35 @@ exports.DeliveryChannel = exports.$Enums.DeliveryChannel = {
   MOBILE_MONEY: 'MOBILE_MONEY'
 };
 
+exports.RemittanceStatus = exports.$Enums.RemittanceStatus = {
+  DRAFT: 'DRAFT',
+  PENDING_PAYMENT: 'PENDING_PAYMENT',
+  PAYMENT_SUBMITTED: 'PAYMENT_SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.PayInMethod = exports.$Enums.PayInMethod = {
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  MOBILE_MONEY: 'MOBILE_MONEY'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken',
   Otp: 'Otp',
   IndividualProfile: 'IndividualProfile',
   CorporateProfile: 'CorporateProfile',
   KycDocument: 'KycDocument',
-  Beneficiary: 'Beneficiary'
+  Beneficiary: 'Beneficiary',
+  RemittanceTransfer: 'RemittanceTransfer',
+  FxRate: 'FxRate',
+  CompanyBankAccount: 'CompanyBankAccount'
 };
 
 /**
