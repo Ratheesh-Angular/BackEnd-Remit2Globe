@@ -1,8 +1,10 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/auth.middleware";
 import {
+  addPaymentProofs,
   confirmTransfer,
   createDraftTransfer,
+  deletePaymentProof,
   getQuote,
   getSenderContext,
   getTransferForUser,
@@ -145,6 +147,43 @@ export const remittanceController = {
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Error";
       return res.status(400).json({ success: false, message: msg });
+    }
+  },
+
+  async uploadPaymentProof(req: AuthRequest, res: Response) {
+    try {
+      const files = req.files as Express.Multer.File[] | undefined;
+      if (!files?.length) {
+        return res.status(400).json({
+          success: false,
+          message: "No files uploaded",
+        });
+      }
+      const proofs = await addPaymentProofs(
+        req.user!.userId,
+        String(req.params.id),
+        files,
+      );
+      return res.status(201).json({ success: true, data: { proofs } });
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Error";
+      return res.status(400).json({ success: false, message: msg });
+    }
+  },
+
+  async removePaymentProof(req: AuthRequest, res: Response) {
+    try {
+      await deletePaymentProof(
+        req.user!.userId,
+        String(req.params.id),
+        String(req.params.proofId),
+      );
+      return res.json({ success: true });
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Error";
+      return res
+        .status(msg === "Payment proof not found" ? 404 : 400)
+        .json({ success: false, message: msg });
     }
   },
 };

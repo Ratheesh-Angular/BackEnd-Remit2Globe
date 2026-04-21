@@ -26,7 +26,8 @@ export const beneficiaryController = {
       });
     } catch (error: any) {
       const isValidation = [
-        "Full name",
+        "First name",
+        "Last name",
         "Country",
         "Bank name",
         "Account number",
@@ -86,7 +87,24 @@ export const beneficiaryController = {
         data: { beneficiary },
       });
     } catch (error: any) {
-      return res.status(error.message === "Beneficiary not found" ? 404 : 500).json({
+      if (error.message === "Beneficiary not found") {
+        return res.status(404).json({
+          success: false,
+          message: error.message,
+        });
+      }
+      const isValidation = [
+        "First name",
+        "Last name",
+        "Country",
+        "Bank name",
+        "Account number",
+        "SWIFT",
+        "Mobile money",
+        "Mobile number",
+      ].some((phrase) => error.message?.startsWith(phrase));
+
+      return res.status(isValidation ? 400 : 500).json({
         success: false,
         message: error.message || "Something went wrong",
       });

@@ -65,9 +65,74 @@ export const authController = {
       });
     }
   },
+  async setPassword(req: Request, res: Response) {
+    try {
+      const { token: setupToken, password } = req.body as {
+        token?: string;
+        password?: string;
+      };
+
+      if (!setupToken || !password) {
+        return res.status(400).json({
+          success: false,
+          message: "Setup token and password are required",
+        });
+      }
+
+      await authService.setInitialPassword(setupToken, password);
+
+      return res.status(200).json({
+        success: true,
+        message: "Password created successfully. You can sign in now.",
+      });
+    } catch (error: any) {
+      if (error.message === "INVALID_OR_EXPIRED_SETUP_TOKEN") {
+        return res.status(401).json({
+          success: false,
+          message:
+            "This setup link is invalid or has expired. Complete verification again from registration.",
+        });
+      }
+      if (error.message === "USER_NOT_FOUND") {
+        return res.status(404).json({
+          success: false,
+          message: "Account not found.",
+        });
+      }
+      if (error.message === "VERIFICATION_INCOMPLETE") {
+        return res.status(400).json({
+          success: false,
+          message: "Verify your email and phone before setting a password.",
+        });
+      }
+      if (error.message === "PASSWORD_ALREADY_SET") {
+        return res.status(400).json({
+          success: false,
+          message: "A password is already set for this account. Sign in instead.",
+        });
+      }
+      if (
+        error.message?.startsWith("PASSWORD_") &&
+        error.message !== "PASSWORD_NOT_SET"
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol.",
+        });
+      }
+
+      console.error("Set password error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong. Please try again.",
+      });
+    }
+  },
+
   async login(req: Request, res: Response) {
     try {
-      const { emailOrPhone } = req.body;
+      const { emailOrPhone, password } = req.body;
 
       if (!emailOrPhone) {
         return res.status(400).json({
@@ -76,7 +141,7 @@ export const authController = {
         });
       }
 
-      const result = await authService.login({ emailOrPhone });
+      const result = await authService.login({ emailOrPhone, password });
 
       // Store token in httpOnly cookie (more secure than localStorage)
       res.cookie("token", result.token, {
@@ -92,10 +157,23 @@ export const authController = {
         data: { user: result.user },
       });
     } catch (error: any) {
+      if (error.message === "PASSWORD_REQUIRED") {
+        return res.status(400).json({
+          success: false,
+          message: "Password is required",
+        });
+      }
+      if (error.message === "PASSWORD_NOT_SET") {
+        return res.status(403).json({
+          success: false,
+          message:
+            "No password on this account yet. Complete registration verification and set a password first.",
+        });
+      }
       if (error.message === "INVALID_CREDENTIALS") {
         return res.status(401).json({
           success: false,
-          message: "Invalid email/phone",
+          message: "Invalid email, phone, or password",
         });
       }
       if (error.message === "ACCOUNT_SUSPENDED") {
@@ -113,7 +191,7 @@ export const authController = {
   },
   async getMe(req: AuthRequest, res: Response) {
     try {
-      const user = await prisma.user.findUnique({
+      const row = await prisma.user.findUnique({
         where: { id: req.user!.userId },
         select: {
           id: true,
@@ -123,15 +201,21 @@ export const authController = {
           role: true,
           kycStatus: true,
           createdAt: true,
+          emailVerified: true,
+          phoneVerified: true,
+          passwordHash: true,
         },
       });
 
-      if (!user) {
+      if (!row) {
         return res.status(404).json({
           success: false,
           message: "User not found",
         });
       }
+
+      const { passwordHash: _h, ...rest } = row;
+      const user = { ...rest, hasPassword: Boolean(_h) };
 
       return res.status(200).json({
         success: true,
@@ -141,6 +225,66 @@ export const authController = {
       return res.status(500).json({
         success: false,
         message: "Something went wrong",
+      });
+    }
+  },
+
+  async changePassword(req: AuthRequest, res: Response) {
+    try {
+      const { currentPassword, newPassword } = req.body as {
+        currentPassword?: string;
+        newPassword?: string;
+      };
+
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Current password and new password are required",
+        });
+      }
+
+      await authService.changePassword(
+        req.user!.userId,
+        currentPassword,
+        newPassword,
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Password updated successfully",
+      });
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "";
+      if (msg === "USER_NOT_FOUND") {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      if (msg === "NO_PASSWORD_ON_ACCOUNT") {
+        return res.status(400).json({
+          success: false,
+          message:
+            "This account does not use a password. Sign in with your provider instead.",
+        });
+      }
+      if (msg === "INVALID_CURRENT_PASSWORD") {
+        return res.status(401).json({
+          success: false,
+          message: "Current password is incorrect",
+        });
+      }
+      if (msg.startsWith("PASSWORD_")) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "New password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol.",
+        });
+      }
+      console.error("Change password error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong. Please try again.",
       });
     }
   },

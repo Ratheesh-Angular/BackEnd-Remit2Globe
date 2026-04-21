@@ -4,6 +4,13 @@ import { emailService } from "./email.service";
 // TODO: For SMS, integrate with Twilio, AWS SNS, or another SMS provider
 // import { smsService } from "./sms.service";
 
+/**
+ * When not `"false"`, any 6-digit code succeeds (until OTP delivery/check is fully wired).
+ * Set `OTP_SKIP_CODE_VALIDATION=false` in production to enforce stored OTP codes.
+ */
+const SKIP_CODE_VALIDATION =
+  process.env.OTP_SKIP_CODE_VALIDATION !== "false";
+
 interface OtpRecord {
   id: string;
   userId: string;
@@ -107,6 +114,19 @@ export const otpService = {
    */
   async verifyEmailOtp(userId: string, code: string): Promise<boolean> {
     try {
+      if (SKIP_CODE_VALIDATION) {
+        await prisma.otp.updateMany({
+          where: { userId, type: "EMAIL", verified: false },
+          data: { verified: true },
+        });
+        await prisma.user.update({
+          where: { id: userId },
+          data: { emailVerified: true },
+        });
+        console.log(`Email verified (bypass) for user ${userId}`);
+        return true;
+      }
+
       // Find the OTP record
       const otpRecord = await prisma.otp.findFirst({
         where: {
@@ -149,6 +169,19 @@ export const otpService = {
    */
   async verifyPhoneOtp(userId: string, code: string): Promise<boolean> {
     try {
+      if (SKIP_CODE_VALIDATION) {
+        await prisma.otp.updateMany({
+          where: { userId, type: "PHONE", verified: false },
+          data: { verified: true },
+        });
+        await prisma.user.update({
+          where: { id: userId },
+          data: { phoneVerified: true },
+        });
+        console.log(`Phone verified (bypass) for user ${userId}`);
+        return true;
+      }
+
       // Find the OTP record
       const otpRecord = await prisma.otp.findFirst({
         where: {

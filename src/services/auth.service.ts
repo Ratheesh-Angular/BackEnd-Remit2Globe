@@ -1,7 +1,22 @@
+import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma";
-import { generateToken } from "../utils/jwt.utils";
+import {
+  generateToken,
+  verifyPasswordSetupToken,
+} from "../utils/jwt.utils";
+import { assertStrongPassword } from "../utils/password.utils";
 import { otpService } from "./otp.service";
 import { emailService } from "./email.service";
+
+const BCRYPT_ROUNDS = 12;
+
+function omitPasswordHash<T extends { passwordHash?: string | null }>(
+  user: T,
+): Omit<T, "passwordHash"> {
+  const { passwordHash: _p, ...rest } = user;
+  return rest;
+}
+
 interface RegisterInput {
   email?: string;
   phone?: string;
@@ -10,6 +25,7 @@ interface RegisterInput {
 }
 interface LoginInput {
   emailOrPhone: string;
+  password: string;
 }
 export const authService = {
   async register(input: RegisterInput) {
@@ -59,11 +75,42 @@ export const authService = {
       // Don't fail registration if OTP sending fails
     }
 
-    // 5. Return user
-    return user;
+    // 5. Return user (never expose password hash)
+    return omitPasswordHash(user);
+  },
+  async setInitialPassword(setupToken: string, password: string) {
+    assertStrongPassword(password);
+
+    let userId: string;
+    try {
+      ({ userId } = verifyPasswordSetupToken(setupToken));
+    } catch {
+      throw new Error("INVALID_OR_EXPIRED_SETUP_TOKEN");
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new Error("USER_NOT_FOUND");
+    }
+    if (!user.emailVerified || !user.phoneVerified) {
+      throw new Error("VERIFICATION_INCOMPLETE");
+    }
+    if (user.passwordHash) {
+      throw new Error("PASSWORD_ALREADY_SET");
+    }
+
+    const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash },
+    });
   },
   async login(input: LoginInput) {
-    const { emailOrPhone } = input;
+    const { emailOrPhone, password } = input;
+
+    if (!password) {
+      throw new Error("PASSWORD_REQUIRED");
+    }
 
     // 1. Find user by email or phone
     const isEmail = emailOrPhone.includes("@");
@@ -82,6 +129,15 @@ export const authService = {
       throw new Error("ACCOUNT_SUSPENDED");
     }
 
+    if (!user.passwordHash) {
+      throw new Error("PASSWORD_NOT_SET");
+    }
+
+    const passwordOk = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordOk) {
+      throw new Error("INVALID_CREDENTIALS");
+    }
+
     // 4. Generate JWT token
     const token = generateToken({
       userId: user.id,
@@ -92,7 +148,34 @@ export const authService = {
     // 5. Return token and user info
     return {
       token,
-      user,
+      user: omitPasswordHash(user),
     };
+  },
+
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ) {
+    assertStrongPassword(newPassword);
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new Error("USER_NOT_FOUND");
+    }
+    if (!user.passwordHash) {
+      throw new Error("NO_PASSWORD_ON_ACCOUNT");
+    }
+
+    const match = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!match) {
+      throw new Error("INVALID_CURRENT_PASSWORD");
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash },
+    });
   },
 };

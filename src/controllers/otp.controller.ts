@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { otpService } from "../services/otp.service";
 import { emailService } from "../services/email.service";
 import { prisma } from "../lib/prisma";
+import { generatePasswordSetupToken } from "../utils/jwt.utils";
 
 export const otpController = {
   /**
@@ -80,16 +81,23 @@ export const otpController = {
       // Check if both email and phone are now verified
       const status = await otpService.checkVerificationStatus(userId);
 
-      if (status.emailVerified && status.phoneVerified) {
-        // Send welcome email
-        const user = await prisma.user.findUnique({
+      const fullyVerified = status.emailVerified && status.phoneVerified;
+
+      let passwordSetupToken: string | undefined;
+      if (fullyVerified) {
+        const userRow = await prisma.user.findUnique({
           where: { id: userId },
-          select: { email: true },
+          select: { email: true, passwordHash: true },
         });
 
-        if (user?.email) {
+        if (userRow && !userRow.passwordHash) {
+          passwordSetupToken = generatePasswordSetupToken(userId);
+        }
+
+        // Send welcome email
+        if (userRow?.email) {
           try {
-            await emailService.sendWelcomeEmail(user.email, "User");
+            await emailService.sendWelcomeEmail(userRow.email, "User");
           } catch (error) {
             console.error("Failed to send welcome email:", error);
           }
@@ -99,7 +107,10 @@ export const otpController = {
       return res.status(200).json({
         success: true,
         message: "Phone verified successfully",
-        data: { fullyVerified: status.emailVerified && status.phoneVerified },
+        data: {
+          fullyVerified,
+          passwordSetupToken,
+        },
       });
     } catch (error: any) {
       console.error("Phone OTP verification error:", error);

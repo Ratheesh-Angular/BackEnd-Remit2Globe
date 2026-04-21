@@ -18,8 +18,14 @@ import {
   initiateStkPush,
   normalizeMsisdn,
 } from "../integrations/flex/flex.service";
+import { s3Service } from "./s3.service";
 
 const QUOTE_TTL_MS = 15 * 60 * 1000;
+
+const REMITTANCE_TRANSFER_INCLUDE = {
+  beneficiary: true,
+  paymentProofs: { orderBy: { uploadedAt: "asc" as const } },
+} satisfies Prisma.RemittanceTransferInclude;
 
 function d(n: number | string): Prisma.Decimal {
   return new Prisma.Decimal(n);
@@ -323,9 +329,7 @@ export async function createDraftTransfer(
 export async function getTransferForUser(userId: string, id: string) {
   const t = await prisma.remittanceTransfer.findFirst({
     where: { id, userId },
-    include: {
-      beneficiary: true,
-    },
+    include: REMITTANCE_TRANSFER_INCLUDE,
   });
   if (!t) throw new Error("Transfer not found");
   return t;
@@ -362,7 +366,7 @@ export async function updateTransferStep(
         beneficiaryId,
         currentStep: 2,
       },
-      include: { beneficiary: true },
+      include: REMITTANCE_TRANSFER_INCLUDE,
     });
   }
 
@@ -384,7 +388,7 @@ export async function updateTransferStep(
         complianceAccepted: false,
         currentStep: 3,
       },
-      include: { beneficiary: true },
+      include: REMITTANCE_TRANSFER_INCLUDE,
     });
   }
 
@@ -406,7 +410,7 @@ export async function updateTransferStep(
         payerPhone: payInMethod === PayInMethod.MOBILE_MONEY ? payerPhone : null,
         currentStep: 4,
       },
-      include: { beneficiary: true },
+      include: REMITTANCE_TRANSFER_INCLUDE,
     });
   }
 
@@ -453,8 +457,83 @@ export async function confirmTransfer(userId: string, id: string) {
       status: RemittanceStatus.PENDING_PAYMENT,
       currentStep: 5,
     },
-    include: { beneficiary: true },
+    include: REMITTANCE_TRANSFER_INCLUDE,
   });
+}
+
+export async function addPaymentProofs(
+  userId: string,
+  transferId: string,
+  files: Express.Multer.File[],
+) {
+  const t = await getTransferForUser(userId, transferId);
+  if (t.payInMethod !== PayInMethod.BANK_TRANSFER) {
+    throw new Error(
+      "Payment proof uploads are only for bank transfer pay-in.",
+    );
+  }
+  if (t.status !== RemittanceStatus.PENDING_PAYMENT) {
+    throw new Error(
+      "You can upload payment proof after submitting this transfer.",
+    );
+  }
+  if (!files?.length) throw new Error("No files uploaded");
+
+  const created: Array<{
+    id: string;
+    transferId: string;
+    fileUrl: string;
+    fileKey: string;
+    fileName: string;
+    mimeType: string;
+    fileSize: number;
+    uploadedAt: Date;
+  }> = [];
+
+  for (const file of files) {
+    const { fileUrl, fileKey } = await s3Service.uploadRemittancePaymentProof(
+      file.buffer,
+      file.originalname,
+      file.mimetype,
+      userId,
+      transferId,
+    );
+    const row = await prisma.remittancePaymentProof.create({
+      data: {
+        transferId,
+        fileUrl,
+        fileKey,
+        fileName: file.originalname.slice(0, 240),
+        mimeType: file.mimetype,
+        fileSize: file.size,
+      },
+    });
+    created.push(row);
+  }
+
+  return created;
+}
+
+export async function deletePaymentProof(
+  userId: string,
+  transferId: string,
+  proofId: string,
+) {
+  const t = await getTransferForUser(userId, transferId);
+  if (t.status !== RemittanceStatus.PENDING_PAYMENT) {
+    throw new Error("Cannot remove payment proof for this transfer.");
+  }
+  const proof = await prisma.remittancePaymentProof.findFirst({
+    where: { id: proofId, transferId },
+  });
+  if (!proof) throw new Error("Payment proof not found");
+
+  try {
+    await s3Service.deleteFile(proof.fileKey);
+  } catch {
+    /* continue — object may already be gone */
+  }
+  await prisma.remittancePaymentProof.delete({ where: { id: proofId } });
 }
 
 export async function listMyTransfers(userId: string, limit = 20) {
@@ -462,6 +541,6 @@ export async function listMyTransfers(userId: string, limit = 20) {
     where: { userId },
     orderBy: { createdAt: "desc" },
     take: limit,
-    include: { beneficiary: true },
+    include: REMITTANCE_TRANSFER_INCLUDE,
   });
 }

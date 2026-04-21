@@ -1,5 +1,8 @@
 import { prisma } from "../lib/prisma";
+import { Prisma } from "../generated/prisma";
 import { s3Service } from "./s3.service";
+import { parseResidenceForDb } from "../utils/residence-address.utils";
+
 export const kycService = {
   async saveIndividualProfile(userId: string, data: any) {
     // Construct fullName from firstName, middleName, lastName
@@ -7,6 +10,8 @@ export const kycService = {
       .filter(Boolean)
       .join(" ")
       .trim();
+
+    const addr = parseResidenceForDb(data);
 
     // upsert = update if exists, create if not
     const profile = await prisma.individualProfile.upsert({
@@ -17,13 +22,15 @@ export const kycService = {
         lastName: data.lastName,
         fullName: fullName || null,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
-        nationality: data.nationality,
+        nationality: data.nationality ?? null,
         isNational: data.isNational || false,
         passportNumber: data.passportNumber,
+        passportIssuingCountry: data.passportIssuingCountry || null,
         passportIssue: data.passportIssue ? new Date(data.passportIssue) : null,
         passportExpiry: data.passportExpiry
           ? new Date(data.passportExpiry)
           : null,
+        citizenPrimaryDocumentType: data.citizenPrimaryDocumentType || null,
         workPermitNumber: data.workPermitNumber,
         workPermitIssue: data.workPermitIssue
           ? new Date(data.workPermitIssue)
@@ -32,13 +39,18 @@ export const kycService = {
           ? new Date(data.workPermitExpiry)
           : null,
         nationalIdNumber: data.nationalIdNumber,
+        nationalIdIssuingCountry: data.nationalIdIssuingCountry || null,
         nationalIdIssue: data.nationalIdIssue
           ? new Date(data.nationalIdIssue)
           : null,
         nationalIdExpiry: data.nationalIdExpiry
           ? new Date(data.nationalIdExpiry)
           : null,
-        residentialAddress: data.residentialAddress,
+        residenceAddress:
+          addr.residenceAddress === null
+            ? Prisma.DbNull
+            : addr.residenceAddress,
+        residentialAddress: addr.residentialAddress,
 
         country: data.country,
         contactEmail: data.contactEmail,
@@ -53,13 +65,15 @@ export const kycService = {
         lastName: data.lastName,
         fullName: fullName || null,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
-        nationality: data.nationality,
+        nationality: data.nationality ?? null,
         isNational: data.isNational || false,
         passportNumber: data.passportNumber,
+        passportIssuingCountry: data.passportIssuingCountry || null,
         passportIssue: data.passportIssue ? new Date(data.passportIssue) : null,
         passportExpiry: data.passportExpiry
           ? new Date(data.passportExpiry)
           : null,
+        citizenPrimaryDocumentType: data.citizenPrimaryDocumentType || null,
         workPermitNumber: data.workPermitNumber,
         workPermitIssue: data.workPermitIssue
           ? new Date(data.workPermitIssue)
@@ -68,6 +82,7 @@ export const kycService = {
           ? new Date(data.workPermitExpiry)
           : null,
         nationalIdNumber: data.nationalIdNumber,
+        nationalIdIssuingCountry: data.nationalIdIssuingCountry || null,
         nationalIdIssue: data.nationalIdIssue
           ? new Date(data.nationalIdIssue)
           : null,
@@ -75,7 +90,11 @@ export const kycService = {
           ? new Date(data.nationalIdExpiry)
           : null,
 
-        residentialAddress: data.residentialAddress,
+        residenceAddress:
+          addr.residenceAddress === null
+            ? Prisma.DbNull
+            : addr.residenceAddress,
+        residentialAddress: addr.residentialAddress,
 
         country: data.country,
         contactEmail: data.contactEmail,
@@ -154,7 +173,9 @@ export const kycService = {
         documents: true,
       },
     });
-    return user;
+    if (!user) return null;
+    const { passwordHash: _p, ...safe } = user;
+    return safe;
   },
 
   async submitKyc(userId: string) {

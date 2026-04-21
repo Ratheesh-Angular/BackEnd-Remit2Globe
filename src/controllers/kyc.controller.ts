@@ -44,6 +44,12 @@ export const kycController = {
     try {
       const userId = req.user!.userId;
       const data = await kycService.getMyProfile(userId);
+      if (!data) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
       return res.status(200).json({
         success: true,
         data,

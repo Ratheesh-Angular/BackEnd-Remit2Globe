@@ -186,14 +186,18 @@ exports.Prisma.IndividualProfileScalarFieldEnum = {
   nationality: 'nationality',
   isNational: 'isNational',
   passportNumber: 'passportNumber',
+  passportIssuingCountry: 'passportIssuingCountry',
   passportIssue: 'passportIssue',
   passportExpiry: 'passportExpiry',
+  citizenPrimaryDocumentType: 'citizenPrimaryDocumentType',
   workPermitNumber: 'workPermitNumber',
   workPermitIssue: 'workPermitIssue',
   workPermitExpiry: 'workPermitExpiry',
   nationalIdNumber: 'nationalIdNumber',
+  nationalIdIssuingCountry: 'nationalIdIssuingCountry',
   nationalIdIssue: 'nationalIdIssue',
   nationalIdExpiry: 'nationalIdExpiry',
+  residenceAddress: 'residenceAddress',
   residentialAddress: 'residentialAddress',
   country: 'country',
   contactEmail: 'contactEmail',
@@ -240,9 +244,11 @@ exports.Prisma.BeneficiaryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   deliveryChannel: 'deliveryChannel',
-  fullName: 'fullName',
+  firstName: 'firstName',
+  lastName: 'lastName',
   country: 'country',
   bankName: 'bankName',
+  branchName: 'branchName',
   accountNumber: 'accountNumber',
   swiftBic: 'swiftBic',
   mobileMoneyProvider: 'mobileMoneyProvider',
@@ -276,6 +282,17 @@ exports.Prisma.RemittanceTransferScalarFieldEnum = {
   payerPhone: 'payerPhone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RemittancePaymentProofScalarFieldEnum = {
+  id: 'id',
+  transferId: 'transferId',
+  fileUrl: 'fileUrl',
+  fileKey: 'fileKey',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  fileSize: 'fileSize',
+  uploadedAt: 'uploadedAt'
 };
 
 exports.Prisma.FxRateScalarFieldEnum = {
@@ -405,6 +422,7 @@ exports.Prisma.ModelName = {
   KycDocument: 'KycDocument',
   Beneficiary: 'Beneficiary',
   RemittanceTransfer: 'RemittanceTransfer',
+  RemittancePaymentProof: 'RemittancePaymentProof',
   FxRate: 'FxRate',
   CompanyBankAccount: 'CompanyBankAccount'
 };

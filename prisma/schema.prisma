@@ -94,20 +94,28 @@ model IndividualProfile {
   isNational       Boolean   @default(false)
 
   passportNumber   String?
+  /** Country that issued the passport (resident / foreign nationals). */
+  passportIssuingCountry String?
   passportIssue    DateTime?
   passportExpiry   DateTime?
+
+  /** When citizen: which primary ID they use — passport (with expiry) or national ID (no expiry in UI). */
+  citizenPrimaryDocumentType String?
 
   workPermitNumber String?
   workPermitIssue  DateTime?
   workPermitExpiry DateTime?
 
   nationalIdNumber String?
+  /** Country that issued the national ID (citizens using national ID as primary document). */
+  nationalIdIssuingCountry String?
   nationalIdIssue  DateTime?
   nationalIdExpiry DateTime?
 
- 
-  residentialAddress           String?
- 
+  /** Structured residence: { line1, line2?, city, state, postalCode? } */
+  residenceAddress Json?
+  /** Legacy single-line summary; kept in sync when saving residenceAddress */
+  residentialAddress String?
 
   country          String?
 
@@ -166,11 +174,13 @@ model Beneficiary {
   id                  String          @id @default(uuid())
   userId              String
   deliveryChannel     DeliveryChannel
-  fullName            String
+  firstName           String
+  lastName            String
 
   // Bank Transfer fields
   country             String?
   bankName            String?
+  branchName          String?
   accountNumber       String?
   swiftBic            String?
 
@@ -218,8 +228,24 @@ model RemittanceTransfer {
 
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   beneficiary Beneficiary? @relation(fields: [beneficiaryId], references: [id], onDelete: SetNull)
+  paymentProofs RemittancePaymentProof[]
 
   @@index([userId, status])
+}
+
+model RemittancePaymentProof {
+  id         String   @id @default(uuid())
+  transferId String
+  fileUrl    String
+  fileKey    String
+  fileName   String
+  mimeType   String
+  fileSize   Int
+  uploadedAt DateTime @default(now())
+
+  transfer RemittanceTransfer @relation(fields: [transferId], references: [id], onDelete: Cascade)
+
+  @@index([transferId])
 }
 
 model FxRate {
