@@ -75,6 +75,33 @@ exports.s3Service = {
         const fileUrl = `https://${BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
         return { fileUrl, fileKey };
     },
+    /** Bank / remittance payment confirmation uploads (not KYC path). */
+    async uploadRemittancePaymentProof(fileBuffer, originalName, mimeType, userId, transferId) {
+        const ext = path_1.default.extname(originalName) || "";
+        const timestamp = Date.now();
+        const safeBase = path_1.default
+            .basename(originalName, ext)
+            .replace(/[^a-zA-Z0-9._-]+/g, "_")
+            .slice(0, 64);
+        const fileKey = `remittance/${userId}/${transferId}/payment-proof/${timestamp}-${safeBase}${ext || ""}`;
+        const upload = new lib_storage_1.Upload({
+            client: s3Client,
+            params: {
+                Bucket: BUCKET,
+                Key: fileKey,
+                Body: fileBuffer,
+                ContentType: mimeType || "application/octet-stream",
+                Metadata: {
+                    userId,
+                    transferId,
+                    originalName: originalName.slice(0, 200),
+                },
+            },
+        });
+        await upload.done();
+        const fileUrl = `https://${BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
+        return { fileUrl, fileKey };
+    },
     async deleteFile(fileKey) {
         await s3Client.send(new client_s3_1.DeleteObjectCommand({
             Bucket: BUCKET,

@@ -51,16 +51,33 @@ const otp_routes_1 = __importDefault(require("./routes/otp.routes"));
 const path_1 = __importDefault(require("path"));
 const flex_routes_1 = __importDefault(require("./routes/flex.routes"));
 const remittance_routes_1 = __importDefault(require("./routes/remittance.routes"));
+const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
 dotenv.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT ?? 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:3000";
+const CORS_ORIGINS = (process.env.CORS_ORIGINS ||
+    [FRONTEND_URL, "http://localhost:3000", "http://localhost:3001"].join(","))
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
 // ─── Middleware ──────────────────────────────────────────────────────────────
 app.use((0, cors_1.default)({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+        if (!origin)
+            return callback(null, true);
+        if (CORS_ORIGINS.includes(origin))
+            return callback(null, true);
+        return callback(null, false);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "X-Admin-Api-Key",
+        "x-admin-api-key",
+    ],
 }));
 app.use((0, helmet_1.default)());
 app.use((0, morgan_1.default)("dev"));
@@ -74,6 +91,7 @@ app.use("/api/otp", otp_routes_1.default);
 // Remove this line
 app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "../uploads")));
 app.use("/api/flex", flex_routes_1.default);
+app.use("/api/admin", admin_routes_1.default);
 app.use("/api/remittance", remittance_routes_1.default);
 app.get("/api/health", (_req, res) => {
     res.json({ status: "ok", timestamp: new Date() });

@@ -1,9 +1,19 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const prisma_1 = require("../lib/prisma");
 const jwt_utils_1 = require("../utils/jwt.utils");
+const password_utils_1 = require("../utils/password.utils");
 const otp_service_1 = require("./otp.service");
+const BCRYPT_ROUNDS = 12;
+function omitPasswordHash(user) {
+    const { passwordHash: _p, ...rest } = user;
+    return rest;
+}
 exports.authService = {
     async register(input) {
         // 1. Check if email already exists
@@ -49,11 +59,39 @@ exports.authService = {
             console.error("Error sending OTPs:", error);
             // Don't fail registration if OTP sending fails
         }
-        // 5. Return user
-        return user;
+        // 5. Return user (never expose password hash)
+        return omitPasswordHash(user);
+    },
+    async setInitialPassword(setupToken, password) {
+        (0, password_utils_1.assertStrongPassword)(password);
+        let userId;
+        try {
+            ({ userId } = (0, jwt_utils_1.verifyPasswordSetupToken)(setupToken));
+        }
+        catch {
+            throw new Error("INVALID_OR_EXPIRED_SETUP_TOKEN");
+        }
+        const user = await prisma_1.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new Error("USER_NOT_FOUND");
+        }
+        if (!user.emailVerified || !user.phoneVerified) {
+            throw new Error("VERIFICATION_INCOMPLETE");
+        }
+        if (user.passwordHash) {
+            throw new Error("PASSWORD_ALREADY_SET");
+        }
+        const passwordHash = await bcryptjs_1.default.hash(password, BCRYPT_ROUNDS);
+        await prisma_1.prisma.user.update({
+            where: { id: userId },
+            data: { passwordHash },
+        });
     },
     async login(input) {
-        const { emailOrPhone } = input;
+        const { emailOrPhone, password } = input;
+        if (!password) {
+            throw new Error("PASSWORD_REQUIRED");
+        }
         // 1. Find user by email or phone
         const isEmail = emailOrPhone.includes("@");
         const user = await prisma_1.prisma.user.findUnique({
@@ -67,6 +105,13 @@ exports.authService = {
         if (user.kycStatus === "REJECTED") {
             throw new Error("ACCOUNT_SUSPENDED");
         }
+        if (!user.passwordHash) {
+            throw new Error("PASSWORD_NOT_SET");
+        }
+        const passwordOk = await bcryptjs_1.default.compare(password, user.passwordHash);
+        if (!passwordOk) {
+            throw new Error("INVALID_CREDENTIALS");
+        }
         // 4. Generate JWT token
         const token = (0, jwt_utils_1.generateToken)({
             userId: user.id,
@@ -76,7 +121,26 @@ exports.authService = {
         // 5. Return token and user info
         return {
             token,
-            user,
+            user: omitPasswordHash(user),
         };
+    },
+    async changePassword(userId, currentPassword, newPassword) {
+        (0, password_utils_1.assertStrongPassword)(newPassword);
+        const user = await prisma_1.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new Error("USER_NOT_FOUND");
+        }
+        if (!user.passwordHash) {
+            throw new Error("NO_PASSWORD_ON_ACCOUNT");
+        }
+        const match = await bcryptjs_1.default.compare(currentPassword, user.passwordHash);
+        if (!match) {
+            throw new Error("INVALID_CURRENT_PASSWORD");
+        }
+        const passwordHash = await bcryptjs_1.default.hash(newPassword, BCRYPT_ROUNDS);
+        await prisma_1.prisma.user.update({
+            where: { id: userId },
+            data: { passwordHash },
+        });
     },
 };

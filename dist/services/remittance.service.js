@@ -7,13 +7,20 @@ exports.createDraftTransfer = createDraftTransfer;
 exports.getTransferForUser = getTransferForUser;
 exports.updateTransferStep = updateTransferStep;
 exports.confirmTransfer = confirmTransfer;
+exports.addPaymentProofs = addPaymentProofs;
+exports.deletePaymentProof = deletePaymentProof;
 exports.listMyTransfers = listMyTransfers;
 const crypto_1 = require("crypto");
 const prisma_1 = require("../generated/prisma");
 const prisma_2 = require("../lib/prisma");
 const remittance_constants_1 = require("../constants/remittance.constants");
 const flex_service_1 = require("../integrations/flex/flex.service");
+const s3_service_1 = require("./s3.service");
 const QUOTE_TTL_MS = 15 * 60 * 1000;
+const REMITTANCE_TRANSFER_INCLUDE = {
+    beneficiary: true,
+    paymentProofs: { orderBy: { uploadedAt: "asc" } },
+};
 function d(n) {
     return new prisma_1.Prisma.Decimal(n);
 }
@@ -265,9 +272,7 @@ async function createDraftTransfer(userId, body) {
 async function getTransferForUser(userId, id) {
     const t = await prisma_2.prisma.remittanceTransfer.findFirst({
         where: { id, userId },
-        include: {
-            beneficiary: true,
-        },
+        include: REMITTANCE_TRANSFER_INCLUDE,
     });
     if (!t)
         throw new Error("Transfer not found");
@@ -287,6 +292,9 @@ async function updateTransferStep(userId, id, step, body) {
         });
         if (!ben)
             throw new Error("Beneficiary not found");
+        if (!ben.active) {
+            throw new Error("This beneficiary is inactive. Activate them under Beneficiaries or choose another recipient.");
+        }
         const dest = (t.recipientCountryLabel ?? "").trim().toLowerCase();
         const benCountry = (ben.country ?? "").trim().toLowerCase();
         if (dest && benCountry && dest !== benCountry) {
@@ -298,7 +306,7 @@ async function updateTransferStep(userId, id, step, body) {
                 beneficiaryId,
                 currentStep: 2,
             },
-            include: { beneficiary: true },
+            include: REMITTANCE_TRANSFER_INCLUDE,
         });
     }
     if (step === 3) {
@@ -317,7 +325,7 @@ async function updateTransferStep(userId, id, step, body) {
                 complianceAccepted: false,
                 currentStep: 3,
             },
-            include: { beneficiary: true },
+            include: REMITTANCE_TRANSFER_INCLUDE,
         });
     }
     if (step === 4) {
@@ -340,7 +348,7 @@ async function updateTransferStep(userId, id, step, body) {
                 payerPhone: payInMethod === prisma_1.PayInMethod.MOBILE_MONEY ? payerPhone : null,
                 currentStep: 4,
             },
-            include: { beneficiary: true },
+            include: REMITTANCE_TRANSFER_INCLUDE,
         });
     }
     throw new Error("Invalid step");
@@ -385,14 +393,115 @@ async function confirmTransfer(userId, id) {
             status: prisma_1.RemittanceStatus.PENDING_PAYMENT,
             currentStep: 5,
         },
-        include: { beneficiary: true },
+        include: REMITTANCE_TRANSFER_INCLUDE,
     });
 }
-async function listMyTransfers(userId, limit = 20) {
+async function addPaymentProofs(userId, transferId, files) {
+    const t = await getTransferForUser(userId, transferId);
+    if (t.payInMethod !== prisma_1.PayInMethod.BANK_TRANSFER) {
+        throw new Error("Payment proof uploads are only for bank transfer pay-in.");
+    }
+    if (t.status !== prisma_1.RemittanceStatus.PENDING_PAYMENT) {
+        throw new Error("You can upload payment proof after submitting this transfer.");
+    }
+    if (!files?.length)
+        throw new Error("No files uploaded");
+    const created = [];
+    for (const file of files) {
+        const { fileUrl, fileKey } = await s3_service_1.s3Service.uploadRemittancePaymentProof(file.buffer, file.originalname, file.mimetype, userId, transferId);
+        const row = await prisma_2.prisma.remittancePaymentProof.create({
+            data: {
+                transferId,
+                fileUrl,
+                fileKey,
+                fileName: file.originalname.slice(0, 240),
+                mimeType: file.mimetype,
+                fileSize: file.size,
+            },
+        });
+        created.push(row);
+    }
+    return created;
+}
+async function deletePaymentProof(userId, transferId, proofId) {
+    const t = await getTransferForUser(userId, transferId);
+    if (t.status !== prisma_1.RemittanceStatus.PENDING_PAYMENT) {
+        throw new Error("Cannot remove payment proof for this transfer.");
+    }
+    const proof = await prisma_2.prisma.remittancePaymentProof.findFirst({
+        where: { id: proofId, transferId },
+    });
+    if (!proof)
+        throw new Error("Payment proof not found");
+    try {
+        await s3_service_1.s3Service.deleteFile(proof.fileKey);
+    }
+    catch {
+        /* continue — object may already be gone */
+    }
+    await prisma_2.prisma.remittancePaymentProof.delete({ where: { id: proofId } });
+}
+function dateRangeFromIsoDateString(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim());
+    if (!m)
+        return undefined;
+    const y = parseInt(m[1], 10);
+    const mo = parseInt(m[2], 10);
+    const d = parseInt(m[3], 10);
+    if (mo < 1 || mo > 12 || d < 1 || d > 31)
+        return undefined;
+    const gte = new Date(Date.UTC(y, mo - 1, d, 0, 0, 0, 0));
+    const lt = new Date(gte);
+    lt.setUTCDate(lt.getUTCDate() + 1);
+    return { gte, lt };
+}
+function dateRangeForFilters(q) {
+    if (q.year == null || !Number.isFinite(q.year))
+        return undefined;
+    const y = q.year;
+    if (q.month != null && q.month >= 1 && q.month <= 12) {
+        if (q.day != null && q.day >= 1 && q.day <= 31) {
+            const gte = new Date(Date.UTC(y, q.month - 1, q.day, 0, 0, 0, 0));
+            const lt = new Date(gte);
+            lt.setUTCDate(lt.getUTCDate() + 1);
+            return { gte, lt };
+        }
+        const gte = new Date(Date.UTC(y, q.month - 1, 1, 0, 0, 0, 0));
+        const lt = new Date(Date.UTC(y, q.month, 1, 0, 0, 0, 0));
+        return { gte, lt };
+    }
+    const gte = new Date(Date.UTC(y, 0, 1, 0, 0, 0, 0));
+    const lt = new Date(Date.UTC(y + 1, 0, 1, 0, 0, 0, 0));
+    return { gte, lt };
+}
+async function listMyTransfers(userId, query = {}) {
+    const limit = Math.min(Math.max(query.limit ?? 200, 1), 500);
+    const where = {
+        userId,
+        status: { not: prisma_1.RemittanceStatus.DRAFT },
+    };
+    const refQ = query.reference?.trim();
+    if (refQ) {
+        where.referenceCode = { contains: refQ, mode: "insensitive" };
+    }
+    let dr;
+    if (query.date?.trim()) {
+        dr = dateRangeFromIsoDateString(query.date);
+    }
+    else {
+        dr = dateRangeForFilters({
+            year: query.year,
+            month: query.month,
+            day: query.day,
+        });
+    }
+    if (dr) {
+        where.createdAt = { gte: dr.gte, lt: dr.lt };
+    }
     return prisma_2.prisma.remittanceTransfer.findMany({
-        where: { userId },
+        where,
         orderBy: { createdAt: "desc" },
         take: limit,
-        include: { beneficiary: true },
+        include: REMITTANCE_TRANSFER_INCLUDE,
     });
 }

@@ -5,6 +5,8 @@ export interface CreateBeneficiaryDto {
   deliveryChannel: DeliveryChannel;
   firstName: string;
   lastName: string;
+  /** Defaults to true. */
+  active?: boolean;
   // Bank Transfer
   country?: string;
   bankName?: string;
@@ -93,6 +95,7 @@ export const beneficiaryService = {
         deliveryChannel: data.deliveryChannel,
         firstName: data.firstName.trim(),
         lastName: data.lastName.trim(),
+        active: data.active === false ? false : true,
         country: data.country?.trim() ?? null,
         bankName: data.bankName?.trim() ?? null,
         branchName:
@@ -107,9 +110,12 @@ export const beneficiaryService = {
     });
   },
 
-  async listByUser(userId: string) {
+  async listByUser(userId: string, opts?: { activeOnly?: boolean }) {
     return prisma.beneficiary.findMany({
-      where: { userId },
+      where: {
+        userId,
+        ...(opts?.activeOnly ? { active: true } : {}),
+      },
       orderBy: { createdAt: "desc" },
     });
   },
@@ -122,8 +128,28 @@ export const beneficiaryService = {
     return beneficiary;
   },
 
-  async update(userId: string, id: string, data: Partial<CreateBeneficiaryDto>) {
+  async update(
+    userId: string,
+    id: string,
+    data: Partial<CreateBeneficiaryDto> & { active?: boolean },
+  ) {
     const existing = await beneficiaryService.getById(userId, id);
+
+    const definedKeys = Object.keys(data).filter(
+      (k) => (data as Record<string, unknown>)[k] !== undefined,
+    );
+    const onlyActiveToggle =
+      definedKeys.length === 1 &&
+      definedKeys[0] === "active" &&
+      typeof data.active === "boolean";
+
+    if (onlyActiveToggle) {
+      return prisma.beneficiary.update({
+        where: { id },
+        data: { active: data.active! },
+      });
+    }
+
     const merged = mergeBeneficiaryUpdate(existing, data);
     validateBeneficiaryData(merged);
 
@@ -133,6 +159,7 @@ export const beneficiaryService = {
       data: {
         firstName: merged.firstName.trim(),
         lastName: merged.lastName.trim(),
+        ...(data.active !== undefined ? { active: data.active } : {}),
         country: merged.country?.trim() ?? null,
         bankName: merged.bankName?.trim() ?? null,
         branchName:

@@ -13,18 +13,36 @@ import otpRoutes from "./routes/otp.routes";
 import path from "path";
 import flexRoutes from "./routes/flex.routes";
 import remittanceRoutes from "./routes/remittance.routes";
+import adminRoutes from "./routes/admin.routes";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT ?? 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:3000";
 
+const CORS_ORIGINS = (
+  process.env.CORS_ORIGINS ||
+  [FRONTEND_URL, "http://localhost:3000", "http://localhost:3001"].join(",")
+)
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 // ─── Middleware ──────────────────────────────────────────────────────────────
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (CORS_ORIGINS.includes(origin)) return callback(null, true);
+      return callback(null, false);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Admin-Api-Key",
+      "x-admin-api-key",
+    ],
   }),
 );
 app.use(helmet());
@@ -39,6 +57,7 @@ app.use("/api/otp", otpRoutes);
 // Remove this line
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/flex", flexRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/remittance", remittanceRoutes);
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });

@@ -6,15 +6,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateMD5 = exports.generateTimestamp = void 0;
 const crypto_1 = __importDefault(require("crypto"));
 // yyyyMMddHHmmss
+// export const generateTimestamp = (): string => {
+//   const now = new Date();
+//   const pad = (n: number) => n.toString().padStart(2, "0");
+//   return (
+//     now.getFullYear().toString() +
+//     pad(now.getMonth() + 1) +
+//     pad(now.getDate()) +
+//     pad(now.getHours()) +
+//     pad(now.getMinutes()) +
+//     pad(now.getSeconds())
+//   );
+// };
+// yyyyMMddHHmmss (UTC)
 const generateTimestamp = () => {
     const now = new Date();
     const pad = (n) => n.toString().padStart(2, "0");
-    return (now.getFullYear().toString() +
-        pad(now.getMonth() + 1) +
-        pad(now.getDate()) +
-        pad(now.getHours()) +
-        pad(now.getMinutes()) +
-        pad(now.getSeconds()));
+    return (now.getUTCFullYear().toString() +
+        pad(now.getUTCMonth() + 1) +
+        pad(now.getUTCDate()) +
+        pad(now.getUTCHours()) +
+        pad(now.getUTCMinutes()) +
+        pad(now.getUTCSeconds()));
 };
 exports.generateTimestamp = generateTimestamp;
 const generateMD5 = (userCode, timestamp, rawPassword) => {

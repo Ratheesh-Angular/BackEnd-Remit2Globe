@@ -66,7 +66,19 @@ exports.remittanceController = {
     },
     async listTransfers(req, res) {
         try {
-            const transfers = await (0, remittance_service_1.listMyTransfers)(req.user.userId);
+            const q = req.query;
+            const pInt = (v) => {
+                const n = parseInt(String(v ?? ""), 10);
+                return Number.isFinite(n) ? n : undefined;
+            };
+            const transfers = await (0, remittance_service_1.listMyTransfers)(req.user.userId, {
+                reference: q.reference != null ? String(q.reference) : undefined,
+                date: q.date != null ? String(q.date) : undefined,
+                year: pInt(q.year),
+                month: pInt(q.month),
+                day: pInt(q.day),
+                limit: pInt(q.limit),
+            });
             return res.json({ success: true, data: { transfers } });
         }
         catch (e) {
@@ -109,14 +121,43 @@ exports.remittanceController = {
             return res.json({
                 success: true,
                 message: transfer.payInMethod === "MOBILE_MONEY"
-                    ? "Transfer created. Check your phone to approve the mobile money payment prompt (STK)."
-                    : "Transfer created. Use your reference when paying from your bank, then upload proof when prompted.",
+                    ? "Transfer created. Check your phone to approve the mobile money payment prompt."
+                    : "Transfer created. Please use the transfer reference when making the payment to our account and upload the proof of payment.",
                 data: { transfer },
             });
         }
         catch (e) {
             const msg = e instanceof Error ? e.message : "Error";
             return res.status(400).json({ success: false, message: msg });
+        }
+    },
+    async uploadPaymentProof(req, res) {
+        try {
+            const files = req.files;
+            if (!files?.length) {
+                return res.status(400).json({
+                    success: false,
+                    message: "No files uploaded",
+                });
+            }
+            const proofs = await (0, remittance_service_1.addPaymentProofs)(req.user.userId, String(req.params.id), files);
+            return res.status(201).json({ success: true, data: { proofs } });
+        }
+        catch (e) {
+            const msg = e instanceof Error ? e.message : "Error";
+            return res.status(400).json({ success: false, message: msg });
+        }
+    },
+    async removePaymentProof(req, res) {
+        try {
+            await (0, remittance_service_1.deletePaymentProof)(req.user.userId, String(req.params.id), String(req.params.proofId));
+            return res.json({ success: true });
+        }
+        catch (e) {
+            const msg = e instanceof Error ? e.message : "Error";
+            return res
+                .status(msg === "Payment proof not found" ? 404 : 400)
+                .json({ success: false, message: msg });
         }
     },
 };

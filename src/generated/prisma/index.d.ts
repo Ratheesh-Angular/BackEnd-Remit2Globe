@@ -11680,6 +11680,7 @@ export namespace Prisma {
     swiftBic: string | null
     mobileMoneyProvider: string | null
     mobileNumber: string | null
+    active: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11697,6 +11698,7 @@ export namespace Prisma {
     swiftBic: string | null
     mobileMoneyProvider: string | null
     mobileNumber: string | null
+    active: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11714,6 +11716,7 @@ export namespace Prisma {
     swiftBic: number
     mobileMoneyProvider: number
     mobileNumber: number
+    active: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -11733,6 +11736,7 @@ export namespace Prisma {
     swiftBic?: true
     mobileMoneyProvider?: true
     mobileNumber?: true
+    active?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11750,6 +11754,7 @@ export namespace Prisma {
     swiftBic?: true
     mobileMoneyProvider?: true
     mobileNumber?: true
+    active?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11767,6 +11772,7 @@ export namespace Prisma {
     swiftBic?: true
     mobileMoneyProvider?: true
     mobileNumber?: true
+    active?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -11857,6 +11863,7 @@ export namespace Prisma {
     swiftBic: string | null
     mobileMoneyProvider: string | null
     mobileNumber: string | null
+    active: boolean
     createdAt: Date
     updatedAt: Date
     _count: BeneficiaryCountAggregateOutputType | null
@@ -11891,6 +11898,7 @@ export namespace Prisma {
     swiftBic?: boolean
     mobileMoneyProvider?: boolean
     mobileNumber?: boolean
+    active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -11911,6 +11919,7 @@ export namespace Prisma {
     swiftBic?: boolean
     mobileMoneyProvider?: boolean
     mobileNumber?: boolean
+    active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -11929,6 +11938,7 @@ export namespace Prisma {
     swiftBic?: boolean
     mobileMoneyProvider?: boolean
     mobileNumber?: boolean
+    active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -11947,11 +11957,12 @@ export namespace Prisma {
     swiftBic?: boolean
     mobileMoneyProvider?: boolean
     mobileNumber?: boolean
+    active?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BeneficiaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "deliveryChannel" | "firstName" | "lastName" | "country" | "bankName" | "branchName" | "accountNumber" | "swiftBic" | "mobileMoneyProvider" | "mobileNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["beneficiary"]>
+  export type BeneficiaryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "deliveryChannel" | "firstName" | "lastName" | "country" | "bankName" | "branchName" | "accountNumber" | "swiftBic" | "mobileMoneyProvider" | "mobileNumber" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["beneficiary"]>
   export type BeneficiaryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     remittanceTransfers?: boolean | Beneficiary$remittanceTransfersArgs<ExtArgs>
@@ -11983,6 +11994,10 @@ export namespace Prisma {
       swiftBic: string | null
       mobileMoneyProvider: string | null
       mobileNumber: string | null
+      /**
+       * When false, hidden from send-money pickers; can be turned back on.
+       */
+      active: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["beneficiary"]>
@@ -12422,6 +12437,7 @@ export namespace Prisma {
     readonly swiftBic: FieldRef<"Beneficiary", 'String'>
     readonly mobileMoneyProvider: FieldRef<"Beneficiary", 'String'>
     readonly mobileNumber: FieldRef<"Beneficiary", 'String'>
+    readonly active: FieldRef<"Beneficiary", 'Boolean'>
     readonly createdAt: FieldRef<"Beneficiary", 'DateTime'>
     readonly updatedAt: FieldRef<"Beneficiary", 'DateTime'>
   }
@@ -17823,6 +17839,7 @@ export namespace Prisma {
     swiftBic: 'swiftBic',
     mobileMoneyProvider: 'mobileMoneyProvider',
     mobileNumber: 'mobileNumber',
+    active: 'active',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -18920,6 +18937,7 @@ export namespace Prisma {
     swiftBic?: StringNullableFilter<"Beneficiary"> | string | null
     mobileMoneyProvider?: StringNullableFilter<"Beneficiary"> | string | null
     mobileNumber?: StringNullableFilter<"Beneficiary"> | string | null
+    active?: BoolFilter<"Beneficiary"> | boolean
     createdAt?: DateTimeFilter<"Beneficiary"> | Date | string
     updatedAt?: DateTimeFilter<"Beneficiary"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -18939,6 +18957,7 @@ export namespace Prisma {
     swiftBic?: SortOrderInput | SortOrder
     mobileMoneyProvider?: SortOrderInput | SortOrder
     mobileNumber?: SortOrderInput | SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -18961,6 +18980,7 @@ export namespace Prisma {
     swiftBic?: StringNullableFilter<"Beneficiary"> | string | null
     mobileMoneyProvider?: StringNullableFilter<"Beneficiary"> | string | null
     mobileNumber?: StringNullableFilter<"Beneficiary"> | string | null
+    active?: BoolFilter<"Beneficiary"> | boolean
     createdAt?: DateTimeFilter<"Beneficiary"> | Date | string
     updatedAt?: DateTimeFilter<"Beneficiary"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -18980,6 +19000,7 @@ export namespace Prisma {
     swiftBic?: SortOrderInput | SortOrder
     mobileMoneyProvider?: SortOrderInput | SortOrder
     mobileNumber?: SortOrderInput | SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BeneficiaryCountOrderByAggregateInput
@@ -19003,6 +19024,7 @@ export namespace Prisma {
     swiftBic?: StringNullableWithAggregatesFilter<"Beneficiary"> | string | null
     mobileMoneyProvider?: StringNullableWithAggregatesFilter<"Beneficiary"> | string | null
     mobileNumber?: StringNullableWithAggregatesFilter<"Beneficiary"> | string | null
+    active?: BoolWithAggregatesFilter<"Beneficiary"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Beneficiary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Beneficiary"> | Date | string
   }
@@ -20284,6 +20306,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBeneficiariesInput
@@ -20303,6 +20326,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutBeneficiaryInput
@@ -20320,6 +20344,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBeneficiariesNestedInput
@@ -20339,6 +20364,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutBeneficiaryNestedInput
@@ -20357,6 +20383,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20373,6 +20400,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20390,6 +20418,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21627,6 +21656,7 @@ export namespace Prisma {
     swiftBic?: SortOrder
     mobileMoneyProvider?: SortOrder
     mobileNumber?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21644,6 +21674,7 @@ export namespace Prisma {
     swiftBic?: SortOrder
     mobileMoneyProvider?: SortOrder
     mobileNumber?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21661,6 +21692,7 @@ export namespace Prisma {
     swiftBic?: SortOrder
     mobileMoneyProvider?: SortOrder
     mobileNumber?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23253,6 +23285,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     remittanceTransfers?: RemittanceTransferCreateNestedManyWithoutBeneficiaryInput
@@ -23270,6 +23303,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     remittanceTransfers?: RemittanceTransferUncheckedCreateNestedManyWithoutBeneficiaryInput
@@ -23624,6 +23658,7 @@ export namespace Prisma {
     swiftBic?: StringNullableFilter<"Beneficiary"> | string | null
     mobileMoneyProvider?: StringNullableFilter<"Beneficiary"> | string | null
     mobileNumber?: StringNullableFilter<"Beneficiary"> | string | null
+    active?: BoolFilter<"Beneficiary"> | boolean
     createdAt?: DateTimeFilter<"Beneficiary"> | Date | string
     updatedAt?: DateTimeFilter<"Beneficiary"> | Date | string
   }
@@ -24692,6 +24727,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBeneficiariesInput
@@ -24710,6 +24746,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24831,6 +24868,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBeneficiariesNestedInput
@@ -24849,6 +24887,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25030,6 +25069,7 @@ export namespace Prisma {
     swiftBic?: string | null
     mobileMoneyProvider?: string | null
     mobileNumber?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -25134,6 +25174,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     remittanceTransfers?: RemittanceTransferUpdateManyWithoutBeneficiaryNestedInput
@@ -25151,6 +25192,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     remittanceTransfers?: RemittanceTransferUncheckedUpdateManyWithoutBeneficiaryNestedInput
@@ -25168,6 +25210,7 @@ export namespace Prisma {
     swiftBic?: NullableStringFieldUpdateOperationsInput | string | null
     mobileMoneyProvider?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

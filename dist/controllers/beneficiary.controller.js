@@ -23,7 +23,8 @@ exports.beneficiaryController = {
         }
         catch (error) {
             const isValidation = [
-                "Full name",
+                "First name",
+                "Last name",
                 "Country",
                 "Bank name",
                 "Account number",
@@ -40,7 +41,11 @@ exports.beneficiaryController = {
     async list(req, res) {
         try {
             const userId = req.user.userId;
-            const beneficiaries = await beneficiary_service_1.beneficiaryService.listByUser(userId);
+            const q = req.query.activeOnly;
+            const activeOnly = q === "true" || q === "1";
+            const beneficiaries = await beneficiary_service_1.beneficiaryService.listByUser(userId, {
+                activeOnly,
+            });
             return res.status(200).json({
                 success: true,
                 data: { beneficiaries },
@@ -82,7 +87,23 @@ exports.beneficiaryController = {
             });
         }
         catch (error) {
-            return res.status(error.message === "Beneficiary not found" ? 404 : 500).json({
+            if (error.message === "Beneficiary not found") {
+                return res.status(404).json({
+                    success: false,
+                    message: error.message,
+                });
+            }
+            const isValidation = [
+                "First name",
+                "Last name",
+                "Country",
+                "Bank name",
+                "Account number",
+                "SWIFT",
+                "Mobile money",
+                "Mobile number",
+            ].some((phrase) => error.message?.startsWith(phrase));
+            return res.status(isValidation ? 400 : 500).json({
                 success: false,
                 message: error.message || "Something went wrong",
             });

@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.kycService = void 0;
 const prisma_1 = require("../lib/prisma");
+const prisma_2 = require("../generated/prisma");
 const s3_service_1 = require("./s3.service");
+const residence_address_utils_1 = require("../utils/residence-address.utils");
 exports.kycService = {
     async saveIndividualProfile(userId, data) {
         // Construct fullName from firstName, middleName, lastName
@@ -10,6 +12,7 @@ exports.kycService = {
             .filter(Boolean)
             .join(" ")
             .trim();
+        const addr = (0, residence_address_utils_1.parseResidenceForDb)(data);
         // upsert = update if exists, create if not
         const profile = await prisma_1.prisma.individualProfile.upsert({
             where: { userId },
@@ -19,13 +22,15 @@ exports.kycService = {
                 lastName: data.lastName,
                 fullName: fullName || null,
                 dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
-                nationality: data.nationality,
+                nationality: data.nationality ?? null,
                 isNational: data.isNational || false,
                 passportNumber: data.passportNumber,
+                passportIssuingCountry: data.passportIssuingCountry || null,
                 passportIssue: data.passportIssue ? new Date(data.passportIssue) : null,
                 passportExpiry: data.passportExpiry
                     ? new Date(data.passportExpiry)
                     : null,
+                citizenPrimaryDocumentType: data.citizenPrimaryDocumentType || null,
                 workPermitNumber: data.workPermitNumber,
                 workPermitIssue: data.workPermitIssue
                     ? new Date(data.workPermitIssue)
@@ -34,13 +39,17 @@ exports.kycService = {
                     ? new Date(data.workPermitExpiry)
                     : null,
                 nationalIdNumber: data.nationalIdNumber,
+                nationalIdIssuingCountry: data.nationalIdIssuingCountry || null,
                 nationalIdIssue: data.nationalIdIssue
                     ? new Date(data.nationalIdIssue)
                     : null,
                 nationalIdExpiry: data.nationalIdExpiry
                     ? new Date(data.nationalIdExpiry)
                     : null,
-                residentialAddress: data.residentialAddress,
+                residenceAddress: addr.residenceAddress === null
+                    ? prisma_2.Prisma.DbNull
+                    : addr.residenceAddress,
+                residentialAddress: addr.residentialAddress,
                 country: data.country,
                 contactEmail: data.contactEmail,
                 contactPhone: data.contactPhone,
@@ -54,13 +63,15 @@ exports.kycService = {
                 lastName: data.lastName,
                 fullName: fullName || null,
                 dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
-                nationality: data.nationality,
+                nationality: data.nationality ?? null,
                 isNational: data.isNational || false,
                 passportNumber: data.passportNumber,
+                passportIssuingCountry: data.passportIssuingCountry || null,
                 passportIssue: data.passportIssue ? new Date(data.passportIssue) : null,
                 passportExpiry: data.passportExpiry
                     ? new Date(data.passportExpiry)
                     : null,
+                citizenPrimaryDocumentType: data.citizenPrimaryDocumentType || null,
                 workPermitNumber: data.workPermitNumber,
                 workPermitIssue: data.workPermitIssue
                     ? new Date(data.workPermitIssue)
@@ -69,13 +80,17 @@ exports.kycService = {
                     ? new Date(data.workPermitExpiry)
                     : null,
                 nationalIdNumber: data.nationalIdNumber,
+                nationalIdIssuingCountry: data.nationalIdIssuingCountry || null,
                 nationalIdIssue: data.nationalIdIssue
                     ? new Date(data.nationalIdIssue)
                     : null,
                 nationalIdExpiry: data.nationalIdExpiry
                     ? new Date(data.nationalIdExpiry)
                     : null,
-                residentialAddress: data.residentialAddress,
+                residenceAddress: addr.residenceAddress === null
+                    ? prisma_2.Prisma.DbNull
+                    : addr.residenceAddress,
+                residentialAddress: addr.residentialAddress,
                 country: data.country,
                 contactEmail: data.contactEmail,
                 contactPhone: data.contactPhone,
@@ -151,7 +166,10 @@ exports.kycService = {
                 documents: true,
             },
         });
-        return user;
+        if (!user)
+            return null;
+        const { passwordHash: _p, ...safe } = user;
+        return safe;
     },
     async submitKyc(userId) {
         const user = await prisma_1.prisma.user.findUnique({

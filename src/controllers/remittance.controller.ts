@@ -68,10 +68,7 @@ export const remittanceController = {
 
   async createTransfer(req: AuthRequest, res: Response) {
     try {
-      const transfer = await createDraftTransfer(
-        req.user!.userId,
-        req.body,
-      );
+      const transfer = await createDraftTransfer(req.user!.userId, req.body);
       return res.status(201).json({
         success: true,
         message: "Draft saved",
@@ -85,7 +82,19 @@ export const remittanceController = {
 
   async listTransfers(req: AuthRequest, res: Response) {
     try {
-      const transfers = await listMyTransfers(req.user!.userId);
+      const q = req.query;
+      const pInt = (v: unknown) => {
+        const n = parseInt(String(v ?? ""), 10);
+        return Number.isFinite(n) ? n : undefined;
+      };
+      const transfers = await listMyTransfers(req.user!.userId, {
+        reference: q.reference != null ? String(q.reference) : undefined,
+        date: q.date != null ? String(q.date) : undefined,
+        year: pInt(q.year),
+        month: pInt(q.month),
+        day: pInt(q.day),
+        limit: pInt(q.limit),
+      });
       return res.json({ success: true, data: { transfers } });
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Error";
@@ -140,8 +149,8 @@ export const remittanceController = {
         success: true,
         message:
           transfer.payInMethod === "MOBILE_MONEY"
-            ? "Transfer created. Check your phone to approve the mobile money payment prompt (STK)."
-            : "Transfer created. Use your reference when paying from your bank, then upload proof when prompted.",
+            ? "Transfer created. Check your phone to approve the mobile money payment prompt."
+            : "Transfer created. Please use the transfer reference when making the payment to our account and upload the proof of payment.",
         data: { transfer },
       });
     } catch (e: unknown) {

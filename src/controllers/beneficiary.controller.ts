@@ -46,7 +46,11 @@ export const beneficiaryController = {
   async list(req: AuthRequest, res: Response) {
     try {
       const userId = req.user!.userId;
-      const beneficiaries = await beneficiaryService.listByUser(userId);
+      const q = req.query.activeOnly;
+      const activeOnly = q === "true" || q === "1";
+      const beneficiaries = await beneficiaryService.listByUser(userId, {
+        activeOnly,
+      });
       return res.status(200).json({
         success: true,
         data: { beneficiaries },

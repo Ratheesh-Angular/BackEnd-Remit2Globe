@@ -5,6 +5,14 @@ import {
   getFlexBanks,
 } from "../integrations/flex/flex.service";
 import { getFlexCountries } from "../integrations/flex/flex.service";
+import {
+  filterCountriesByAllowlist,
+  readAllowlist,
+} from "../services/flex-country-allowlist.service";
+import {
+  extractCountryRows,
+  setCountryRowsInPayload,
+} from "../utils/flex-countries-payload";
 // ✅ Test Token
 export const getFlexTokenController = async (req: Request, res: Response) => {
   try {
@@ -64,15 +72,26 @@ export const testFlexProtectedAPI = async (req: Request, res: Response) => {
 };
 
 export const getFlexCountriesController = async (
-  req: Request,
+  _req: Request,
   res: Response,
 ) => {
   try {
-    const data = await getFlexCountries();
+    const [data, allowlist] = await Promise.all([
+      getFlexCountries(),
+      readAllowlist(),
+    ]);
+    const rows = extractCountryRows(data);
+    const payload =
+      allowlist.length > 0 && rows.length > 0
+        ? setCountryRowsInPayload(
+            data,
+            filterCountriesByAllowlist(rows, allowlist),
+          )
+        : data;
 
     res.json({
       success: true,
-      data,
+      data: payload,
     });
   } catch (error: any) {
     console.error("Countries Error:", error.response?.data || error.message);

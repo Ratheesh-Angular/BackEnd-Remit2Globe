@@ -253,6 +253,7 @@ exports.Prisma.BeneficiaryScalarFieldEnum = {
   swiftBic: 'swiftBic',
   mobileMoneyProvider: 'mobileMoneyProvider',
   mobileNumber: 'mobileNumber',
+  active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

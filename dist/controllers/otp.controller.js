@@ -4,6 +4,7 @@ exports.otpController = void 0;
 const otp_service_1 = require("../services/otp.service");
 const email_service_1 = require("../services/email.service");
 const prisma_1 = require("../lib/prisma");
+const jwt_utils_1 = require("../utils/jwt.utils");
 exports.otpController = {
     /**
      * Verify email OTP
@@ -70,15 +71,20 @@ exports.otpController = {
             }
             // Check if both email and phone are now verified
             const status = await otp_service_1.otpService.checkVerificationStatus(userId);
-            if (status.emailVerified && status.phoneVerified) {
-                // Send welcome email
-                const user = await prisma_1.prisma.user.findUnique({
+            const fullyVerified = status.emailVerified && status.phoneVerified;
+            let passwordSetupToken;
+            if (fullyVerified) {
+                const userRow = await prisma_1.prisma.user.findUnique({
                     where: { id: userId },
-                    select: { email: true },
+                    select: { email: true, passwordHash: true },
                 });
-                if (user?.email) {
+                if (userRow && !userRow.passwordHash) {
+                    passwordSetupToken = (0, jwt_utils_1.generatePasswordSetupToken)(userId);
+                }
+                // Send welcome email
+                if (userRow?.email) {
                     try {
-                        await email_service_1.emailService.sendWelcomeEmail(user.email, "User");
+                        await email_service_1.emailService.sendWelcomeEmail(userRow.email, "User");
                     }
                     catch (error) {
                         console.error("Failed to send welcome email:", error);
@@ -88,7 +94,10 @@ exports.otpController = {
             return res.status(200).json({
                 success: true,
                 message: "Phone verified successfully",
-                data: { fullyVerified: status.emailVerified && status.phoneVerified },
+                data: {
+                    fullyVerified,
+                    passwordSetupToken,
+                },
             });
         }
         catch (error) {

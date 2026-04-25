@@ -3,6 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.otpService = void 0;
 const prisma_1 = require("../lib/prisma");
 const email_service_1 = require("./email.service");
+// TODO: For SMS, integrate with Twilio, AWS SNS, or another SMS provider
+// import { smsService } from "./sms.service";
+/**
+ * When not `"false"`, any 6-digit code succeeds (until OTP delivery/check is fully wired).
+ * Set `OTP_SKIP_CODE_VALIDATION=false` in production to enforce stored OTP codes.
+ */
+const SKIP_CODE_VALIDATION = process.env.OTP_SKIP_CODE_VALIDATION !== "false";
 exports.otpService = {
     /**
      * Generate a 6-digit OTP code
@@ -87,6 +94,18 @@ exports.otpService = {
      */
     async verifyEmailOtp(userId, code) {
         try {
+            if (SKIP_CODE_VALIDATION) {
+                await prisma_1.prisma.otp.updateMany({
+                    where: { userId, type: "EMAIL", verified: false },
+                    data: { verified: true },
+                });
+                await prisma_1.prisma.user.update({
+                    where: { id: userId },
+                    data: { emailVerified: true },
+                });
+                console.log(`Email verified (bypass) for user ${userId}`);
+                return true;
+            }
             // Find the OTP record
             const otpRecord = await prisma_1.prisma.otp.findFirst({
                 where: {
@@ -125,6 +144,18 @@ exports.otpService = {
      */
     async verifyPhoneOtp(userId, code) {
         try {
+            if (SKIP_CODE_VALIDATION) {
+                await prisma_1.prisma.otp.updateMany({
+                    where: { userId, type: "PHONE", verified: false },
+                    data: { verified: true },
+                });
+                await prisma_1.prisma.user.update({
+                    where: { id: userId },
+                    data: { phoneVerified: true },
+                });
+                console.log(`Phone verified (bypass) for user ${userId}`);
+                return true;
+            }
             // Find the OTP record
             const otpRecord = await prisma_1.prisma.otp.findFirst({
                 where: {

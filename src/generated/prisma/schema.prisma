@@ -198,11 +198,16 @@ model Beneficiary {
   mobileMoneyProvider String?
   mobileNumber        String?
 
+  /// When false, hidden from send-money pickers; can be turned back on.
+  active Boolean @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user                User                 @relation(fields: [userId], references: [id])
   remittanceTransfers RemittanceTransfer[]
+
+  @@index([userId, active])
 }
 
 model RemittanceTransfer {

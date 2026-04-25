@@ -353,6 +353,11 @@ export async function updateTransferStep(
       where: { id: beneficiaryId, userId },
     });
     if (!ben) throw new Error("Beneficiary not found");
+    if (!ben.active) {
+      throw new Error(
+        "This beneficiary is inactive. Activate them under Beneficiaries or choose another recipient.",
+      );
+    }
     const dest = (t.recipientCountryLabel ?? "").trim().toLowerCase();
     const benCountry = (ben.country ?? "").trim().toLowerCase();
     if (dest && benCountry && dest !== benCountry) {
@@ -536,9 +541,81 @@ export async function deletePaymentProof(
   await prisma.remittancePaymentProof.delete({ where: { id: proofId } });
 }
 
-export async function listMyTransfers(userId: string, limit = 20) {
+export type ListMyTransfersQuery = {
+  /** Substring match on reference (case-insensitive). */
+  reference?: string;
+  /** Single calendar day in UTC, `YYYY-MM-DD`. Takes precedence over year/month/day. */
+  date?: string;
+  year?: number;
+  month?: number;
+  day?: number;
+  limit?: number;
+};
+
+function dateRangeFromIsoDateString(iso: string): { gte: Date; lt: Date } | undefined {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim());
+  if (!m) return undefined;
+  const y = parseInt(m[1], 10);
+  const mo = parseInt(m[2], 10);
+  const d = parseInt(m[3], 10);
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return undefined;
+  const gte = new Date(Date.UTC(y, mo - 1, d, 0, 0, 0, 0));
+  const lt = new Date(gte);
+  lt.setUTCDate(lt.getUTCDate() + 1);
+  return { gte, lt };
+}
+
+function dateRangeForFilters(q: {
+  year?: number;
+  month?: number;
+  day?: number;
+}): { gte: Date; lt: Date } | undefined {
+  if (q.year == null || !Number.isFinite(q.year)) return undefined;
+  const y = q.year;
+  if (q.month != null && q.month >= 1 && q.month <= 12) {
+    if (q.day != null && q.day >= 1 && q.day <= 31) {
+      const gte = new Date(Date.UTC(y, q.month - 1, q.day, 0, 0, 0, 0));
+      const lt = new Date(gte);
+      lt.setUTCDate(lt.getUTCDate() + 1);
+      return { gte, lt };
+    }
+    const gte = new Date(Date.UTC(y, q.month - 1, 1, 0, 0, 0, 0));
+    const lt = new Date(Date.UTC(y, q.month, 1, 0, 0, 0, 0));
+    return { gte, lt };
+  }
+  const gte = new Date(Date.UTC(y, 0, 1, 0, 0, 0, 0));
+  const lt = new Date(Date.UTC(y + 1, 0, 1, 0, 0, 0, 0));
+  return { gte, lt };
+}
+
+export async function listMyTransfers(
+  userId: string,
+  query: ListMyTransfersQuery = {},
+) {
+  const limit = Math.min(Math.max(query.limit ?? 200, 1), 500);
+  const where: Prisma.RemittanceTransferWhereInput = {
+    userId,
+    status: { not: RemittanceStatus.DRAFT },
+  };
+  const refQ = query.reference?.trim();
+  if (refQ) {
+    where.referenceCode = { contains: refQ, mode: "insensitive" };
+  }
+  let dr: { gte: Date; lt: Date } | undefined;
+  if (query.date?.trim()) {
+    dr = dateRangeFromIsoDateString(query.date);
+  } else {
+    dr = dateRangeForFilters({
+      year: query.year,
+      month: query.month,
+      day: query.day,
+    });
+  }
+  if (dr) {
+    where.createdAt = { gte: dr.gte, lt: dr.lt };
+  }
   return prisma.remittanceTransfer.findMany({
-    where: { userId },
+    where,
     orderBy: { createdAt: "desc" },
     take: limit,
     include: REMITTANCE_TRANSFER_INCLUDE,
