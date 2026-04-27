@@ -21,7 +21,12 @@ const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:3000";
 
 const CORS_ORIGINS = (
   process.env.CORS_ORIGINS ||
-  [FRONTEND_URL, "http://localhost:3000", "http://localhost:3001"].join(",")
+  [
+    FRONTEND_URL,
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://frontend-remit2globe.onrender.com",
+  ].join(",")
 )
   .split(",")
   .map((o) => o.trim())
