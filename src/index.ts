@@ -25,7 +25,7 @@ const CORS_ORIGINS = (
     FRONTEND_URL,
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://frontend-remit2globe.onrender.com",
+    "https://amigo-web.onrender.com",
   ].join(",")
 )
   .split(",")
