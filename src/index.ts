@@ -16,7 +16,9 @@ import remittanceRoutes from "./routes/remittance.routes";
 import adminRoutes from "./routes/admin.routes";
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT ?? 5000;
+// const PORT = process.env.PORT ?? 5000;
+// Better (explicit number conversion)
+const PORT = Number(process.env.PORT) || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:3000";
 
 const CORS_ORIGINS = (
@@ -72,10 +74,18 @@ app.get("/api/health", (_req: Request, res: Response) => {
 app.use(errorMiddleware);
 
 // ─── Start ───────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(
-    `Server running on http://localhost:${PORT} [${process.env.NODE_ENV}]`,
-  );
+// app.listen(PORT, () => {
+//   console.log(
+//     `Server running on http://localhost:${PORT} [${process.env.NODE_ENV}]`,
+//   );
+// });
+
+// ─── Start ───────────────────────────────────────────────────────────────────
+const HOST = "0.0.0.0"; // Bind to all network interfaces
+
+app.listen(Number(PORT), HOST, () => {
+  const env = process.env.NODE_ENV || "development";
+  console.log(`Server running on port ${PORT} [${env}]`);
 });
 
 export default app;
