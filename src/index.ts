@@ -69,6 +69,19 @@ app.use("/api/remittance", remittanceRoutes);
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
+// Add this route temporarily
+app.get("/api/debug/ip", async (_req: Request, res: Response) => {
+  try {
+    const response = await fetch("https://api.ipify.org?format=json");
+    const data = (await response.json()) as { ip: string };
+    res.json({
+      outboundIP: data.ip,
+      service: "amigo-api-uwm5.onrender.com",
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Could not fetch IP" });
+  }
+});
 
 // ─── Error handler ───────────────────────────────────────────────────────────
 app.use(errorMiddleware);
