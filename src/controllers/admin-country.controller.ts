@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { getFlexCountries } from "../integrations/flex/flex.service";
 import {
   readAllowlist,
   writeAllowlist,
 } from "../services/flex-country-allowlist.service";
 import { extractCountryRows } from "../utils/flex-countries-payload";
+import { getStaticFlexCountriesPayload } from "../utils/static-country-catalog";
 
 export const getAdminFlexCountriesController = async (
   _req: Request,
   res: Response,
 ) => {
   try {
-    const data = await getFlexCountries();
+    const data = getStaticFlexCountriesPayload();
     res.json({ success: true, data });
   } catch (error: unknown) {
     const err = error as { message?: string };
@@ -52,7 +52,7 @@ export const putCountryAllowlistController = async (
         error: "Body must include couCodes: string[]",
       });
     }
-    const flex = await getFlexCountries();
+    const flex = getStaticFlexCountriesPayload();
     const validCodes = new Set(
       extractCountryRows(flex)
         .map((r) => String(r.couCode ?? "").trim().toUpperCase())

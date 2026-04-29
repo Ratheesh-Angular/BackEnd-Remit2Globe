@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.flexStkCallbackController = exports.getFlexBanksController = exports.getFlexCountriesController = exports.testFlexProtectedAPI = exports.getFlexMD5Controller = exports.getFlexTokenController = void 0;
 const flex_client_1 = require("../integrations/flex/flex.client");
 const flex_service_1 = require("../integrations/flex/flex.service");
-const flex_service_2 = require("../integrations/flex/flex.service");
 const flex_country_allowlist_service_1 = require("../services/flex-country-allowlist.service");
 const flex_countries_payload_1 = require("../utils/flex-countries-payload");
+const static_country_catalog_1 = require("../utils/static-country-catalog");
 // ✅ Test Token
 const getFlexTokenController = async (req, res) => {
     try {
@@ -63,10 +63,8 @@ const testFlexProtectedAPI = async (req, res) => {
 exports.testFlexProtectedAPI = testFlexProtectedAPI;
 const getFlexCountriesController = async (_req, res) => {
     try {
-        const [data, allowlist] = await Promise.all([
-            (0, flex_service_2.getFlexCountries)(),
-            (0, flex_country_allowlist_service_1.readAllowlist)(),
-        ]);
+        const data = (0, static_country_catalog_1.getStaticFlexCountriesPayload)();
+        const allowlist = await (0, flex_country_allowlist_service_1.readAllowlist)();
         const rows = (0, flex_countries_payload_1.extractCountryRows)(data);
         const payload = allowlist.length > 0 && rows.length > 0
             ? (0, flex_countries_payload_1.setCountryRowsInPayload)(data, (0, flex_country_allowlist_service_1.filterCountriesByAllowlist)(rows, allowlist))

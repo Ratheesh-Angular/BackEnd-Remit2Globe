@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.putCountryAllowlistController = exports.getCountryAllowlistController = exports.getAdminFlexCountriesController = void 0;
-const flex_service_1 = require("../integrations/flex/flex.service");
 const flex_country_allowlist_service_1 = require("../services/flex-country-allowlist.service");
 const flex_countries_payload_1 = require("../utils/flex-countries-payload");
+const static_country_catalog_1 = require("../utils/static-country-catalog");
 const getAdminFlexCountriesController = async (_req, res) => {
     try {
-        const data = await (0, flex_service_1.getFlexCountries)();
+        const data = (0, static_country_catalog_1.getStaticFlexCountriesPayload)();
         res.json({ success: true, data });
     }
     catch (error) {
@@ -43,7 +43,7 @@ const putCountryAllowlistController = async (req, res) => {
                 error: "Body must include couCodes: string[]",
             });
         }
-        const flex = await (0, flex_service_1.getFlexCountries)();
+        const flex = (0, static_country_catalog_1.getStaticFlexCountriesPayload)();
         const validCodes = new Set((0, flex_countries_payload_1.extractCountryRows)(flex)
             .map((r) => String(r.couCode ?? "").trim().toUpperCase())
             .filter(Boolean));

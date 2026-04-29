@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFlexBanks = exports.getFlexCountries = exports.postFlexData = exports.getFlexData = exports.generateFlexMD5 = void 0;
+exports.getFlexBanks = exports.postFlexData = exports.getFlexData = exports.generateFlexMD5 = void 0;
 exports.normalizeMsisdn = normalizeMsisdn;
 exports.getFlexStkCallbackUrl = getFlexStkCallbackUrl;
 exports.initiateStkPush = initiateStkPush;
@@ -24,31 +24,6 @@ const postFlexData = async (payload) => {
     return await flex_client_1.flexClient.request("POST", "/some-endpoint", payload);
 };
 exports.postFlexData = postFlexData;
-// ✅ Get Countries
-const getFlexCountries = async () => {
-    const timestamp = (0, flex_utils_1.generateTimestamp)();
-    const md5 = (0, flex_utils_1.generateMD5)(flex_config_1.flexConfig.userCode, timestamp, flex_config_1.flexConfig.rawPassword);
-    const token = await flex_client_1.flexClient.getAccessToken();
-    console.log({
-        userId: flex_config_1.flexConfig.userCode,
-        timestamp,
-        md5,
-        token,
-    }, "flexConfig");
-    const response = await fetch(`${flex_config_1.flexConfig.baseURL}/countries`, {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "x-userId": flex_config_1.flexConfig.userCode,
-            "x-password": md5,
-            "x-timestamp": timestamp,
-            Accept: "application/json",
-        },
-    });
-    const data = await response.json();
-    return data;
-};
-exports.getFlexCountries = getFlexCountries;
 // ✅ Get Banks by Country
 const getFlexBanks = async (couCode) => {
     const timestamp = (0, flex_utils_1.generateTimestamp)();

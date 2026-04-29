@@ -4,7 +4,6 @@ import {
   generateFlexMD5,
   getFlexBanks,
 } from "../integrations/flex/flex.service";
-import { getFlexCountries } from "../integrations/flex/flex.service";
 import {
   filterCountriesByAllowlist,
   readAllowlist,
@@ -13,6 +12,7 @@ import {
   extractCountryRows,
   setCountryRowsInPayload,
 } from "../utils/flex-countries-payload";
+import { getStaticFlexCountriesPayload } from "../utils/static-country-catalog";
 // ✅ Test Token
 export const getFlexTokenController = async (req: Request, res: Response) => {
   try {
@@ -76,10 +76,8 @@ export const getFlexCountriesController = async (
   res: Response,
 ) => {
   try {
-    const [data, allowlist] = await Promise.all([
-      getFlexCountries(),
-      readAllowlist(),
-    ]);
+    const data = getStaticFlexCountriesPayload();
+    const allowlist = await readAllowlist();
     const rows = extractCountryRows(data);
     const payload =
       allowlist.length > 0 && rows.length > 0

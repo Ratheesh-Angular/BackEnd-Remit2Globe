@@ -26,43 +26,6 @@ export const postFlexData = async (payload: any) => {
   return await flexClient.request("POST", "/some-endpoint", payload);
 };
 
-// ✅ Get Countries
-export const getFlexCountries = async () => {
-  const timestamp = generateTimestamp();
-
-  const md5 = generateMD5(
-    flexConfig.userCode,
-    timestamp,
-    flexConfig.rawPassword,
-  );
-
-  const token = await flexClient.getAccessToken();
-
-  console.log(
-    {
-      userId: flexConfig.userCode,
-      timestamp,
-      md5,
-      token,
-    },
-    "flexConfig",
-  );
-
-  const response = await fetch(`${flexConfig.baseURL}/countries`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "x-userId": flexConfig.userCode,
-      "x-password": md5,
-      "x-timestamp": timestamp,
-      Accept: "application/json",
-    },
-  });
-
-  const data = await response.json();
-  return data;
-};
-
 // ✅ Get Banks by Country
 export const getFlexBanks = async (couCode: string) => {
   const timestamp = generateTimestamp();
