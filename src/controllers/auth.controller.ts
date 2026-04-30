@@ -6,7 +6,21 @@ import { AuthRequest } from "../middleware/auth.middleware";
 export const authController = {
   async register(req: Request, res: Response) {
     try {
-      const { email, phone, country, role } = req.body;
+      const { email, phone, country, role: rawRole } = req.body;
+
+      const normalizedRole =
+        typeof rawRole === "string"
+          ? rawRole.trim().toUpperCase()
+          : "";
+
+      const roleAliases: Record<string, "INDIVIDUAL" | "CORPORATE"> = {
+        INDIVIDUAL: "INDIVIDUAL",
+        CORPORATE: "CORPORATE",
+        PERSONAL: "INDIVIDUAL",
+        BUSINESS: "CORPORATE",
+      };
+
+      const role = roleAliases[normalizedRole];
 
       // Basic validation
       if (!email && !phone) {
