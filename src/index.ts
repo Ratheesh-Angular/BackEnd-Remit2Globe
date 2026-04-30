@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./lib/load-env";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -6,7 +6,6 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import { errorMiddleware } from "./middleware/error.middleware";
-import * as dotenv from "dotenv";
 import kycRoutes from "./routes/kyc.routes";
 import beneficiaryRoutes from "./routes/beneficiary.routes";
 import otpRoutes from "./routes/otp.routes";
@@ -14,7 +13,7 @@ import path from "path";
 import flexRoutes from "./routes/flex.routes";
 import remittanceRoutes from "./routes/remittance.routes";
 import adminRoutes from "./routes/admin.routes";
-dotenv.config();
+
 const app = express();
 // const PORT = process.env.PORT ?? 5000;
 // Better (explicit number conversion)

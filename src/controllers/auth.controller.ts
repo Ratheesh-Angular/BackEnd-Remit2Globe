@@ -154,7 +154,8 @@ export const authController = {
       return res.status(200).json({
         success: true,
         message: "Login successful",
-        data: { user: result.user },
+        // Same JWT as Set-Cookie; SPA mirrors it onto the Next.js origin via /api/auth/session when frontend and API differ (e.g. Render).
+        data: { user: result.user, token: result.token },
       });
     } catch (error: any) {
       if (error.message === "PASSWORD_REQUIRED") {

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "build": "tsc && node scripts/copy-prisma-generated.cjs",
-    "start": "node dist/index.js"
+    "start": "cross-env NODE_ENV=production node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +30,7 @@
     "multer": "^2.1.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
