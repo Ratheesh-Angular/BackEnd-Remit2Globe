@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "build": "tsc && node scripts/copy-prisma-generated.cjs",
-    "start": "cross-env NODE_ENV=production node dist/index.js"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
