@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "build": "tsc && node scripts/copy-prisma-generated.cjs",
-    "start": "node dist/index.js"
+    "start": "npx prisma migrate deploy && node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "@aws-sdk/lib-storage": "^3.1025.0",
     "@prisma/adapter-pg": "^7.6.0",
     "@prisma/client": "^7.6.0",
+    "prisma": "^7.6.0",
     "axios": "^1.14.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
@@ -40,7 +41,6 @@
     "@types/multer": "^2.1.0",
     "@types/node": "^25.5.2",
     "nodemon": "^3.1.14",
-    "prisma": "^7.6.0",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.2"
   }
