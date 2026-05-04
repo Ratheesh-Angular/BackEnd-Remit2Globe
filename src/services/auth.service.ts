@@ -6,7 +6,6 @@ import {
 } from "../utils/jwt.utils";
 import { assertStrongPassword } from "../utils/password.utils";
 import { otpService } from "./otp.service";
-import { emailService } from "./email.service";
 
 const BCRYPT_ROUNDS = 12;
 

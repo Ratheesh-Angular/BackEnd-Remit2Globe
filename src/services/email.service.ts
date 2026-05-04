@@ -1,13 +1,40 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
-// Initialize SES client
-const sesClient = new SESClient({
-  region: process.env.AWS_REGION || "us-east-1",
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-  },
-});
+/**
+ * Production (e.g. Render): do not call SES unless explicitly enabled — avoids IAM/Sandbox failures.
+ * Development: sends normally. Set EMAIL_SENDING_ENABLED=true on production when SES is wired.
+ */
+function isProductionEmailOutboundDisabled(): boolean {
+  return (
+    process.env.NODE_ENV === "production" &&
+    process.env.EMAIL_SENDING_ENABLED?.trim().toLowerCase() !== "true"
+  );
+}
+
+function buildSesClient(): SESClient {
+  const sesKey = process.env.AWS_SES_ACCESS_KEY_ID?.trim();
+  const sesSecret = process.env.AWS_SES_SECRET_ACCESS_KEY?.trim();
+  const useSesKeys = Boolean(sesKey && sesSecret);
+
+  const region =
+    process.env.AWS_SES_REGION?.trim() ||
+    process.env.AWS_REGION?.trim() ||
+    "us-east-1";
+
+  const credentials = useSesKeys
+    ? {
+        accessKeyId: sesKey as string,
+        secretAccessKey: sesSecret as string,
+      }
+    : {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+      };
+
+  return new SESClient({ region, credentials });
+}
+
+const sesClient = buildSesClient();
 
 interface SendEmailParams {
   to: string;
@@ -21,6 +48,13 @@ export const emailService = {
    * Send an email using AWS SES
    */
   async sendEmail({ to, subject, htmlBody, textBody }: SendEmailParams) {
+    if (isProductionEmailOutboundDisabled()) {
+      console.log(
+        `[email] delivery skipped (production; set EMAIL_SENDING_ENABLED=true to use SES) to=${to} subject=${subject}`,
+      );
+      return { success: true, messageId: "skipped-production" };
+    }
+
     const fromEmail = process.env.AWS_SES_FROM_EMAIL || "no-reply@example.com";
     const fromName = process.env.AWS_SES_FROM_NAME || "Remit 2 Globe";
 

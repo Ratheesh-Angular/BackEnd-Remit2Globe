@@ -45,7 +45,7 @@ exports.otpService = {
             });
             // Send email
             await email_service_1.emailService.sendOtpEmail(email, code, 10);
-            console.log(`Email OTP sent to ${email} for user ${userId}`);
+            console.log(`Email OTP stored for ${email} (user ${userId}); delivery per email service config`);
         }
         catch (error) {
             console.error("Error sending email OTP:", error);
