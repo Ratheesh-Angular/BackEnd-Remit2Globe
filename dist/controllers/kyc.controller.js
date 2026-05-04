@@ -56,9 +56,19 @@ exports.kycController = {
             });
         }
         catch (error) {
+            console.error("getMyProfile error:", error);
+            if (error instanceof Error && error.stack) {
+                console.error(error.stack);
+            }
+            const isProd = process.env.NODE_ENV === "production";
+            const message = isProd
+                ? "Something went wrong"
+                : error instanceof Error
+                    ? error.message || "Something went wrong"
+                    : String(error);
             return res.status(500).json({
                 success: false,
-                message: "Something went wrong",
+                message,
             });
         }
     },
