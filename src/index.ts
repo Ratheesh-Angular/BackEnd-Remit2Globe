@@ -48,6 +48,8 @@ app.use(
       "Authorization",
       "X-Admin-Api-Key",
       "x-admin-api-key",
+      "X-Internal-Auth",
+      "x-internal-auth",
     ],
   }),
 );

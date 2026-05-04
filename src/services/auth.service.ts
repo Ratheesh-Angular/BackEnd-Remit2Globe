@@ -178,4 +178,25 @@ export const authService = {
       data: { passwordHash },
     });
   },
+
+  /**
+   * Called only from the trusted Next.js server (shared secret header).
+   * Mirrors login JWT for OAuth-only users whose session exists in NextAuth
+   * but who never received a mirrored httpOnly cookie on the web origin.
+   */
+  async issueTrustedSessionToken(userId: string) {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new Error("USER_NOT_FOUND");
+    }
+    if (user.kycStatus === "REJECTED") {
+      throw new Error("ACCOUNT_SUSPENDED");
+    }
+    const token = generateToken({
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+    });
+    return { token };
+  },
 };

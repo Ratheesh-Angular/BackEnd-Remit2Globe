@@ -3,6 +3,10 @@ import { authController } from "../controllers/auth.controller";
 import { protect } from "../middleware/auth.middleware";
 const router = Router();
 
+router.post(
+  "/internal/trusted-session",
+  authController.trustedIssueSession,
+);
 router.post("/register", authController.register);
 router.post("/set-password", authController.setPassword);
 router.post("/login", authController.login);

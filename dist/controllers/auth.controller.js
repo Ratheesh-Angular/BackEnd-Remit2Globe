@@ -5,9 +5,74 @@ const auth_service_1 = require("../services/auth.service");
 const prisma_1 = require("../lib/prisma");
 //test commit
 exports.authController = {
+    /**
+     * Server-to-server: Next.js verifies NextAuth session, then requests a JWT
+     * via shared `INTERNAL_FRONTEND_AUTH_SECRET`.
+     */
+    async trustedIssueSession(req, res) {
+        try {
+            const expected = process.env.INTERNAL_FRONTEND_AUTH_SECRET?.trim();
+            if (!expected) {
+                return res.status(503).json({
+                    success: false,
+                    message: "Trusted session issuance is not configured",
+                });
+            }
+            const headerSecret = req.get("x-internal-auth")?.trim();
+            if (!headerSecret || headerSecret !== expected) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Unauthorized",
+                });
+            }
+            const rawId = req.body?.userId;
+            const userId = typeof rawId === "string" ? rawId.trim() : "";
+            if (!userId) {
+                return res.status(400).json({
+                    success: false,
+                    message: "userId is required",
+                });
+            }
+            const { token } = await auth_service_1.authService.issueTrustedSessionToken(userId);
+            return res.status(200).json({
+                success: true,
+                data: { token },
+            });
+        }
+        catch (error) {
+            const msg = error instanceof Error ? error.message : "";
+            if (msg === "USER_NOT_FOUND") {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found",
+                });
+            }
+            if (msg === "ACCOUNT_SUSPENDED") {
+                return res.status(403).json({
+                    success: false,
+                    message: "Your account has been suspended. Please contact support.",
+                });
+            }
+            console.error("Trusted issue session error:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Something went wrong",
+            });
+        }
+    },
     async register(req, res) {
         try {
-            const { email, phone, country, role } = req.body;
+            const { email, phone, country, role: rawRole } = req.body;
+            const normalizedRole = typeof rawRole === "string"
+                ? rawRole.trim().toUpperCase()
+                : "";
+            const roleAliases = {
+                INDIVIDUAL: "INDIVIDUAL",
+                CORPORATE: "CORPORATE",
+                PERSONAL: "INDIVIDUAL",
+                BUSINESS: "CORPORATE",
+            };
+            const role = roleAliases[normalizedRole];
             // Basic validation
             if (!email && !phone) {
                 return res.status(400).json({
@@ -134,7 +199,8 @@ exports.authController = {
             return res.status(200).json({
                 success: true,
                 message: "Login successful",
-                data: { user: result.user },
+                // Same JWT as Set-Cookie; SPA mirrors it onto the Next.js origin via /api/auth/session when frontend and API differ (e.g. Render).
+                data: { user: result.user, token: result.token },
             });
         }
         catch (error) {

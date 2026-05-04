@@ -3,65 +3,86 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadPaymentProof = exports.upload = void 0;
+exports.uploadPaymentProof = exports.upload = exports.KYC_UPLOAD_MAX_BYTES = void 0;
+const path_1 = __importDefault(require("path"));
 const multer_1 = __importDefault(require("multer"));
 // Store in memory — we upload to S3 directly
 const storage = multer_1.default.memoryStorage();
-/** PDF, common images, and typical document uploads for KYC. */
-const ALLOWED_MIMES = new Set([
+exports.KYC_UPLOAD_MAX_BYTES = 25 * 1024 * 1024;
+/** Explicit types (images/text handled by prefix rules below). */
+const SPECIFIC_ALLOWED_MIMES = new Set([
     "application/pdf",
-    "image/jpeg",
-    "image/jpg",
-    "image/pjpeg",
-    "image/png",
-    "image/gif",
-    "image/webp",
-    "image/bmp",
-    "image/x-ms-bmp",
-    "image/tiff",
-    "image/tif",
-    "image/x-tiff",
-    "image/heic",
-    "image/heif",
     "application/msword",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-]);
-const fileFilter = (req, file, cb) => {
-    if (ALLOWED_MIMES.has(file.mimetype)) {
-        cb(null, true);
-    }
-    else {
-        cb(new Error("File type not allowed. Use PDF, Word (.doc/.docx), or a common image (JPEG, PNG, GIF, WebP, BMP, TIFF, HEIC)."));
-    }
-};
-exports.upload = (0, multer_1.default)({
-    storage,
-    fileFilter,
-    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
-});
-/** Wider set for remittance payment proof (images + office + pdf + text). */
-const PAYMENT_PROOF_MIMES = new Set([
-    ...ALLOWED_MIMES,
     "application/vnd.ms-excel",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/vnd.ms-powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    "text/plain",
-    "text/csv",
     "application/rtf",
     "application/vnd.oasis.opendocument.text",
     "application/vnd.oasis.opendocument.spreadsheet",
 ]);
-const paymentProofFilter = (_req, file, cb) => {
-    if (PAYMENT_PROOF_MIMES.has(file.mimetype)) {
+const ALLOWED_EXTENSIONS = new Set([
+    ".pdf",
+    ".jpg",
+    ".jpeg",
+    ".jpe",
+    ".jfif",
+    ".png",
+    ".gif",
+    ".webp",
+    ".bmp",
+    ".tif",
+    ".tiff",
+    ".heic",
+    ".heif",
+    ".avif",
+    ".svg",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".ppt",
+    ".pptx",
+    ".txt",
+    ".csv",
+    ".rtf",
+    ".odt",
+    ".ods",
+]);
+function extensionAllowed(originalName) {
+    const ext = path_1.default.extname(originalName).toLowerCase();
+    return ext !== "" && ALLOWED_EXTENSIONS.has(ext);
+}
+function mimeAllowed(mimetype) {
+    const t = mimetype.trim().toLowerCase();
+    if (t.startsWith("image/"))
+        return true;
+    if (t.startsWith("text/"))
+        return true;
+    return SPECIFIC_ALLOWED_MIMES.has(t);
+}
+const kycFileFilter = (_req, file, cb) => {
+    if (mimeAllowed(file.mimetype)) {
         cb(null, true);
+        return;
     }
-    else {
-        cb(new Error("File type not allowed. Use PDF, Word, Excel, PowerPoint, images, CSV, or plain text."));
+    if (!file.mimetype ||
+        file.mimetype === "application/octet-stream") {
+        if (extensionAllowed(file.originalname)) {
+            cb(null, true);
+            return;
+        }
     }
+    cb(new Error("File type not allowed. Upload images, PDF, Word/Excel/PowerPoint, CSV, or plain text."));
 };
+exports.upload = (0, multer_1.default)({
+    storage,
+    fileFilter: kycFileFilter,
+    limits: { fileSize: exports.KYC_UPLOAD_MAX_BYTES },
+});
 exports.uploadPaymentProof = (0, multer_1.default)({
     storage,
-    fileFilter: paymentProofFilter,
+    fileFilter: kycFileFilter,
     limits: { fileSize: 15 * 1024 * 1024 }, // 15MB per file
 });
