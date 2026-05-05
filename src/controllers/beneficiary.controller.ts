@@ -2,6 +2,7 @@ import { Response } from "express";
 import { AuthRequest } from "../middleware/auth.middleware";
 import { beneficiaryService } from "../services/beneficiary.service";
 import { DeliveryChannel } from "../generated/prisma";
+import { toPublicApiErrorMessage } from "../lib/public-error-message";
 
 const VALID_CHANNELS: DeliveryChannel[] = ["BANK_TRANSFER", "MOBILE_MONEY"];
 
@@ -24,7 +25,7 @@ export const beneficiaryController = {
         message: "Beneficiary added successfully",
         data: { beneficiary },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const isValidation = [
         "First name",
         "Last name",
@@ -34,11 +35,16 @@ export const beneficiaryController = {
         "SWIFT",
         "Mobile money",
         "Mobile number",
-      ].some((phrase) => error.message?.startsWith(phrase));
+      ].some(
+        (phrase) =>
+          error instanceof Error && error.message?.startsWith(phrase),
+      );
 
       return res.status(isValidation ? 400 : 500).json({
         success: false,
-        message: error.message || "Something went wrong",
+        message: isValidation
+          ? (error as Error).message
+          : toPublicApiErrorMessage(error),
       });
     }
   },
@@ -55,10 +61,13 @@ export const beneficiaryController = {
         success: true,
         data: { beneficiaries },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       return res.status(500).json({
         success: false,
-        message: error.message || "Something went wrong",
+        message: toPublicApiErrorMessage(
+          error,
+          "Could not load beneficiaries. Please try again.",
+        ),
       });
     }
   },
@@ -72,10 +81,17 @@ export const beneficiaryController = {
         success: true,
         data: { beneficiary },
       });
-    } catch (error: any) {
-      return res.status(error.message === "Beneficiary not found" ? 404 : 500).json({
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "";
+      if (msg === "Beneficiary not found") {
+        return res.status(404).json({
+          success: false,
+          message: msg,
+        });
+      }
+      return res.status(500).json({
         success: false,
-        message: error.message || "Something went wrong",
+        message: toPublicApiErrorMessage(error),
       });
     }
   },
@@ -90,8 +106,8 @@ export const beneficiaryController = {
         message: "Beneficiary updated successfully",
         data: { beneficiary },
       });
-    } catch (error: any) {
-      if (error.message === "Beneficiary not found") {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === "Beneficiary not found") {
         return res.status(404).json({
           success: false,
           message: error.message,
@@ -106,11 +122,16 @@ export const beneficiaryController = {
         "SWIFT",
         "Mobile money",
         "Mobile number",
-      ].some((phrase) => error.message?.startsWith(phrase));
+      ].some(
+        (phrase) =>
+          error instanceof Error && error.message?.startsWith(phrase),
+      );
 
       return res.status(isValidation ? 400 : 500).json({
         success: false,
-        message: error.message || "Something went wrong",
+        message: isValidation
+          ? (error as Error).message
+          : toPublicApiErrorMessage(error),
       });
     }
   },
@@ -124,10 +145,17 @@ export const beneficiaryController = {
         success: true,
         message: "Beneficiary removed successfully",
       });
-    } catch (error: any) {
-      return res.status(error.message === "Beneficiary not found" ? 404 : 500).json({
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "";
+      if (msg === "Beneficiary not found") {
+        return res.status(404).json({
+          success: false,
+          message: msg,
+        });
+      }
+      return res.status(500).json({
         success: false,
-        message: error.message || "Something went wrong",
+        message: toPublicApiErrorMessage(error),
       });
     }
   },
