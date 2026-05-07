@@ -91,8 +91,6 @@ const HOST = "0.0.0.0";
 
 app.listen(Number(PORT), HOST, () => {
   const env = process.env.NODE_ENV || "development";
-  console.log(`Server running on port ${PORT} [${env}]`);
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
 });
 
 export default app;
