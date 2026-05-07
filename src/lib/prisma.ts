@@ -1,11 +1,15 @@
+import "./load-env";
 import { PrismaClient } from "../generated/prisma";
 import { PrismaPg } from "@prisma/adapter-pg";
-import * as dotenv from "dotenv";
+import pg from "pg";
 
-dotenv.config();
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL as string,
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // handles SSL without cert chain validation
+  },
 });
+
+const adapter = new PrismaPg(pool);
 
 export const prisma = new PrismaClient({ adapter });

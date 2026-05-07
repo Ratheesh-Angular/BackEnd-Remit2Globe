@@ -1,8 +1,8 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 /**
- * Production (e.g. Render): do not call SES unless explicitly enabled — avoids IAM/Sandbox failures.
- * Development: sends normally. Set EMAIL_SENDING_ENABLED=true on production when SES is wired.
+ * In production, outbound email is off until EMAIL_SENDING_ENABLED=true (SES + verified identity + IAM).
+ * Development sends via SES when configured. Avoids silent production email failures or sandbox surprises.
  */
 function isProductionEmailOutboundDisabled(): boolean {
   return (

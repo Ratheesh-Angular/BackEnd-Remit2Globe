@@ -5,6 +5,17 @@ import path from "path";
 
 dotenv.config();
 
+/** S3 user metadata is sent as HTTP headers; non-ASCII / control chars break SigV4 signing. */
+function s3AsciiMetadataValue(value: string, maxLen: number): string {
+  const flat = value.replace(/\r\n/g, "\n").replace(/\r/g, "\n").replace(/\n/g, " ").trim();
+  if (flat.length <= maxLen && /^[\t\x20-\x7E]*$/.test(flat)) {
+    return flat;
+  }
+  const b64 = Buffer.from(flat, "utf8").toString("base64url");
+  const prefixed = `b64:${b64}`;
+  return prefixed.length <= maxLen ? prefixed : prefixed.slice(0, maxLen);
+}
+
 const s3Client = new S3Client({
   region: process.env.AWS_REGION as string,
   credentials: {
@@ -27,6 +38,7 @@ export const s3Service = {
     const ext = path.extname(originalName);
     const timestamp = Date.now();
     const fileKey = `kyc/${userId}/${documentType}/${timestamp}${ext}`;
+    const contentType = (mimeType && mimeType.trim()) || "application/octet-stream";
 
     const upload = new Upload({
       client: s3Client,
@@ -34,12 +46,12 @@ export const s3Service = {
         Bucket: BUCKET,
         Key: fileKey,
         Body: fileBuffer,
-        ContentType: mimeType,
+        ContentType: contentType,
         // Metadata for reference
         Metadata: {
-          userId,
-          documentType,
-          originalName,
+          userId: s3AsciiMetadataValue(userId, 128),
+          documentType: s3AsciiMetadataValue(documentType, 128),
+          originalName: s3AsciiMetadataValue(originalName, 1024),
         },
       },
     });
@@ -75,9 +87,9 @@ export const s3Service = {
         Body: fileBuffer,
         ContentType: mimeType || "application/octet-stream",
         Metadata: {
-          userId,
-          transferId,
-          originalName: originalName.slice(0, 200),
+          userId: s3AsciiMetadataValue(userId, 128),
+          transferId: s3AsciiMetadataValue(transferId, 128),
+          originalName: s3AsciiMetadataValue(originalName.slice(0, 500), 1024),
         },
       },
     });

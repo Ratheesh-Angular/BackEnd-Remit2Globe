@@ -1,8 +1,106 @@
 import { Request, Response } from "express";
 import { authService } from "../services/auth.service";
 import { prisma } from "../lib/prisma";
+import { Prisma } from "../generated/prisma";
 import { AuthRequest } from "../middleware/auth.middleware";
-//test commit
+
+function mapRegisterPrismaOrDbError(error: unknown): {
+  status: number;
+  body: { success: false; message: string };
+} | null {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === "P2002") {
+      const target = error.meta?.target;
+      const fields: string[] = Array.isArray(target)
+        ? target.map(String)
+        : typeof target === "string"
+          ? [target]
+          : [];
+      const joined = fields.join(" ").toLowerCase();
+      if (joined.includes("email")) {
+        return {
+          status: 409,
+          body: {
+            success: false,
+            message: "An account with this email already exists",
+          },
+        };
+      }
+      if (joined.includes("phone")) {
+        return {
+          status: 409,
+          body: {
+            success: false,
+            message: "An account with this phone number already exists",
+          },
+        };
+      }
+      return {
+        status: 409,
+        body: {
+          success: false,
+          message: "This registration conflicts with an existing account.",
+        },
+      };
+    }
+  }
+
+  if (error instanceof Prisma.PrismaClientInitializationError) {
+    return {
+      status: 503,
+      body: {
+        success: false,
+        message:
+          "Database is unavailable. Check DATABASE_URL and that the DB accepts connections from this host (e.g. RDS security group, sslmode=require).",
+      },
+    };
+  }
+
+  if (error instanceof Error) {
+    const m = error.message.toLowerCase();
+    if (
+      m.includes("denied access on the database") ||
+      m.includes("permission denied for database") ||
+      m.includes("was denied access")
+    ) {
+      return {
+        status: 503,
+        body: {
+          success: false,
+          message:
+            "Database access denied for this user on the target database. On RDS PostgreSQL, connect as an admin and run: GRANT CONNECT ON DATABASE your_db TO your_app_user; then connect to your_db and GRANT USAGE ON SCHEMA public TO your_app_user; GRANT ALL ON ALL TABLES IN SCHEMA public TO your_app_user; GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO your_app_user;. Ensure DATABASE_URL uses that app user (or the RDS master user) and matches the database name.",
+        },
+      };
+    }
+    if (
+      m.includes("econnrefused") ||
+      m.includes("etimedout") ||
+      m.includes("connection timed out") ||
+      m.includes("connection timeout") ||
+      m.includes("query has timed out") ||
+      m.includes("password authentication failed") ||
+      m.includes("no pg_hba.conf entry") ||
+      m.includes("the server does not support ssl") ||
+      m.includes("self signed certificate") ||
+      (m.includes("certificate") &&
+        (m.includes("ssl") || m.includes("tls") || m.includes("verify"))) ||
+      m.includes("getaddrinfo enotfound") ||
+      (m.includes("database") && m.includes("does not exist"))
+    ) {
+      return {
+        status: 503,
+        body: {
+          success: false,
+          message:
+            "Cannot reach the database. Verify DATABASE_URL, RDS/VPC security groups, and SSL settings (try ?sslmode=require on RDS).",
+        },
+      };
+    }
+  }
+
+  return null;
+}
+
 export const authController = {
   /**
    * Server-to-server: Next.js verifies NextAuth session, then requests a JWT
@@ -51,8 +149,7 @@ export const authController = {
       if (msg === "ACCOUNT_SUSPENDED") {
         return res.status(403).json({
           success: false,
-          message:
-            "Your account has been suspended. Please contact support.",
+          message: "Your account has been suspended. Please contact support.",
         });
       }
       console.error("Trusted issue session error:", error);
@@ -68,9 +165,7 @@ export const authController = {
       const { email, phone, country, role: rawRole } = req.body;
 
       const normalizedRole =
-        typeof rawRole === "string"
-          ? rawRole.trim().toUpperCase()
-          : "";
+        typeof rawRole === "string" ? rawRole.trim().toUpperCase() : "";
 
       const roleAliases: Record<string, "INDIVIDUAL" | "CORPORATE"> = {
         INDIVIDUAL: "INDIVIDUAL",
@@ -116,25 +211,38 @@ export const authController = {
         message: "Account created successfully",
         data: { user },
       });
-    } catch (error: any) {
-      if (error.message === "EMAIL_EXISTS") {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === "EMAIL_EXISTS") {
         return res.status(409).json({
           success: false,
           message: "An account with this email already exists",
         });
       }
 
-      if (error.message === "PHONE_EXISTS") {
+      if (error instanceof Error && error.message === "PHONE_EXISTS") {
         return res.status(409).json({
           success: false,
           message: "An account with this phone number already exists",
         });
       }
+      console.error("FULL REGISTER ERROR:", error);
+      const mapped = mapRegisterPrismaOrDbError(error);
+      if (mapped) {
+        console.error("Register error (mapped):", error);
+        return res.status(mapped.status).json(mapped.body);
+      }
 
       console.error("Register error:", error);
+      const expose =
+        process.env.NODE_ENV !== "production" ||
+        process.env.EXPOSE_ERROR_DETAILS?.trim().toLowerCase() === "true";
+      const detail =
+        expose && error instanceof Error ? error.message : undefined;
       return res.status(500).json({
         success: false,
-        message: "Something went wrong. Please try again.",
+        message: detail
+          ? `Something went wrong: ${detail}`
+          : "Something went wrong. Please try again.",
       });
     }
   },
@@ -181,7 +289,8 @@ export const authController = {
       if (error.message === "PASSWORD_ALREADY_SET") {
         return res.status(400).json({
           success: false,
-          message: "A password is already set for this account. Sign in instead.",
+          message:
+            "A password is already set for this account. Sign in instead.",
         });
       }
       if (
@@ -227,7 +336,7 @@ export const authController = {
       return res.status(200).json({
         success: true,
         message: "Login successful",
-        // Same JWT as Set-Cookie; SPA mirrors it onto the Next.js origin via /api/auth/session when frontend and API differ (e.g. Render).
+        // Same JWT as Set-Cookie; SPA on a different origin mirrors it via /api/auth/session (BFF) when needed.
         data: { user: result.user, token: result.token },
       });
     } catch (error: any) {

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc && node scripts/copy-prisma-generated.cjs",
     "start": "npx prisma migrate deploy && node dist/index.js"
   },
@@ -15,9 +15,8 @@
     "@aws-sdk/client-s3": "^3.1025.0",
     "@aws-sdk/client-ses": "^3.1029.0",
     "@aws-sdk/lib-storage": "^3.1025.0",
-    "@prisma/adapter-pg": "^7.6.0",
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.6.0",
-    "prisma": "^7.6.0",
     "axios": "^1.14.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
@@ -28,10 +27,10 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",
-    "multer": "^2.1.1"
+    "multer": "^2.1.1",
+    "prisma": "^7.6.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
@@ -40,6 +39,7 @@
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.1.0",
     "@types/node": "^25.5.2",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.2"
