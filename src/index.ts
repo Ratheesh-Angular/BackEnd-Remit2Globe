@@ -91,6 +91,7 @@ const HOST = "0.0.0.0";
 
 app.listen(Number(PORT), HOST, () => {
   const env = process.env.NODE_ENV || "development";
+  console.log(`Server running on port ${PORT} [${env}]`);
 });
 
 export default app;
